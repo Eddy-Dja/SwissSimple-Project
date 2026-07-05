@@ -1,0 +1,362 @@
+/* src/pages/demenagementHub.css */
+
+.hub-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 20px 60px;
+}
+
+.hub-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hub-header h1 {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #1A202C;
+}
+
+.hub-header p {
+  color: #64748B;
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+
+.hub-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  border-bottom: 2px solid #E2E8F0;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.hub-tabs button {
+  background: none;
+  border: none;
+  padding: 15px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #64748B;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.hub-tabs button:hover { color: #1A202C; }
+
+.hub-tabs button.active {
+  color: #3B82F6;
+  border-bottom: 3px solid #3B82F6;
+}
+
+/* GESTION DES ÉTAPES */
+.hub-step.hidden { display: none; }
+.hub-step.visible { display: block; }
+
+/* BOUTONS DE NAVIGATION HUB */
+.hub-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+  padding-bottom: 40px;
+}
+
+.btn-hub-next {
+  background: #16a34a;
+  color: white;
+  padding: 18px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex: 1;
+  transition: background 0.2s;
+  box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
+  text-align: center;
+}
+
+.btn-hub-next:hover { background: #15803d; }
+.btn-hub-next:only-child { flex: 2; }
+
+.btn-hub-prev {
+  background: #f1f5f9;
+  color: #334155;
+  padding: 18px 32px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  transition: background 0.2s;
+  text-align: center;
+}
+
+.btn-hub-prev:hover { background: #e2e8f0; }
+
+/* SYNTHESE FINALE */
+.synthese-container {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+}
+
+.synthese-container h2 { margin-bottom: 20px; color: #1A202C; }
+.synthese-container p { font-size: 18px; margin-bottom: 10px; color: #64748B; }
+
+.synthese-recap {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.recap-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.recap-item:last-of-type { border-bottom: none; }
+.recap-title { font-weight: 600; color: #334155; font-size: 1.1rem; }
+.recap-value { font-weight: 700; font-size: 1.1rem; }
+.recap-value.benefice { color: #16a34a; }
+.recap-value.perte { color: #dc2626; }
+
+.recap-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  margin-top: 10px;
+  border-top: 2px solid #1A202C;
+}
+
+.recap-total span { font-size: 1.2rem; font-weight: 700; color: #1A202C; }
+.recap-total h3 { font-size: 1.8rem; color: #16a34a; margin: 0; }
+.recap-total h3.perte { color: #dc2626; }
+
+.unlocked-results h3 {
+  font-size: 32px;
+  color: #10B981;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* =========================================
+   CARTES D'ANALYSE
+========================================= */
+.analysis-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+  text-align: left;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.analysis-card h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  color: #1A202C;
+  font-weight: 700;
+}
+
+.analysis-desc {
+  font-size: 1rem;
+  color: #64748B;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* SECTION POUR LE CALCUL DE RENTABILITÉ */
+.roi-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.roi-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.roi-section h5 {
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+  color: #1A202C;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* BLOC INPUT */
+.break-even-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.break-even-grid:has(.break-even-item:only-child) {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 768px) {
+  .break-even-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.break-even-item label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  background: #F8FAFC;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.input-currency {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-weight: 600;
+  pointer-events: none;
+  font-size: 1.1rem;
+  z-index: 1;
+}
+
+.break-even-input {
+  width: 100%;
+  height: 50px !important;
+  padding: 0 16px 0 50px !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  font-size: 1.1rem !important;
+  background-color: transparent !important;
+  box-sizing: border-box !important;
+  outline: none;
+  margin: 0 !important;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.break-even-input:focus {
+  border-color: #3B82F6 !important;
+}
+
+/* BOUTON BLEU COMPACT (Pour le calcul) */
+.btn-calc-blue {
+  background-color: #3B82F6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  height: 50px;
+  padding: 0 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.2s;
+}
+
+.btn-calc-blue:hover { background-color: #2563eb; }
+
+/* BOUTON BLEU LARGE (Même taille que le bouton vert, pour le PDF) */
+.btn-hub-blue {
+  background: #3B82F6;
+  color: white;
+  padding: 18px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+  text-align: center;
+}
+
+.btn-hub-blue:hover { background: #2563eb; }
+
+/* RÉSULTAT DU POINT MORT */
+.break-even-result {
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.break-even-result.benefice {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.break-even-result.perte {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.break-even-result strong { font-weight: 800; }
+
+/* ============================================================
+   CLASSES UTILITAIRES (Retirées du React)
+   ============================================================ */
+.hub-warning-message {
+  color: #dc2626;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.pdf-btn-container {
+  margin-top: 20px;
+  padding: 0;
+}
+
+.roi-calc-container {
+  max-width: 500px;
+  margin: 15px auto 0 auto;
+}
+
+.w-100 {
+  width: 100%;
+}

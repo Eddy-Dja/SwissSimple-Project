@@ -1,0 +1,258 @@
+/* Fichier : SimulateurAVS.css */
+
+.radar-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem 0; /* Padding 0 sur les côtés pour laisser les résultats respirer */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.back-btn-top {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 0 2rem 24px;
+  transition: color 0.2s;
+}
+.back-btn-top:hover { color: #2563eb; }
+
+.radar-title-container { text-align: center; margin-bottom: 2.5rem; padding: 0 24px; }
+.radar-title { font-size: 2.5rem; font-weight: 800; color: #0f172a; margin: 0 0 0.5rem 0; }
+.radar-subtitle { font-size: 1.1rem; color: #64748b; margin: 0; }
+
+/* --- FORMULAIRE PETIT ET CENTRÉ --- */
+.avs-form-small {
+  max-width: 700px !important; /* Format compact pour célibataire */
+  margin: 0 auto 3rem auto !important;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box !important;
+  transition: max-width 0.3s ease; /* Animation fluide quand on change de statut */
+}
+
+/* --- ÉLARGISSEMENT AUTOMATIQUE SI MARIÉ --- */
+.avs-form-small.avs-form-wide {
+  max-width: 950px !important;
+}
+
+.radar-filters.base-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.filter-group label { font-size: 0.9rem; font-weight: 600; color: #334155; }
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.filter-hint { font-size: 0.8rem; color: #94a3b8; }
+
+.btn-primary {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.btn-primary:hover { background-color: #1d4ed8; }
+
+.avs-state-group { margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem; }
+.avs-form-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; width: 100%; }
+.avs-form-col { flex: 1 1 280px; }
+.avs-mt-1 { margin-top: 1rem; }
+.avs-mt-2 { margin-top: 2rem; }
+
+.avs-marriage-group {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+.avs-marriage-label { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
+
+/* --- RÉSULTATS PLEINE LARGEUR (CASSE LA LIMITE DU PARENT) --- */
+.avs-full-width {
+  /* Astuce pour forcer la pleine largeur malgré le dashboard-container */
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  padding: 3rem 5vw !important; /* 5vw donne de l'air sur les bords */
+  background: #f8fafc; /* Fond gris clair pour bien voir les panneaux */
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+
+.simple-center { 
+  max-width: 1600px; /* Limite interne pour que ce soit lisible sur très grands écrans */
+  margin: 0 auto;
+  display: flex; 
+  flex-direction: column; 
+  gap: 1rem; 
+  box-sizing: border-box !important; 
+}
+
+.simple-location-text { font-size: 1rem; color: #64748b; text-align: center; margin: 0; }
+.avs-result-title { margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: bold; }
+
+.simple-box {
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.simple-box.light { background-color: #ffffff; border: 1px solid #e2e8f0; }
+.simple-box.dark { background-color: #1e293b; color: #ffffff; }
+.simple-box.total-box { background-color: #2563eb; color: #ffffff; margin-top: 0.5rem; }
+
+.simple-box-label, .simple-box-label-dark { font-size: 1rem; font-weight: 500; }
+.simple-box-label { color: #64748b; }
+.simple-box-label-dark { color: #cbd5e1; }
+
+.simple-box-value, .simple-box-value-dark { font-size: 1.5rem; font-weight: 700; margin: 0; }
+.simple-box-value { color: #0f172a; }
+.simple-box-value-dark { color: #ffffff; }
+
+.taux-effectif {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #64748b;
+  text-align: center;
+  background: #f1f5f9;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+/* --- PANNEAUX CÔTE À CÔTE (FORCÉ AVEC !IMPORTANT) --- */
+.avs-panels-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 2rem !important;
+  width: 100% !important;
+  margin-top: 1.5rem !important;
+  align-items: stretch !important; /* Force la même hauteur */
+}
+
+.avs-panel {
+  flex: 1 1 0 !important; /* Force 50% de largeur exactement */
+  min-width: 0 !important; /* Empêche le texte de faire déborder */
+  padding: 2rem !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  box-sizing: border-box !important;
+}
+
+.avs-panel-blue { background-color: #eff6ff; border: 2px solid #bfdbfe; }
+.avs-panel-red { background-color: #fef2f2; border: 2px solid #fecaca; }
+
+.avs-panel-header {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem; 
+  border-bottom: 1px solid;
+  padding-bottom: 1rem;
+}
+.avs-header-blue { color: #1d4ed8; border-color: #bfdbfe; }
+.avs-header-red { color: #b91c1c; border-color: #fecaca; }
+
+.avs-push-bottom { margin-top: auto; } 
+
+.avs-box-blue-dark { background-color: #1e40af; color: #ffffff; }
+.avs-box-blue-total { background-color: #1d4ed8; color: #ffffff; margin-top: 0.5rem; }
+.avs-box-red-dark { background-color: #b91c1c; color: #ffffff; }
+.avs-box-red-total { background-color: #991b1b; color: #ffffff; margin-top: 0.5rem; }
+
+.avs-warning-yellow { border-color: #fcd34d; background-color: #fffbeb; }
+.avs-warning-text-yellow { color: #b45309; }
+.avs-warning-green { border-color: #86efac; background-color: #f0fdf4; }
+.avs-warning-text-green { color: #15803d; }
+
+.avs-info-blue {
+  background-color: #dbeafe;
+  border: 1px solid #93c5fd;
+  color: #1e3a8a;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.avs-phase-box {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border: 1px dashed;
+  border-radius: 12px;
+  background-color: #ffffff;
+}
+.avs-phase-blue { border-color: #93c5fd; }
+.avs-phase-text-blue { font-size: 0.95rem; color: #1e40af; margin-bottom: 0.5rem; font-weight: bold; text-align: center; }
+.avs-phase-text-red { font-size: 0.95rem; color: #b91c1c; margin-bottom: 0.5rem; font-weight: bold; text-align: center; }
+
+.avs-box-borderless { border: none; }
+
+.avertissement-legal {
+  max-width: 800px;
+  margin: 3rem auto 0 auto;
+  padding: 1.5rem;
+  background-color: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.titre-avertissement { font-weight: 700; color: #b45309; font-size: 0.95rem; }
+.texte-avertissement { font-size: 0.85rem; color: #92400e; line-height: 1.5; }
+
+@media (max-width: 768px) {
+  .radar-title { font-size: 2rem; }
+  .avs-form-small { padding: 1.5rem; }
+  .simple-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .avs-panels-wrapper {
+    flex-direction: column !important; /* Sur mobile, on empile */
+  }
+}

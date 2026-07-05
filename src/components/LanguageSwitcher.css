@@ -1,0 +1,19 @@
+.lang-switcher-btn {
+  background: #f1f5f9;
+  color: #1A202C;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.lang-switcher-btn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}

@@ -1,0 +1,275 @@
+.assurance-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* BOUTON RETOUR */
+.back-btn-top {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.2s;
+}
+
+.back-btn-top:hover { opacity: 0.8; }
+
+/* EN-TÊTE */
+.assurance-header { text-align: center; margin-bottom: 2.5rem; }
+.assurance-title { font-size: 2.2rem; color: #1a1a1a; margin-bottom: 0.5rem; }
+.assurance-subtitle { font-size: 1.1rem; color: #555; }
+
+/* SÉLECTEUR DE MODE (SIMPLE / COMPARAISON) */
+.mode-selector-assurance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  background-color: #f1f5f9;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.mode-btn-assurance {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: transparent;
+  color: #64748b;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.mode-btn-assurance.active { background-color: #fff; color: #1a1a1a; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.mode-btn-assurance:hover:not(.active) { color: #334155; }
+
+/* FORMULAIRE */
+.assurance-form {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 3rem;
+  box-sizing: border-box;
+}
+
+.assurance-filters {
+  display: flex;
+  flex-direction: column; /* Les sections s'empilent verticalement */
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* SECTION DES LIEUX (A ET B) */
+.locations-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Toujours 2 colonnes égales */
+  gap: 1.5rem;
+}
+
+/* En mode simple, on cache la 2ème colonne visuellement en mettant 1 colonne */
+.locations-wrapper:has(.location-column:only-child) {
+  grid-template-columns: 1fr;
+}
+
+/* SECTION DES FILTRES COMMUNS */
+.common-filters-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  border-top: 1px solid #e2e8f0; /* Ligne de séparation avec les lieux */
+  padding-top: 1.5rem;
+}
+
+/* COLONNES LIEU A / LIEU B */
+.location-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.location-column.bordered {
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.filter-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  background-color: #fafafa;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #fff;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 1rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover { background-color: #1d4ed8; }
+.btn-primary:disabled { background-color: #93c5fd; cursor: not-allowed; }
+
+/* RÉSUMÉ COMPARAISON (VS) - SECURISÉ ANTI-CHEVAUCHEMENT */
+.comparison-summary {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 3rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.comparison-avg-row {
+  display: flex;
+  flex-wrap: wrap; /* Permet de passer à la ligne proprement sur mobile */
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+}
+
+.comparison-avg-col {
+  flex: 1 1 200px; /* Grandit, rétrécit, base 200px */
+  min-width: 0;
+}
+
+.comparison-avg-col h4 { margin: 0 0 5px 0; color: #64748b; font-size: 0.9rem; }
+.comparison-avg-col h2 { margin: 0; color: #1a1a1a; font-size: 1.8rem; white-space: nowrap; }
+.comparison-avg-col h2 span { font-size: 0.8rem; color: #888; font-weight: 400; }
+
+.comparison-vs {
+  font-size: 1.5rem;
+  color: #cbd5e1;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.comparison-diff { padding: 1rem; border-radius: 8px; }
+.comparison-diff.benefice { background: #f0fdf4; color: #166534; }
+.comparison-diff.perte { background: #fef2f2; color: #991b1b; }
+.comparison-diff.neutre { background: #f8fafc; color: #1a1a1a; }
+.comparison-diff h3 { margin: 0; font-size: 1.2rem; }
+.comparison-subtitle { font-size: 0.8rem; color: #94a3b8; margin-top: 10px; margin-bottom: 0; }
+
+/* ONGLETS RÉGIONS */
+.region-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 2rem;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.region-tab {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: transparent;
+  color: #64748b;
+  transition: all 0.2s;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.region-tab.active { background: #fff; color: #1a1a1a; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.region-tab:hover:not(.active) { color: #334155; }
+
+/* RÉSULTATS */
+.assurance-results { min-height: 200px; }
+.no-results { text-align: center; padding: 3rem; color: #666; background: #f8f8f8; border-radius: 12px; font-size: 1.1rem; }
+.results-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: #1a1a1a; }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* CARTE PRIME */
+.prime-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.prime-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); }
+
+.prime-card-header {
+  background: #f9fafb;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.assureur-name { margin: 0; font-size: 1.2rem; color: #111; }
+.prime-type { font-size: 0.8rem; background: #eff6ff; color: #1d4ed8; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600; }
+
+.prime-card-body { padding: 1.5rem; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; }
+.prime-tarif-name { font-size: 0.9rem; color: #666; margin-top: 0; margin-bottom: 1.5rem; min-height: 40px; }
+
+.prime-price { display: flex; flex-direction: column; align-items: flex-end; margin-top: auto; }
+.price-label { font-size: 0.8rem; color: #888; margin-bottom: 0.25rem; }
+.price-value { font-size: 1.8rem; font-weight: 700; color: #059669; }

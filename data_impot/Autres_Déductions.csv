@@ -1,0 +1,467 @@
+﻿Canton-Id;Canton;Type d'impot;Nom;Autorite fiscale;Revenu net / Fortune nette CHF;Deduction CHF
+10;FR;Impôt sur la fortune;Déductions pour les personnes mariées ou les familles monoparentales;Canton;0;105 000
+10;FR;Impôt sur la fortune;Déductions pour les personnes mariées ou les familles monoparentales;Canton;125 001;85 000
+10;FR;Impôt sur la fortune;Déductions pour les personnes mariées ou les familles monoparentales;Canton;160 001;65 000
+10;FR;Impôt sur la fortune;Déductions pour les personnes mariées ou les familles monoparentales;Canton;195 001;45 000
+10;FR;Impôt sur la fortune;Déductions pour les personnes mariées ou les familles monoparentales;Canton;230 001;25 000
+10;FR;Impôt sur la fortune;Déductions pour les personnes mariées ou les familles monoparentales;Canton;265 001;5 000
+10;FR;Impôt sur la fortune;Déductions pour les personnes mariées ou les familles monoparentales;Canton;300 001;0
+10;FR;Impôt sur la fortune;Déduction pour les personnes seules sans enfants;Canton;0;55 000
+10;FR;Impôt sur la fortune;Déduction pour les personnes seules sans enfants;Canton;75 001;45 000
+10;FR;Impôt sur la fortune;Déduction pour les personnes seules sans enfants;Canton;100 001;35 000
+10;FR;Impôt sur la fortune;Déduction pour les personnes seules sans enfants;Canton;125 001;25 000
+10;FR;Impôt sur la fortune;Déduction pour les personnes seules sans enfants;Canton;150 001;15 000
+10;FR;Impôt sur la fortune;Déduction pour les personnes seules sans enfants;Canton;175 001;5 000
+10;FR;Impôt sur la fortune;Déduction pour les personnes seules sans enfants;Canton;200 001;0
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;0;4 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;20 301;3 900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;21 301;3 700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;22 301;3 500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;23 301;3 300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;24 301;3 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;25 301;2 900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;26 301;2 700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;27 301;2 500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;28 301;2 300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;29 301;2 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;30 301;1 900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;31 301;1 700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;32 301;1 500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;33 301;1 300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;34 301;1 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;35 301;900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;36 301;700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;37 301;500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;38 301;300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;39 301;100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;40 301;0
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;0;5 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;24 301;4 900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;25 301;4 700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;26 301;4 500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;27 301;4 300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;28 301;4 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;29 301;3 900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;30 301;3 700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;31 301;3 500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;32 301;3 300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;33 301;3 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;34 301;2 900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;35 301;2 700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;36 301;2 500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;37 301;2 300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;38 301;2 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;39 301;1 900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;40 301;1 700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;41 301;1 500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;42 301;1 300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;43 301;1 100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;44 301;900
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;45 301;700
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;46 301;500
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;47 301;300
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;48 301;100
+10;FR;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;49 301;0
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;0;11 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;30 301;10 700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;31 301;10 300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;32 301;9 900
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;33 301;9 500
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;34 301;9 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;35 301;8 700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;36 301;8 300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;37 301;7 900
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;38 301;7 500
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;39 301;7 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;40 301;6 700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;41 301;6 300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;42 301;5 900
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;43 301;5 500
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;44 301;5 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;45 301;4 700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;46 301;4 300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;47 301;3 900
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;48 301;3 500
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;49 301;3 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;50 301;2 700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;51 301;2 300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;52 301;1 900
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;53 301;1 500
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;54 301;1 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;55 301;700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;56 301;300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, avec devoir de soutien;Canton;57 301;0
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;0;9 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;24 301;8 800
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;25 301;8 500
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;26 301;8 200
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;27 301;7 900
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;28 301;7 600
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;29 301;7 300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;30 301;7 000
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;31 301;6 700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;32 301;6 400
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;33 301;6 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;34 301;5 800
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;35 301;5 500
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;36 301;5 200
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;37 301;4 900
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;38 301;4 600
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;39 301;4 300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;40 301;4 000
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;41 301;3 700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;42 301;3 400
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;43 301;3 100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;44 301;2 800
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;45 301;2 500
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;46 301;2 200
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;47 301;1 900
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;48 301;1 600
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;49 301;1 300
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;50 301;1 000
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;51 301;700
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;52 301;400
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;53 301;100
+10;FR;Impôt sur le revenu;Déduction pour les rentiers AVS/AI, sans devoir de soutien;Canton;54 301;0
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;0;7 050
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;16 801;6 750
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;17 601;6 450
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;18 401;6 150
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;19 201;5 850
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;20 001;5 550
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;20 801;5 250
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;21 601;4 950
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;22 401;4 650
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;23 201;4 350
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;24 001;4 050
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;24 801;3 750
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;25 601;3 450
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;26 401;3 150
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;27 201;2 850
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;28 001;2 550
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;28 801;2 250
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;29 601;1 950
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;30 401;1 650
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;31 201;1 350
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;32 001;1 050
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;32 801;750
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;33 601;450
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;34 401;150
+14;SH;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;35 201;0
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;0;14 100
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;25 201;13 800
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;26 001;13 500
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;26 801;13 200
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;27 601;12 900
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;28 401;12 600
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;29 201;12 300
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;30 001;12 000
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;30 801;11 700
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;31 601;11 400
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;32 401;11 100
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;33 201;10 800
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;34 001;10 500
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;34 801;10 200
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;35 601;9 900
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;36 401;9 600
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;37 201;9 300
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;38 001;9 000
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;38 801;8 700
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;39 601;8 400
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;40 401;8 100
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;41 201;7 800
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;42 001;7 500
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;42 801;7 200
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;43 601;6 900
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;44 401;6 600
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;45 201;6 300
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;46 001;6 000
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;46 801;5 700
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;47 601;5 400
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;48 401;5 100
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;49 201;4 800
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;50 001;4 500
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;50 801;4 200
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;51 601;3 900
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;52 401;3 600
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;53 201;3 300
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;54 001;3 000
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;54 801;2 700
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;55 601;2 400
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;56 401;2 100
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;57 201;1 800
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;58 001;1 500
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;58 801;1 200
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;59 601;900
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;60 401;600
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;61 201;300
+14;SH;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;62 001;0
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;0;3 525
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;16 801;3 375
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;17 601;3 225
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;18 401;3 075
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;19 201;2 925
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;20 001;2 775
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;20 801;2 625
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;21 601;2 475
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;22 401;2 325
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;23 201;2 175
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;24 001;2 025
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;24 801;1 875
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;25 601;1 725
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;26 401;1 575
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;27 201;1 425
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;28 001;1 275
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;28 801;1 125
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;29 601;975
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;30 401;825
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;31 201;675
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;32 001;525
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;32 801;375
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;33 601;225
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;34 401;75
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;35 201;0
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;0;7 050
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;25 201;6 900
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;26 001;6 750
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;26 801;6 600
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;27 601;6 450
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;28 401;6 300
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;29 201;6 150
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;30 001;6 000
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;30 801;5 850
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;31 601;5 700
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;32 401;5 550
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;33 201;5 400
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;34 001;5 250
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;34 801;5 100
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;35 601;4 950
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;36 401;4 800
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;37 201;4 650
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;38 001;4 500
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;38 801;4 350
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;39 601;4 200
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;40 401;4 050
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;41 201;3 900
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;42 001;3 750
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;42 801;3 600
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;43 601;3 450
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;44 401;3 300
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;45 201;3 150
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;46 001;3 000
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;46 801;2 850
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;47 601;2 700
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;48 401;2 550
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;49 201;2 400
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;50 001;2 250
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;50 801;2 100
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;51 601;1 950
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;52 401;1 800
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;53 201;1 650
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;54 001;1 500
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;54 801;1 350
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;55 601;1 200
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;56 401;1 050
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;57 201;900
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;58 001;750
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;58 801;600
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;59 601;450
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;60 401;300
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;61 201;150
+14;SH;Impôt sur le revenu;Déduction pour revenus modestes, famille monoparentale ou les personnes mariées;Canton;62 001;0
+19;AG;Impôt sur le revenu;Déduction sociale supplémentaire;Canton;0;12 000
+19;AG;Impôt sur le revenu;Déduction sociale supplémentaire;Canton;15 000;7 500
+19;AG;Impôt sur le revenu;Déduction sociale supplémentaire;Canton;20 000;3 000
+19;AG;Impôt sur le revenu;Déduction sociale supplémentaire;Canton;25 000;2 000
+19;AG;Impôt sur le revenu;Déduction sociale supplémentaire;Canton;30 000;1 000
+19;AG;Impôt sur le revenu;Déduction sociale supplémentaire;Canton;35 000;0
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;0;4 200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;17 900;4 000
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;18 900;3 800
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;19 900;3 600
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;20 900;3 400
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;21 900;3 200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;22 900;3 000
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;23 900;2 800
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;24 900;2 600
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;25 900;2 400
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;26 900;2 200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;27 900;2 000
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;28 900;1 800
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;29 900;1 600
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;30 900;1 400
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;31 900;1 200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;32 900;1 000
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;33 900;800
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;34 900;600
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;35 900;400
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;36 900;200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;37 900;0
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;0;4 200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;25 300;4 000
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;26 300;3 800
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;27 300;3 600
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;28 300;3 400
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;29 300;3 200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;30 300;3 000
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;31 300;2 800
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;32 300;2 600
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;33 300;2 400
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;34 300;2 200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;35 300;2 000
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;36 300;1 800
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;37 300;1 600
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;38 300;1 400
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;39 300;1 200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;40 300;1 000
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;41 300;800
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;42 300;600
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;43 300;400
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;44 300;200
+20;TG;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés;Canton;45 300;0
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;0;8 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;21 001;7 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;24 001;6 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;27 001;5 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;30 001;4 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;33 001;3 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;36 001;2 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;39 001;1 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;42 001;0
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;0;8 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;27 001;7 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;30 001;6 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;33 001;5 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;36 001;4 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;39 001;3 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;42 001;2 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;45 001;1 000
+21;TI;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, famille monoparentale ou les personnes mariées;Canton;48 001;0
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;0;21 250
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;21 251;19 125
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;22 831;17 000
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;24 411;14 875
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;25 991;12 750
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;27 571;10 625
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;29 151;8 500
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;30 731;6 375
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;32 311;4 250
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;33 891;2 125
+23;VS;Impôt sur le revenu;Déduction pour revenus modestes, célibataires sans enfants;Canton;35 471;0
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;0;2 100
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;26 001;2 000
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;27 001;1 900
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;28 001;1 800
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;29 001;1 700
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;30 001;1 600
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;31 001;1 500
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;32 001;1 400
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;33 001;1 300
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;34 001;1 200
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;35 001;1 100
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;36 001;1 000
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;37 001;900
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;38 001;800
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;39 001;700
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;40 001;600
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;41 001;500
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;42 001;400
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;43 001;300
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;44 001;200
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;45 001;100
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, personnes célibataires;Canton;46 001;0
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;0;3 800
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;48 001;3 600
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;49 001;3 400
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;50 001;3 200
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;51 001;3 000
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;52 001;2 800
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;53 001;2 600
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;54 001;2 400
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;55 001;2 200
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;56 001;2 000
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;57 001;1 800
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;58 001;1 600
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;59 001;1 400
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;60 001;1 200
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;61 001;1 000
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;62 001;800
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;63 001;600
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;64 001;400
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;65 001;200
+24;NE;Impôt sur le revenu;Déduction pour revenus modestes, Personnes mariées;Canton;66 001;0
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;0;10 661
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;53 305;8 529
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;60 448;6 397
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;68 230;4 264
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;76 226;2 132
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires sans enfants;Canton;85 288;0
+25;GE;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;0;10 661
+25;GE;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;61 301;8 529
+25;GE;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;69 510;6 397
+25;GE;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;78 465;4 264
+25;GE;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;87 633;2 132
+25;GE;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;98 081;0
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;0;12 260
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;61 301;9 808
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;69 510;7 356
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;78 465;4 904
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;87 633;2 452
+25;GE;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;98 081;0
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;0;8 900
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;29 100;8 300
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;29 900;7 800
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;30 800;7 200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;31 600;6 700
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;32 500;6 200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;33 400;5 600
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;34 200;5 100
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;35 100;4 500
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;35 900;4 000
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;36 800;3 500
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;37 700;2 900
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;38 500;2 400
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;39 400;1 800
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;40 200;1 300
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;41 100;800
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;42 000;200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI célibataires;Canton;42 800;0
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;0;8 900
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;37 200;8 300
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;38 000;7 800
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;38 900;7 200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;39 700;6 700
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;40 600;6 200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;41 500;5 600
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;42 300;5 100
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;43 200;4 500
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;44 000;4 000
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;44 900;3 500
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;45 800;2 900
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;46 600;2 400
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;47 500;1 800
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;48 300;1 300
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;49 200;800
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;50 100;200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers de l'AVS/AI, les personnes mariées, une personne recevant la rente;Canton;50 900;0
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;0;10 300
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;37 200;9 700
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;38 000;9 200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;38 900;8 600
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;39 700;8 100
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;40 600;7 600
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;41 500;7 000
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;42 300;6 500
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;43 200;5 900
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;44 000;5 400
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;44 900;4 900
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;45 800;4 300
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;46 600;3 800
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;47 500;3 200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;48 300;2 700
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;49 200;2 200
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;50 100;1 600
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;50 900;1 100
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;51 800;500
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;52 600;0
+26;JU;Impôt sur le revenu;Déduction pour les rentiers AVS/AI mariés, dont les deux partenaires sont bénéficiaires d'une rente;Canton;53 500;0

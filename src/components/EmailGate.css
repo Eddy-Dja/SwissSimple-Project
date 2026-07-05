@@ -1,0 +1,32 @@
+.email-gate-container {
+  background: #f8f9fa;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  margin-top: 20px;
+}
+.email-gate-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+.email-gate-title {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+.email-gate-desc {
+  color: #475569;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.email-gate-btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.email-gate-hint {
+  display: block;
+  margin-top: 15px;
+  color: #94a3b8;
+}

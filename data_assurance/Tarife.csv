@@ -1,0 +1,282 @@
+﻿Versicherer;Geschäftsjahr;Erhebungsjahr;Kategorie;Tarif;Tariftyp;Sort.-Nr.;Name_DE;Name_FR;Name_IT
+8;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+8;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+8;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+8;2026;2025;MOD;01_016;HAM;475;Gesundheitspraxisversicherung;Gesundheitspraxisversicherung;Gesundheitspraxisversicherung
+8;2026;2025;MOD;01_046;HAM;485;Hausarztversicherung Profit;Hausarztversicherung Profit;Hausarztversicherung Profit
+8;2026;2025;MOD;01_131;DIV;504;Callmed;Callmed;Callmed
+8;2026;2025;MOD;01_170;HAM;489;Multimed;Multimed;Multimed
+8;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+32;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+32;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+32;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+32;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+32;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+32;2026;2025;MOD;CASAMED;HAM;655;CASAMED;CASAMED;CASAMED
+32;2026;2025;MOD;SMARTMED;DIV;12;SMARTMED;SMARTMED;SMARTMED
+134;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+134;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+134;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+134;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+134;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+194;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+194;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+194;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+194;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+194;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+194;2026;2025;MOD;HAM;HAM;615;Hausarzt;Hausarzt;Hausarzt
+194;2026;2025;MOD;Telmed;DIV;622;Telmed;Telmed;Telmed
+246;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+246;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+246;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+246;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+246;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+246;2026;2025;MOD;Casa;HAM;757;Casa;casa;casa
+246;2026;2025;MOD;Medcasa;HAM;626;Medcasa;igomed;igomed
+246;2026;2025;MOD;Regiomed;HAM;620;Regiomed;Medizentrum Steffisburg;Medizentrum Steffisburg
+246;2026;2025;MOD;sanmed24;DIV;626;Sanmed24;sanmed24;sanmed24
+290;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+290;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+290;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+290;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+290;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+290;2026;2025;MOD;HAM_DOC;HAM;509;MyDoc;MyDoc;MyDoc
+290;2026;2025;MOD;HMO_01;HMO;515;HMO;HMO;HMO
+290;2026;2025;MOD;smartDoc;DIV;17;smartDoc;smartDoc;smartDoc
+312;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+312;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+312;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+312;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+312;2026;2025;MOD;CareMed;HAM;662;CareMed;CareMed;CareMed
+312;2026;2025;MOD;FlexCare;DIV;674;FlexCare;FlexCare;FlexCare
+312;2026;2025;MOD;HMO;HMO;657;HMO;HMO;HMO
+312;2026;2025;MOD;SmartCare;DIV;672;SmartCare;SmartCare;SmartCare
+312;2026;2025;MOD;TelFirst;DIV;675;TelFirst;TelFirst;TelFirst
+343;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+343;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+343;2026;2025;ALT;K1;K;30;3 und mehr Kinder;3 enfants et plus;3 und mehr Kinder
+343;2026;2025;ALT;K5;K;70;3 und mehr Kinder;3 enfants et plus;3 und mehr Kinder
+343;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+343;2026;2025;MOD;OptiMed;HMO;518;OptiMed;OptiMed;OptiMed
+343;2026;2025;MOD;PrimaCare;HAM;530;PrimaCare;PrimaCare;PrimaCare
+343;2026;2025;MOD;PrimaFlex;DIV;572;PrimaFlex;PrimaFlex;PrimaFlex
+343;2026;2025;MOD;SanaTel;DIV;576;SanaTel;SanaTel;SanaTel
+360;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+360;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+360;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+360;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+360;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+360;2026;2025;MOD;HM1;HAM;572;Hausmed;Hausmed;Hausmed
+360;2026;2025;MOD;TM1;DIV;63;Telmed;TelMed;TelMed
+376;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+376;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+376;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+376;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+376;2026;2025;MOD;HMO_A;HMO;665;KPTwin.plus;CPTwin.plus;CPTwin.plus
+376;2026;2025;MOD;KPTwindoc;HAM;667;KPTwin.doc;CPTwin.doc;CPTwin.doc
+376;2026;2025;MOD;KPTwineasy;DIV;677;KPTwin.easy;CPTwin.easy;CPTwin.easy
+376;2026;2025;MOD;KPTwinsmart;DIV;676;KPTwin.smart;KPTwin.smart;KPTwin.smart
+376;2026;2025;MOD;KPTwinwin;HAM;669;KPTwin.win;CPTwin.win;CPTwin.win
+455;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+455;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+455;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+455;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+455;2026;2025;MOD;HAM_CBA;HAM;574;Hausarzt;Médecin de famille;Medico di famiglia
+455;2026;2025;MOD;HMO_Kt;HMO;580;Gesundheitszentrum;Centre de santé;Centro sanitario
+455;2026;2025;MOD;Select;DIV;583;Select;Select;Select
+455;2026;2025;MOD;TelMed;DIV;585;Telemedizin;Télémédecine;Telemedicina
+509;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+509;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+509;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+509;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+509;2026;2025;MOD;DIV_XBA;DIV;29;FlexHelp 24;FlexHelp 24;FlexHelp 24
+509;2026;2025;MOD;HAM_CBA;HAM;640;casamed hausarzt;casamed médecin de famille;casamed family doctor
+509;2026;2025;MOD;HAM_GBA;HAM;754;callmed 24;callmed 24;callmed 24
+509;2026;2025;MOD;HAM_PBA;HAM;638;casamed pharm;casamed pharm;casamed pharm
+509;2026;2025;MOD;HMO;HMO;633;casamed hmo;casamed hmo;casamed hmo
+780;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+780;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+780;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+780;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+780;2026;2025;MOD;Telmed-Modell;DIV;20;Glarnermed-24;Glarnermed-24;Glarnermed-24
+820;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+820;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+820;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+820;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+820;2026;2025;MOD;casamed;HAM;536;casamed;casamed;casamed
+881;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+881;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+881;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+881;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+881;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+881;2026;2025;MOD;HAM_MC;HAM;785;EGK-Care;EGK-Care;EGK-Care
+881;2026;2025;MOD;Tel_Care;DIV;738;EGK-TelCare;EGK-TelCare;EGK-TelCare
+923;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+923;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+923;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+923;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+923;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+923;2026;2025;MOD;HOMECARE;HAM;187;SLKK-HomeCare;SLKK-HomeCare;SLKK-HomeCare
+923;2026;2025;MOD;SMARTMED;DIV;686;SLKK-SmartMed;SLKK-SmartMed;SLKK-SmartMed
+923;2026;2025;MOD;TELCARE;DIV;687;SLKK-TelCare;SLKK-TelCare;SLKK-TelCare
+941;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+941;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+941;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+941;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+941;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+941;2026;2025;MOD;Digimed;DIV;544;Digimed;Digimed;Digimed
+941;2026;2025;MOD;Medicasa;HAM;542;Medicasa;Medicasa;Medicasa
+941;2026;2025;MOD;Telmed;DIV;546;Telmed;Telmed;Telmed
+966;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+966;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+966;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+966;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+966;2026;2025;MOD;Sparmed;HAM;544;Sparmed;Sparmed;Sparmed
+1040;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1040;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1040;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1040;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1040;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1040;2026;2025;MOD;Medicasa;HAM;549;Medicasa;Medicasa;Medicasa
+1040;2026;2025;MOD;Telmed;DIV;557;Telmed;Telmed;Telmed
+1113;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1113;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1113;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+1113;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1113;2026;2025;MOD;SanaTel;DIV;155;SanaTel;SanaTel;SanaTel
+1318;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1318;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1318;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+1318;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1318;2026;2025;MOD;RS;HAM;552;Hausarztmodell;Hausarztmodell;Hausarztmodell
+1322;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1322;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1322;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1322;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1322;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1322;2026;2025;MOD;HAS;HAM;554;Hausarztsystem;Hausarztsystem;Hausarztsystem
+1322;2026;2025;MOD;TELMED;DIV;1;Telmed;Telmed;Telmed
+1384;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1384;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1384;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1384;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1384;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1384;2026;2025;MOD;BESTCARE;HMO;1079;FAVORIT BESTCARE;FAVORIT BESTCARE;FAVORIT BESTCARE
+1384;2026;2025;MOD;CASA;HAM;1023;FAVORIT CASA;FAVORIT CASA;FAVORIT CASA
+1384;2026;2025;MOD;HMO;HMO;1081;FAVORIT SANTE;FAVORIT SANTE;FAVORIT SANTE
+1384;2026;2025;MOD;MEDICA;HAM;1026;FAVORIT MEDICA;FAVORIT MEDICA;FAVORIT MEDICA
+1384;2026;2025;MOD;MULTICHOICE;HAM;1025;FAVORIT MULTICHOICE;FAVORIT MULTICHOICE;FAVORIT MULTICHOICE
+1384;2026;2025;MOD;PHARMA;HAM;1024;FAVORIT MEDPHARM;FAVORIT MEDPHARM;FAVORIT MEDPHARM
+1384;2026;2025;MOD;TELMED;DIV;701;FAVORIT TELMED;FAVORIT TELMED;FAVORIT TELMED
+1386;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1386;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1386;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1386;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1386;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1386;2026;2025;MOD;COC;DIV;4;Combi Care;Combi Care;Combi Care
+1386;2026;2025;MOD;MCMIT;HMO;12;Managed Care;Managed Care;Managed Care
+1386;2026;2025;MOD;MD;HAM;7;Med Direct;Med Direct;Med Direct
+1386;2026;2025;MOD;TDO;DIV;3;Tel Doc;Tel Doc;Tel Doc
+1386;2026;2025;MOD;VIVA;HMO;10;VIVA – Gesundheitsplan;VIVA – Gesundheitsplan;VIVA – Gesundheitsplan
+1401;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1401;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1401;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1401;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1401;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1401;2026;2025;MOD;HAS;HAM;561;Hausarzt-Modell;Hausarzt-Modell;Hausarzt-Modell
+1401;2026;2025;MOD;sanmed24;DIV;563;sanmed24;sanmed24;sanmed24
+1479;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1479;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1479;2026;2025;ALT;K1;K;30;3 und mehr Kinder;3 enfants et plus;3 und mehr Kinder
+1479;2026;2025;ALT;K5;K;70;3 und mehr Kinder;3 enfants et plus;3 und mehr Kinder
+1479;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1479;2026;2025;MOD;OptiMed;HMO;597;OptiMed;OptiMed;OptiMed
+1479;2026;2025;MOD;PrimaCare;HAM;600;PrimaCare;PrimaCare;PrimaCare
+1479;2026;2025;MOD;PrimaFlex;DIV;603;PrimaFlex;PrimaFlex;PrimaFlex
+1479;2026;2025;MOD;SanaTel;DIV;606;SanaTel;SanaTel;SanaTel
+1507;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1507;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1507;2026;2025;ALT;K1;K;30;3 und mehr Kinder;3 enfants et plus;3 und mehr Kinder
+1507;2026;2025;ALT;K5;K;70;3 und mehr Kinder;3 enfants et plus;3 und mehr Kinder
+1507;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1507;2026;2025;MOD;PrimaCare;HAM;47;PrimaCare;PrimaCare;PrimaCare
+1507;2026;2025;MOD;SanaTel;DIV;607;SanaTel;SanaTel;SanaTel
+1509;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1509;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1509;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+1509;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1509;2026;2025;MOD;Hausarztmodell 1;HAM;694;Hausarztmodell 1;Médecin de famille 1;Medico di famiglia 1
+1509;2026;2025;MOD;Hausarztmodell 2;HAM;697;Hausarztmodell 2;Médecin de famille 2;Medico di famiglia 2
+1509;2026;2025;MOD;Hausarztmodell 3;HAM;698;Hausarztmodell 3;Médecin de famille 3;Medico di famiglia 3
+1509;2026;2025;MOD;Hausarztmodell 4;HAM;699;Hausarztmodell 4;Médecin de famille 4;Medico di famiglia 4
+1509;2026;2025;MOD;MultiAccess;HMO;107;MultiAccess;MultiAccess;MultiAccess
+1509;2026;2025;MOD;TelMed (CallMed);DIV;713;TelMed (CallMed);TelMed (CallMed);TelMed (CallMed)
+1509;2026;2025;MOD;TelMed (Compact One);DIV;709;TelMed (Compact One);TelMed (Compact One);TelMed (Compact One)
+1535;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1535;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1535;2026;2025;ALT;K1;K;30;3 und mehr Kinder;3 enfants et plus;3 und mehr Kinder
+1535;2026;2025;ALT;K5;K;70;3 und mehr Kinder;3 enfants et plus;3 und mehr Kinder
+1535;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1535;2026;2025;MOD;OptiMed;HMO;692;OptiMed;OptiMed;OptiMed
+1535;2026;2025;MOD;PrimaCare;HAM;706;PrimaCare;PrimaCare;PrimaCare
+1535;2026;2025;MOD;PrimaFlex;DIV;718;PrimaFlex;PrimaFlex;PrimaFlex
+1535;2026;2025;MOD;SanaTel;DIV;722;SanaTel;SanaTel;SanaTel
+1542;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1542;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1542;2026;2025;ALT;K1;K;30;AUGR3+AUGR4;AUGR3+AUGR4;AUGR3+AUGR4
+1542;2026;2025;ALT;K4;K;60;AUGR3+AUGR4;AUGR3+AUGR4;AUGR3+AUGR4
+1542;2026;2025;ALT;K5;K;70;AUGR3+AUGR4;AUGR3+AUGR4;AUGR3+AUGR4
+1542;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1542;2026;2025;MOD;FV;HAM;734;FeminaVita;FeminaVita;FeminaVita
+1542;2026;2025;MOD;HS;HAM;733;Hausspital;Hausspital;Hausspital
+1542;2026;2025;MOD;MF;HAM;720;Hausarzt Modell;Médecin de famille;Medico di famiglia
+1542;2026;2025;MOD;PRV;HAM;716;PreventoMed;PreventoMed;PreventoMed
+1542;2026;2025;MOD;QM;HAM;732;Qualimed;Qualimed;Qualimed
+1542;2026;2025;MOD;RPH;HAM;735;PharMed;PharMed;PharMed
+1542;2026;2025;MOD;RS;DIV;173;Gesundheitnetz;Réseau de soins;Rete delle cure
+1555;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1555;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1555;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1555;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1555;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1555;2026;2025;MOD;COC;DIV;808;Combi Care;Combi Care;Combi Care
+1555;2026;2025;MOD;HMO_PLUS;HMO;785;HMO plus;HMO plus;HMO plus
+1555;2026;2025;MOD;MCA;DIV;814;Med Call;Visana Med Call;Visana Med Call
+1555;2026;2025;MOD;MCMIT;HMO;788;Managed Care;Managed Care;Managed Care
+1555;2026;2025;MOD;MD;HAM;346;Med Direct;Med Direct;Med Direct
+1555;2026;2025;MOD;TCA;DIV;826;Tel Care;Tel Care;Tel Care
+1555;2026;2025;MOD;TDO;DIV;829;Tel Doc;Visana Tel Doc;Visana Tel Doc
+1555;2026;2025;MOD;VIVA;HMO;786;VIVA – Gesundheitsplan;VIVA – plan de santé;VIVA – piano sanitario
+1560;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1560;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1560;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1560;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1560;2026;2025;MOD;AGRIcontact;DIV;142;AGRIcontact;AGRIcontact;AGRIcontact
+1560;2026;2025;MOD;AGRIeco;HMO;17;AGRIeco;AGRIeco;AGRIeco
+1560;2026;2025;MOD;AGRIsmart;DIV;140;AGRIsmart;AGRIsmart;AGRIsmart
+1560;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1562;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1562;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1562;2026;2025;ALT;K1;K;40;Kinder;Enfants;Minorenni
+1562;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1562;2026;2025;MOD;BFP_BF;HAM;789;BeneFit PLUS Hausarzt R4;BeneFit PLUS Médecin de famille R4;BeneFit PLUS Medico di famiglia R4
+1562;2026;2025;MOD;BFP_CA;HAM;768;BeneFit PLUS Hausarzt R3;BeneFit PLUS Médecin de famille R3;BeneFit PLUS Medico di famiglia  R3
+1562;2026;2025;MOD;BFP_CAF;HAM;786;BeneFit PLUS Flexmed R3;BeneFit PLUS Flexmed R3;BeneFit PLUS Flexmed R3
+1562;2026;2025;MOD;BFP_CM;HAM;767;BeneFit PLUS Hausarzt R2;BeneFit PLUS Médecin de famille R2;BeneFit PLUS Medico di famiglia R2
+1562;2026;2025;MOD;BFP_CP;HAM;792;BeneFit PLUS Hausarzt R1;BeneFit PLUS Médecin de famille R1;BeneFit PLUS Medico di famiglia R1
+1562;2026;2025;MOD;BFP_CPF;HAM;797;BeneFit PLUS Flexmed R1;BeneFit PLUS Flexmed R1;BeneFit PLUS Flexmed R1
+1562;2026;2025;MOD;BFP_TEL;DIV;765;BeneFit PLUS Telmed;BeneFit PLUS Telmed;BeneFit PLUS Telmed
+1562;2026;2025;MOD;PREMED;DIV;642;Premed-24;Premed-24;Premed-24
+1568;2026;2025;ALT;E1;E;10;Erwachsene;Adultes;Adulti
+1568;2026;2025;ALT;J1;J;20;Junge Erwachsene;Jeunes adultes;Giovani adulti
+1568;2026;2025;ALT;K1;K;30;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1568;2026;2025;ALT;K3;K;50;ab 3. Kind;dès le 3ème enfant;ab 3. Kind
+1568;2026;2025;MOD;BASE;BASE;1;Grundversicherung;Assurance de base;Assicurazione di base
+1568;2026;2025;MOD;COC;DIV;816;Combi Care;Combi Care;Combi Care
+1568;2026;2025;MOD;MCA;DIV;824;Med Call;sana24 Med Call;sana24 Med Call
+1568;2026;2025;MOD;MCMIT;HMO;8;Managed Care;Managed Care;Managed Care
+1568;2026;2025;MOD;MCOHNE;HMO;6;Managed Care ohne Capitation;Managed Care sans capitation;Managed Care senza capitation
+1568;2026;2025;MOD;MD;HAM;4;Med Direct;Med Direct;Med Direct
+1568;2026;2025;MOD;TCA;DIV;817;Tel Care;sana24 Tel Care;sana24 Tel Care
+1568;2026;2025;MOD;TDO;DIV;823;Tel Doc;Tel Doc;Tel Doc
+1568;2026;2025;MOD;VIVA;HMO;5;VIVA – Gesundheitsplan;VIVA – plan de santé;VIVA – piano sanitario

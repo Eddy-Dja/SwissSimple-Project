@@ -1,0 +1,188 @@
+/* Fichier : SimulateurLPP.css */
+
+.lpp-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.back-btn-top {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 0 2rem 24px;
+  transition: color 0.2s;
+}
+.back-btn-top:hover { color: #2563eb; }
+
+.lpp-title-container { text-align: center; margin-bottom: 2.5rem; padding: 0 24px; }
+.lpp-title { font-size: 2.5rem; font-weight: 800; color: #0f172a; margin: 0 0 0.5rem 0; }
+.lpp-subtitle { font-size: 1.1rem; color: #64748b; margin: 0; }
+
+.lpp-form {
+  max-width: 800px !important;
+  margin: 0 auto 3rem auto !important;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box !important;
+}
+
+.lpp-form-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; width: 100%; }
+.filter-group { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; min-width: 280px; }
+.filter-group label { font-size: 0.9rem; font-weight: 600; color: #334155; }
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.filter-hint { font-size: 0.8rem; color: #94a3b8; }
+
+.lpp-result-container {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  padding: 3rem 5vw !important;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  box-sizing: border-box !important;
+}
+
+.lpp-result-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lpp-panels-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 2rem !important;
+  width: 100% !important;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: stretch !important;
+}
+
+.lpp-panel {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  padding: 2rem !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  box-sizing: border-box !important;
+}
+
+.lpp-panel-blue { background-color: #eff6ff; border: 2px solid #bfdbfe; }
+.lpp-panel-green { background-color: #f0fdf4; border: 2px solid #bbf7d0; }
+
+.lpp-panel-header {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem; 
+  border-bottom: 1px solid;
+  padding-bottom: 1rem;
+}
+.lpp-panel-blue .lpp-panel-header { color: #1d4ed8; border-color: #bfdbfe; }
+.lpp-panel-green .lpp-panel-header { color: #15803d; border-color: #bbf7d0; }
+
+.lpp-push-bottom { margin-top: auto; } 
+
+.simple-box {
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.simple-box.light { background-color: #ffffff; border: 1px solid #e2e8f0; }
+.simple-box.dark { background-color: #1e293b; color: #ffffff; }
+.simple-box.total-box { background-color: #2563eb; color: #ffffff; margin-top: 0.5rem; }
+
+.simple-box-label, .simple-box-label-dark { font-size: 1rem; font-weight: 500; }
+.simple-box-label { color: #64748b; }
+.simple-box-label-dark { color: #cbd5e1; }
+
+.simple-box-value, .simple-box-value-dark { font-size: 1.5rem; font-weight: 700; margin: 0; }
+.simple-box-value { color: #0f172a; }
+.simple-box-value-dark { color: #ffffff; }
+
+.lpp-info-box {
+  background-color: #dbeafe;
+  border: 1px solid #93c5fd;
+  color: #1e3a8a;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.lpp-recap-box {
+  max-width: 800px;
+  margin: 2rem auto 0 auto;
+  padding: 1.5rem;
+  background: #f1f5f9;
+  border-radius: 12px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.avertissement-legal {
+  max-width: 800px;
+  margin: 3rem auto 0 auto;
+  padding: 1.5rem;
+  background-color: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.titre-avertissement { font-weight: 700; color: #b45309; font-size: 0.95rem; }
+.texte-avertissement { font-size: 0.85rem; color: #92400e; line-height: 1.5; }
+
+@media (max-width: 768px) {
+  .lpp-title { font-size: 2rem; }
+  .lpp-form { padding: 1.5rem; }
+  .simple-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .lpp-panels-wrapper {
+    flex-direction: column !important;
+  }
+}
