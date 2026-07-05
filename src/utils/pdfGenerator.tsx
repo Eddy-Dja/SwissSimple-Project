@@ -19,13 +19,14 @@ const drawLogoText = (doc: jsPDF, x: number, y: number) => {
   doc.setTextColor(26, 32, 44); doc.text("imple", cursorX, y);
 };
 
-const formatColoredAmount = (amount: number | null | undefined) => {
+const formatColoredAmount = (amount: number | null | undefined): any => {
   if (amount === null || amount === undefined || isNaN(amount)) return { content: '0.00 CHF', styles: {} };
   const isPositive = amount >= 0;
   const sign = isPositive ? '+' : '-';
   const text = `${sign} ${Math.abs(amount).toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CHF`;
   const color = isPositive ? [22, 163, 74] : [220, 38, 38]; 
-  return { content: text, styles: { textColor: color, fontStyle: 'bold' } };
+  // On ajoute 'as const' ici pour dire à TypeScript que c'est bien le type 'bold' et pas juste un string
+  return { content: text, styles: { textColor: color, fontStyle: 'bold' as const } };
 };
 
 const fmt = (val: number | undefined) => val ? val.toLocaleString('de-CH') : '0';
@@ -50,8 +51,8 @@ export const generateDemenagementPDF = (data: any, t: any) => {
   doc.setTextColor(59, 130, 246);
   doc.text(t('pdf.title_move'), 14, 45);
 
-  // Tableau 1: Détails Fiscaux (Impôts)
-  const taxBody = [];
+  // Tableau 1: Détails Fiscaux (Impôts) - Type any[] pour éviter les erreurs TS
+  const taxBody: any[] = [];
   if (data.taxDep && data.taxArr) {
     taxBody.push(["Revenu Net", `${fmt(data.taxDep.revenuNet)} CHF`, `${fmt(data.taxArr.revenuNet)} CHF`]);
     taxBody.push(["Déductions Cantonales", `- ${fmt(data.taxDep.totalDeductionsCant)} CHF`, `- ${fmt(data.taxArr.totalDeductionsCant)} CHF`]);
@@ -86,7 +87,7 @@ export const generateDemenagementPDF = (data: any, t: any) => {
   });
 
   // Tableau 2: Assurance Maladie
-  const insBody = [
+  const insBody: any[] = [
     ["Prime Annuelle Moyenne (A)", `${data.insuranceAvgA.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
     ["Prime Annuelle Moyenne (B)", `${data.insuranceAvgB.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
     [{ content: "Différence Assurance", styles: { fontStyle: 'bold', halign: 'right' } }, formatColoredAmount(data.insuranceDiff)]
@@ -94,7 +95,7 @@ export const generateDemenagementPDF = (data: any, t: any) => {
 
   autoTable(doc, {
     startY: (doc as any).lastAutoTable.finalY + 10,
-    head: [["Détails Assurance Maladie", "Montant"]],
+    head: [["Assurance Maladie", "Montant"]],
     body: insBody,
     theme: 'grid',
     headStyles: { fillColor: [26, 32, 44], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -115,7 +116,7 @@ export const generateDemenagementPDF = (data: any, t: any) => {
 
   // Tableau 4: Analyse Rentabilité
   if (data.fraisUniques > 0 || data.ancienLoyer > 0 || data.nouveauLoyer > 0 || data.ancienTransport > 0 || data.nouveauTransport > 0) {
-    const roiBody = [];
+    const roiBody: any[] = [];
     
     if (data.fraisUniques > 0) roiBody.push(["Frais uniques de déménagement", `${data.fraisUniques.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
     
@@ -268,7 +269,7 @@ export const generateRetraitePDF = (data: any, t: any) => {
 
   // Tableau 5: Objectif de revenu
   if (data.revenuSouhaite > 0) {
-    const objBody = [
+    const objBody: any[] = [
       ["Revenu souhaité", `${data.revenuSouhaite.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
     ];
     

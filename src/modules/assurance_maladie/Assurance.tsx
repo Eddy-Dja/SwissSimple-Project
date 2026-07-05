@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 //import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabaseClient';
-import { useAuth } from '../../context/AuthContext';
 import './Assurance.css';
 
 interface Prime {
@@ -149,9 +148,6 @@ interface AssuranceProps {
 
 export default function Assurance({ initialMode = 'simple', onPrevStep, onNextStep, onResultChange }: AssuranceProps) {
   const { t } = useTranslation();
-  
-  const { user } = useAuth();
-  const isUnlocked = !!user;
 
   const mode = initialMode;
   

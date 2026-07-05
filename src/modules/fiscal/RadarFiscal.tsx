@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabaseClient';
-import { useAuth } from '../../context/AuthContext';
-import EmailGate from '../../components/EmailGate';
 import AuthModal from '../../components/AuthModal';
 import './RadarFiscal.css';
 
@@ -211,8 +209,6 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
   const [loading, setLoading] = useState(false);
   const [communes, setCommunes] = useState<Commune[]>([]);
 
-  const { user } = useAuth();
-  const isUnlocked = !!user;
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const mode = initialMode;
