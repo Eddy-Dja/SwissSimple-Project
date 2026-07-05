@@ -7,7 +7,7 @@ import EmailGate from '../components/EmailGate';
 import AuthModal from '../components/AuthModal';
 import { useAuth } from '../context/AuthContext';
 import { generateRetraitePDF } from '../utils/pdfGenerator';
-import './retraiteHub.css';
+import './RetraiteHub.css';
 
 const RetraiteHub: React.FC = () => {
   const { t } = useTranslation();

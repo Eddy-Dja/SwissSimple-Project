@@ -7,7 +7,7 @@ import EmailGate from '../components/EmailGate';
 import AuthModal from '../components/AuthModal';
 import { useAuth } from '../context/AuthContext';
 import { generateDemenagementPDF } from '../utils/pdfGenerator';
-import './demenagementHub.css';
+import './DemenagementHub.css';
 
 const DemenagementHub: React.FC = () => {
   const { t } = useTranslation();
