@@ -40,50 +40,12 @@ body {
 /* ============================================================
    NAVBAR
    ============================================================ */
-.navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 20px 0; transition: all 0.3s ease;
-}
 
 .navbar-scrolled {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color);
   padding: 12px 0;
-}
-
-.nav-container { 
-  display: grid; 
-  grid-template-columns: 1fr auto 1fr; /* 3 colonnes : Gauche(vide), Centre(modules), Droite(vide) */
-  align-items: center; 
-  max-width: 1200px; 
-  margin: 0 auto; 
-  padding: 0 20px; 
-  box-sizing: border-box;
-}
-
-.nav-logo { 
-  font-size: 24px; 
-  font-weight: 800; 
-  cursor: pointer; 
-  display: flex; 
-  align-items: center; 
-  gap: 8px;
-  justify-self: start; /* Force le logo à gauche */
-}
-
-.logo-icon { 
-  font-size: 26px; 
-  width: 26px; 
-  height: 26px; 
-}
-.logo-red-letter { color: var(--swiss-red); }
-
-.nav-links { 
-  display: flex; 
-  align-items: center; 
-  gap: 25px;
-  justify-self: center; /* Force les 4 modules à être parfaitement au centre */
 }
 
 .nav-link-btn { background: none; border: none; font-size: 16px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: color 0.2s; }
@@ -106,15 +68,15 @@ body {
    HERO SECTION
    ============================================================ */
 .hero-section {
-  min-height: auto; /* <-- CHANGÉ : Au lieu de 80vh, on s'adapte au contenu */
+  min-height: auto;
   display: flex; 
   align-items: center; 
   justify-content: center;
   text-align: center; 
   position: relative; 
   overflow: hidden; 
-  padding-top: 140px; /* <-- Laisse de la place pour la navbar fixe */
-  padding-bottom: 20px; /* <-- CHANGÉ : Réduit de 80px à 20px pour coller à la section suivante */
+  padding-top: 20px; /* On réduit à 20px, car App.tsx donne déjà 110px */
+  padding-bottom: 20px;
   background: #ffffff;
 }
 
@@ -472,7 +434,28 @@ body.dark-mode .footer .disclaimer,
   .hero-section h1 { font-size: 36px; }
   .tools-grid { grid-template-columns: 1fr 1fr; }
   .premium-grid { grid-template-columns: 1fr; }
-  .nav-link-btn { display: none; }
+  
+  /* ON FAIT RÉAPPARAÎTRE LES 4 OPTIONS SUR MOBILE */
+  .nav-link-btn { 
+    display: block !important; 
+    font-size: 12px; /* Texte plus petit pour renir */
+    padding: 4px 0;
+  }
+  
+  /* ON AJUSTE LA BARRE NOIRE POUR QUE ÇA RENTRE */
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo {
+    font-size: 20px; /* Logo un peu plus petit sur mobile */
+  }
+  .nav-links {
+    gap: 12px; /* Espace réduit entre les 4 boutons */
+  }
+
   .hero-cta-group { flex-direction: column; width: 100%; }
   .btn-hero-primary, .btn-hero-secondary { width: 100%; }
 }

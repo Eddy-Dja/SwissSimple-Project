@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabaseClient';
 import { useAuth } from '../../context/AuthContext';
@@ -175,8 +174,8 @@ const SearchableSelect: React.FC<{
   return (
     <div className="filter-group select-wrapper" ref={wrapperRef}>
       <label>{label} {emoji}</label>
-      <div className="form-input select-trigger" onClick={() => { setIsOpen(!isOpen); setSearch(''); }}>
-        <span className={`select-text ${selected ? 'has-value' : ''}`}>
+      <div className="form-input select-trigger" onClick={() => { console.log("Clic sur le menu déroulant !"); setIsOpen(!isOpen); setSearch(''); }}>
+         <span className={`select-text ${selected ? 'has-value' : ''}`}>
           {selected ? `${selected.commune} (${selected.canton})` : '-- Choisir --'}
         </span>
         <span className="select-arrow">▼</span>
@@ -203,7 +202,7 @@ const SearchableSelect: React.FC<{
 interface RadarFiscalProps {
   initialMode?: 'simple' | 'comparaison';
   onNextStep?: () => void;
-  onResultChange?: (diff: number | null) => void;
+  onResultChange?: (diff: number | null, details?: { dep: any, arr: any, depName?: string, arrName?: string }) => void;
   hideWarning?: boolean;
 }
 
@@ -245,6 +244,10 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
   useEffect(() => {
     const fetchCommunes = async (): Promise<void> => {
       const { data, error } = await supabase.from('communes').select('id, commune, canton, canton_id, coeff_revenu_canton, coeff_revenu_commune, coeff_revenu_eglise_reforme, coeff_revenu_eglise_catholique').order('commune').limit(5000);
+      
+      console.log("Réponse de Supabase - Data:", data);
+      console.log("Réponse de Supabase - Error:", error);
+
       if (error) console.error('Erreur chargement communes:', error);
       if (data) setCommunes(data as Commune[]);
     };
@@ -531,7 +534,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     return revenu * (rX / 100);
   };
 
-  const calculerImpotPrecis = (baseRevenuInput: number, baremeCantonal: BaremeTranche[], baremeFederal: BaremeTranche[], commune: Commune, deductionsFed: DeductionRow[], deductionsCant: DeductionRow[], paliersFed: DeductionPalier[], paliersCant: DeductionPalier[], statut: StatutCivil, nbEnfants: number): ResultatFiscal => {
+const calculerImpotPrecis = (baseRevenuInput: number, baremeCantonal: BaremeTranche[], baremeFederal: BaremeTranche[], commune: Commune, deductionsFed: DeductionRow[], deductionsCant: DeductionRow[], paliersFed: DeductionPalier[], paliersCant: DeductionPalier[], statut: StatutCivil, nbEnfants: number): ResultatFiscal => {
     const revenuNet = calculateNetIncome(baseRevenuInput);
     const revenuBrut = baseRevenuInput;
 
@@ -624,7 +627,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         
         const calculatedDiff = resDep.impotTotal - resArr.impotTotal;
         setDifference(calculatedDiff);
-        if (onResultChange) onResultChange(calculatedDiff);
+        if (onResultChange) onResultChange(calculatedDiff, { dep: resDep, arr: resArr, depName: communeDepart?.commune, arrName: communeArrivee?.commune });
 
       } else {
         setResultatArrivee(null); setDifference(null);
@@ -770,34 +773,42 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
               ) : (<h2 className="diff-title neutre-text">{t('radar.diff_neutre')}</h2>)}
             </div>
 
+             {/* DIV AVEC CLASSE CSS POUR ESPACER LES RÉSULTATS */}
             <div className="result-spacing-wrapper">
-              {!isUnlocked ? (
-                <EmailGate 
-                  title={t('radar.gate_title')}
-                  description={`${t('radar.gate_desc', { amount: formatCHF(Math.abs(difference)), dep: communeDepart?.commune, arr: communeArrivee?.commune })}`}
-                  onUnlock={() => setIsAuthModalOpen(true)} 
-                />
-              ) : (
-                <div className="result-row">
+              {/* On affiche les détails des 2 communes DIRECTEMENT, sans demander d'email */}
+              <div className="result-row">
+                {/* COLONNE COMMUNE DE DÉPART AVEC TOUS LES DÉTAILS */}
                   <div className="result-col">
                     <p className="result-commune-name">{communeDepart?.commune}</p>
-                    <p className="result-small-text">{t('radar.impot_cantonal')}{formatCHF(resultatDepart.impotCantonal)} CHF</p>
-                    <p className="result-small-text">{t('radar.impot_communal')}{formatCHF(resultatDepart.impotCommunal)} CHF</p>
-                    {resultatDepart.impotParoissial > 0 && <p className="result-small-text">{t('radar.impot_paroissial')}{formatCHF(resultatDepart.impotParoissial)} CHF</p>}
-                    <p className="result-small-text">{t('radar.impot_federal')}{formatCHF(resultatDepart.impotFederal)} CHF</p>
+                    <p className="result-small-text">{t('radar.revenu_net')} : {formatCHF(resultatDepart.revenuNet)} CHF</p>
+                    <p className="result-small-text">{t('radar.deductions_cant')} : - {formatCHF(resultatDepart.totalDeductionsCant)} CHF</p>
+                    <p className="result-small-text">{t('radar.revenu_imposable_cant')} : {formatCHF(resultatDepart.revenuImposableCantonal)} CHF</p>
+                    <p className="result-small-text">{t('radar.deductions_fed')} : - {formatCHF(resultatDepart.totalDeductionsFed)} CHF</p>
+                    <p className="result-small-text">{t('radar.revenu_imposable_fed')} : {formatCHF(resultatDepart.revenuImposableFederal)} CHF</p>
+                    <p className="result-small-text">{t('radar.impot_cantonal')} {formatCHF(resultatDepart.impotCantonal)} CHF</p>
+                    <p className="result-small-text">{t('radar.impot_communal')} {formatCHF(resultatDepart.impotCommunal)} CHF</p>
+                    {resultatDepart.impotParoissial > 0 && <p className="result-small-text">{t('radar.impot_paroissial')} {formatCHF(resultatDepart.impotParoissial)} CHF</p>}
+                    <p className="result-small-text">{t('radar.impot_federal')} {formatCHF(resultatDepart.impotFederal)} CHF</p>
                     <h3 className="result-h3">{formatCHF(resultatDepart.impotTotal)} CHF<span className="result-period">{t('radar.periode_an')}</span></h3>
                   </div>
-                  <div className="result-vs">VS</div>
+
+                <div className="result-vs">VS</div>
+
+                {/* COLONNE COMMUNE D'ARRIVÉE AVEC TOUS LES DÉTAILS */}
                   <div className="result-col">
                     <p className="result-commune-name">{communeArrivee?.commune}</p>
-                    <p className="result-small-text">{t('radar.impot_cantonal')}{formatCHF(resultatArrivee.impotCantonal)} CHF</p>
-                    <p className="result-small-text">{t('radar.impot_communal')}{formatCHF(resultatArrivee.impotCommunal)} CHF</p>
-                    {resultatArrivee.impotParoissial > 0 && <p className="result-small-text">{t('radar.impot_paroissial')}{formatCHF(resultatArrivee.impotParoissial)} CHF</p>}
-                    <p className="result-small-text">{t('radar.impot_federal')}{formatCHF(resultatArrivee.impotFederal)} CHF</p>
+                    <p className="result-small-text">{t('radar.revenu_net')} : {formatCHF(resultatArrivee.revenuNet)} CHF</p>
+                    <p className="result-small-text">{t('radar.deductions_cant')} : - {formatCHF(resultatArrivee.totalDeductionsCant)} CHF</p>
+                    <p className="result-small-text">{t('radar.revenu_imposable_cant')} : {formatCHF(resultatArrivee.revenuImposableCantonal)} CHF</p>
+                    <p className="result-small-text">{t('radar.deductions_fed')} : - {formatCHF(resultatArrivee.totalDeductionsFed)} CHF</p>
+                    <p className="result-small-text">{t('radar.revenu_imposable_fed')} : {formatCHF(resultatArrivee.revenuImposableFederal)} CHF</p>
+                    <p className="result-small-text">{t('radar.impot_cantonal')} {formatCHF(resultatArrivee.impotCantonal)} CHF</p>
+                    <p className="result-small-text">{t('radar.impot_communal')} {formatCHF(resultatArrivee.impotCommunal)} CHF</p>
+                    {resultatArrivee.impotParoissial > 0 && <p className="result-small-text">{t('radar.impot_paroissial')} {formatCHF(resultatArrivee.impotParoissial)} CHF</p>}
+                    <p className="result-small-text">{t('radar.impot_federal')} {formatCHF(resultatArrivee.impotFederal)} CHF</p>
                     <h3 className="result-h3">{formatCHF(resultatArrivee.impotTotal)} CHF<span className="result-period">{t('radar.periode_an')}</span></h3>
                   </div>
-                </div>
-              )}
+              </div>
             </div>
 
             {onNextStep && (

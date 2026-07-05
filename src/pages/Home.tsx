@@ -89,7 +89,7 @@ export default function Home() {
         
         <div className="premium-grid">
           <div className="premium-card" onClick={() => handlePremiumClick('/demenagement')}>
-            <div className="premium-badge">👑 {t('premium.badge')}</div>
+            <div className="premium-badge"> {t('premium.badge')}</div>
             <div className="premium-icon">🖥️</div>
             <h3>{t('premium.demenagement_title')}</h3>
             <p>{t('premium.demenagement_desc')}</p>
@@ -97,7 +97,7 @@ export default function Home() {
           </div>
 
           <div className="premium-card" onClick={() => handlePremiumClick('/retraite')}>
-            <div className="premium-badge">👑 {t('premium.badge')}</div>
+            <div className="premium-badge"> {t('premium.badge')}</div>
             <div className="premium-icon">👴</div>
             <h3>{t('premium.retraite_title')}</h3>
             <p>{t('premium.retraite_desc')}</p>

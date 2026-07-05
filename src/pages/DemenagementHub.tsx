@@ -24,6 +24,10 @@ const DemenagementHub: React.FC = () => {
   const [pointMortMois, setPointMortMois] = useState<number | null>(null);
   const [analyseDetails, setAnalyseDetails] = useState<{loyer: number, transport: number, economiesReelles: number} | null>(null);
 
+  const [taxDetails, setTaxDetails] = useState<any>(null);
+  const [insuranceAvgA, setInsuranceAvgA] = useState<number>(0);
+  const [insuranceAvgB, setInsuranceAvgB] = useState<number>(0);
+
   const { user } = useAuth();
   const isUnlocked = !!user;
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -95,7 +99,7 @@ const DemenagementHub: React.FC = () => {
             hideWarning
             initialMode="comparaison" 
             onNextStep={() => setActiveTab('assurance')}
-            onResultChange={(diff) => setTaxDiff(diff)}
+            onResultChange={(diff, details) => { setTaxDiff(diff); setTaxDetails(details); }}
           />
         </div>
 
@@ -105,7 +109,10 @@ const DemenagementHub: React.FC = () => {
             initialMode="comparaison" 
             onPrevStep={() => setActiveTab('impots')} 
             onNextStep={() => setActiveTab('synthese')}
-            onResultChange={(diff) => setInsuranceDiff(diff)}
+            onResultChange={(diff, details) => { 
+              setInsuranceDiff(diff); 
+              if(details) { setInsuranceAvgA(details.avgA); setInsuranceAvgB(details.avgB); }
+            }}
           />
         </div>
 
@@ -248,10 +255,19 @@ const DemenagementHub: React.FC = () => {
                       className="btn-hub-blue" 
                       onClick={() => generateDemenagementPDF({
                         taxDiff, 
-                        insuranceDiff, 
+                        taxDep: taxDetails?.dep,
+                        taxArr: taxDetails?.arr,
+                        depName: taxDetails?.depName,
+                        arrName: taxDetails?.arrName,
+                        insuranceDiff,
+                        insuranceAvgA,
+                        insuranceAvgB,
                         totalDiff,
                         fraisUniques: parseFloat(fraisUniquesInput) || 0,
-                        transportDiff: analyseDetails?.transport || 0,
+                        ancienLoyer: parseFloat(ancienLoyerInput) || 0,
+                        nouveauLoyer: parseFloat(nouveauLoyerInput) || 0,
+                        ancienTransport: parseFloat(ancienTransportInput) || 0,
+                        nouveauTransport: parseFloat(nouveauTransportInput) || 0,
                         realEco: analyseDetails?.economiesReelles || 0,
                         pointMortMois
                       }, t)}
@@ -260,21 +276,23 @@ const DemenagementHub: React.FC = () => {
                     </button>
                   </div>
                 </div>
-
-                <div className="hub-navigation" style={{ marginTop: '30px', marginBottom: '40px' }}>
-                  <button className="btn-hub-next" onClick={() => setActiveTab('impots')}>
-                    {t('hub.back_impots')}
-                  </button>
-                  <button className="btn-hub-next" onClick={() => setActiveTab('assurance')}>
-                    {t('hub.back_assurance')}
-                  </button>
-                </div>
-
               </div>
             )}
+
+            {/* LA MAGIE EST ICI : ON SORT LES BOUTONS DU BLOC ISUNLOCKED */}
+            {/* LES BOUTONS SONT TOUJOURS AFFICHÉS EN BAS DE LA SYNTHÈSE */}
+            <div className="hub-navigation" style={{ display: 'flex', gap: '15px', marginTop: '30px', marginBottom: '40px' }}>
+              <button className="btn-hub-next" style={{ flex: 1, width: '50%' }} onClick={() => setActiveTab('impots')}>
+                {t('hub.back_impots', '← Détails Impôts')}
+              </button>
+              <button className="btn-hub-next" style={{ flex: 1, width: '50%' }} onClick={() => setActiveTab('assurance')}>
+                {t('hub.back_assurance', '← Détails Assurance')}
+              </button>
+            </div>
+
           </div>
         </div>
-      </div>
+        </div>
 
       {/* AVERTISSEMENT TRADUIT AJOUTÉ EN BAS DE PAGE POUR LE MODULE DÉMÉNAGEMENT */}
       <div className="avertissement-legal">

@@ -3,7 +3,7 @@
 .hub-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 120px 20px 60px;
+  padding: 20px 20px 60px; /* On réduit le haut à 20px */
 }
 
 .back-btn-top {

@@ -1,0 +1,73 @@
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 20px 0; transition: all 0.3s ease;
+}
+
+.navbar-scrolled {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #E2E8F0;
+  padding: 12px 0;
+}
+
+.nav-container { 
+  display: grid; 
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center; 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 0 20px; 
+  box-sizing: border-box;
+}
+
+.nav-logo { 
+  font-size: 24px; 
+  font-weight: 800; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px;
+  justify-self: start;
+}
+
+/* Sécurité absolue pour la taille du logo */
+img.logo-icon {
+  width: 26px !important;
+  height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
+  object-fit: contain !important;
+  flex-shrink: 0 !important;
+}
+
+.logo-red-letter { color: #DA291C !important; }
+
+.nav-links { 
+  display: flex; 
+  align-items: center; 
+  gap: 25px;
+  justify-self: center;
+}
+
+.nav-link-btn { 
+  background: none; border: none; font-size: 16px; font-weight: 500; 
+  color: #64748B; cursor: pointer; transition: color 0.2s; font-family: inherit;
+}
+.nav-link-btn:hover { color: #1A202C; }
+
+/* Responsive Mobile pour le Navbar */
+@media (max-width: 900px) {
+  .nav-link-btn { 
+    display: block !important; 
+    font-size: 12px; 
+    padding: 4px 0;
+  }
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo { font-size: 20px; }
+  .nav-links { gap: 12px; }
+}

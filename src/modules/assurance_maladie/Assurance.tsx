@@ -144,7 +144,7 @@ interface AssuranceProps {
   initialMode?: 'simple' | 'comparaison';
   onPrevStep?: () => void;
   onNextStep?: () => void;
-  onResultChange?: (diff: number | null) => void;
+  onResultChange?: (diff: number | null, details?: { avgA: number, avgB: number }) => void;
 }
 
 export default function Assurance({ initialMode = 'simple', onPrevStep, onNextStep, onResultChange }: AssuranceProps) {
@@ -224,8 +224,8 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
         const avgB = calculateAvgPrime(primesB);
         const calculatedDiff = avgA.annuel - avgB.annuel;
         
-        if (onResultChange) onResultChange(calculatedDiff);
-      } else {
+        if (onResultChange) onResultChange(calculatedDiff, { avgA: avgA.annuel, avgB: avgB.annuel });
+                } else {
         setResultsB([]);
         if (onResultChange) onResultChange(null);
       }
@@ -377,23 +377,23 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
         )}
 
         {/* 2. BOUTONS DE NAVIGATION (TOUJOURS VISIBLES EN MODE COMPARAISON) */}
-        {mode === 'comparaison' && (
+                {mode === 'comparaison' && (
           <div className="hub-navigation">
             {onPrevStep && (
               <button className="btn-hub-prev" onClick={onPrevStep}>
-                {t('assurance.prev_step')}
+                {t('assurance.prev_step', '← Retour aux Impôts')}
               </button>
             )}
             {onNextStep && (
               <button className="btn-hub-next" onClick={onNextStep}>
-                {t('assurance.next_step')}
+                {t('assurance.next_step', 'Vers la Synthèse Financière → 📊')}
               </button>
             )}
           </div>
         )}
 
         {/* 3. DÉTAILS DES CAISSES (SI DÉBLOQUÉ) */}
-        {mode === 'comparaison' && resultsA.length > 0 && resultsB.length > 0 && isUnlocked && (
+        {mode === 'comparaison' && resultsA.length > 0 && resultsB.length > 0 && (
           <>
             <div className="region-tabs">
               <button type="button" className={`region-tab ${activeTab === 'A' ? 'active' : ''}`} onClick={() => setActiveTab('A')}>

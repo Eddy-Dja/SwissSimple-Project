@@ -25,12 +25,12 @@
   "premium": {
     "title": "Besoin d'une vision globale ?",
     "subtitle": "Couplez nos simulateurs pour prendre les bonnes décisions financières.",
-    "badge": "Module Premium",
+    "badge": "✨ Module Avancé",
     "demenagement_title": "Simulateur de Déménagement",
     "demenagement_desc": "Évaluez l'impact financier total d'un déménagement en combinant l'évolution de vos impôts et de vos primes d'assurance maladie.",
     "retraite_title": "Simulateur de Retraite",
     "retraite_desc": "Projetez vos revenus une fois à la retraite en combinant votre rente AVS (1er pilier) et votre caisse de pension LPP (2ème pilier).",
-    "cta": "Débloquer l'analyse complète"
+    "cta": "Accéder à l'analyse complète"
   },
   "auth": {
     "title_login": "Espace Membre",
@@ -84,7 +84,7 @@
     "surcout": "Surcoût : ",
     "adjusted": "(Ajustée)",
     "gate_title": "🔒 Débloquez l'analyse complète",
-    "gate_desc_move": "Vous voyez le total de vos économies ci-dessus. Pour comprendre exactement d'où provient ce montant, créez un compte gratuit. Vous pourrez alors retourner sur les étapes 1 et 2 pour voir le détail exact. Vos données seront sauvegardées.",
+    "gate_desc_move": "Vous voyez le total de vos économies ci-dessus. Les détails des impôts et des assurances sont disponibles gratuitement. Créez un compte gratuit pour débloquer la synthèse financière globale, le calcul de rentabilité (ROI) et générer le PDF complet. Vos données seront sauvegardées.",
     "gate_desc_ret": "Pour comprendre si ce montant sera suffisant, calculez votre taux de remplacement, simulez l'impact d'un retrait immobilier, et découvrez vos recommandations d'optimisation. Créez un compte gratuit.",
     "unlocked": "🎉 Accès débloqué !",
     "unlocked_desc_move": "Vos résultats détaillés sont prêts. Découvrez ci-dessous vos analyses avancées :",
@@ -126,7 +126,7 @@
     "lpp_impact_label": "Capital LPP retiré anticipativement",
     "lpp_impact_warning": "En retirant <strong>{{amount}} CHF</strong> de votre LPP, votre rente mensuelle est réduite de <strong>{{loss}} CHF/mois</strong> à vie. Sur 20 ans de retraite, cela représente une perte totale de {{totalLoss}} CHF.",
     "capital_title": "⚖️ Option : Capital ou Rente",
-    "capital_desc": "Souhaitez-vous retirer une partie de votre LPP en capital (cash) au lieu d'une rente à vie ? Faites glisser le curseur pour voir l'impact.",
+    "capital_desc": "Souhaitez-vous retirer une partie de votre LPP en capital (cash) au moment de votre retraite, au lieu d'une rente à vie ? Faites glisser le curseur pour voir l'impact.",
     "capital_0": "0% (Tout en rente)",
     "capital_cash": "Capital cash reçu à la retraite",
     "capital_rent": "Nouvelle rente LPP mensuelle",

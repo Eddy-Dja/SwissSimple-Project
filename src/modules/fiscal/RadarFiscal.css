@@ -38,6 +38,7 @@
   border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   margin-bottom: 2rem;
+  overflow: visible !important; /* FORCE LE CADRE À LAISSER PASSER LE MENU */
 }
 
 .mode-selector {
@@ -72,11 +73,13 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
+  overflow: visible !important;
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
+  overflow: visible !important;
 }
 
 .filter-group label {
@@ -140,6 +143,7 @@
 
 .select-wrapper {
   position: relative;
+  z-index: 50; /* PLUS HAUT QUE LES AUTRES CHAMPS */
 }
 
 .select-trigger {
@@ -163,25 +167,28 @@
   color: #64748b;
 }
 
+/* MENU DÉROULANT FORCÉ AVEC BORDURE ROUGE POUR TEST */
 .dropdown-container {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-top: 0.25rem;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  max-height: 300px;
-  display: flex;
-  flex-direction: column;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin-top: 5px !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important; /* Bordure grise discrète */
+  border-radius: 8px !important;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1) !important; /* Ombre légère */
+  z-index: 9999 !important;
+  max-height: 600px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
 }
 
 .dropdown-search-wrapper {
   padding: 0.5rem;
   border-bottom: 1px solid #e2e8f0;
+  background: #f9fafb;
 }
 
 .dropdown-search-input {
@@ -191,6 +198,7 @@
 .dropdown-list {
   overflow-y: auto;
   flex: 1;
+  background: #fff;
 }
 
 .dropdown-no-result {
@@ -424,7 +432,7 @@
   color: #64748b;
   font-size: 0.9rem;
 }
-Ah
+
 .taux-effectif strong {
   color: #0f172a;
 }
@@ -466,8 +474,8 @@ Ah
 
 .avertissement-legal .texte-avertissement {
   display: block;
-  text-align: justify; /* Justifie le texte pour un rendu propre */
-  text-align-last: center; /* Centre la dernière ligne si elle est courte */
+  text-align: justify;
+  text-align-last: center;
 }
 
 /* Espace entre le résultat global et les détails des communes */
@@ -478,5 +486,5 @@ Ah
 
 /* Espace entre les détails et le bouton de navigation du bas */
 .hub-nav-spacing {
-  margin-top: 0px; /* La marge basse du wrapper gère déjà l'espace */
+  margin-top: 0px;
 }

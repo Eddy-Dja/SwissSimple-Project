@@ -97,11 +97,12 @@ const RetraiteHub: React.FC = () => {
             onResultChange={(data) => setLppData(data)}
           />
           <div className="hub-navigation">
+            {/* MODIFICATION ICI : Texte plus clair */}
             <button className="btn-hub-prev" onClick={() => setActiveTab('avs')}>
-              ← {t('hub.tab1_avs')}
+              ← {t('hub.back_avs', 'Retour à la rente AVS')}
             </button>
             <button className="btn-hub-next" onClick={() => setActiveTab('synthese')}>
-              {t('hub.tab3_synthese')} → 📊
+              {t('hub.next_step_synthese', 'Passer à la synthèse financière')} → 📊
             </button>
           </div>
         </div>
@@ -310,25 +311,35 @@ const RetraiteHub: React.FC = () => {
                         totalRetraite,
                         dernierSalaire,
                         tauxRemplacement,
-                        estimatedTaxSaving
+                        estimatedTaxSaving,
+                        retraitLPP,
+                        perteRenteLPPRetrait,
+                        pourcentageCapital,
+                        capitalCash,
+                        revenuSouhaite,
+                        trouMensuel,
+                        capitalNecessaire,
+                        versementMensuel3a
                       }, t)}
                     >
                       {t('hub.pdf_btn_ret')}
                     </button>
                   </div>
                 </div>
-
-                <div className="hub-navigation" style={{ marginTop: '30px', marginBottom: '40px' }}>
-                  <button className="btn-hub-next" onClick={() => setActiveTab('avs')}>
-                    {t('hub.back_avs')}
-                  </button>
-                  <button className="btn-hub-next" onClick={() => setActiveTab('lpp')}>
-                    {t('hub.back_lpp')}
-                  </button>
-                </div>
-
               </div>
             )}
+
+            {/* LA MAGIE EST ICI : LES BOUTONS SONT SORTIS DU BLOC ISUNLOCKED */}
+            {/* LES BOUTONS SONT TOUJOURS AFFICHÉS EN BAS DE LA SYNTHÈSE */}
+            <div className="hub-navigation" style={{ marginTop: '30px', marginBottom: '40px' }}>
+              <button className="btn-hub-next" onClick={() => setActiveTab('avs')}>
+                {t('hub.back_avs', '← Retour à la rente AVS')}
+              </button>
+              <button className="btn-hub-next" onClick={() => setActiveTab('lpp')}>
+                {t('hub.back_lpp', '← Retour à la rente LPP')}
+              </button>
+            </div>
+
           </div>
         </div>
       </div>

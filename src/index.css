@@ -1,22 +1,119 @@
+/* ============================================================
+   VARIABLES & RESET GLOBAL
+   ============================================================ */
+:root {
+  --swiss-red: #DA291C;
+  --swiss-dark: #0B0F19;
+  --swiss-gray: #F4F6F8;
+  --text-main: #1A202C;
+  --text-muted: #64748B;
+  --border-color: #E2E8F0;
+  --primary-blue: #3B82F6;
+  --primary-green: #10B981;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 html {
   scrollbar-gutter: stable !important;
   overflow-y: auto !important;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #ffffff;
+  color: var(--text-main);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden !important;
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-* {
+/* ============================================================
+   NAVBAR GLOBALE (Présente sur toutes les pages)
+   ============================================================ */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 20px 0; transition: all 0.3s ease;
+}
+
+.navbar-scrolled {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 0;
+}
+
+.nav-container { 
+  display: grid; 
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center; 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 0 20px; 
   box-sizing: border-box;
 }
+
+.nav-logo { 
+  font-size: 24px; 
+  font-weight: 800; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px;
+  justify-self: start;
+}
+
+.logo-icon { 
+  width: 26px !important;
+  height: 26px !important;
+  object-fit: contain;
+}
+.logo-red-letter { color: var(--swiss-red); }
+
+.nav-links { 
+  display: flex; 
+  align-items: center; 
+  gap: 25px;
+  justify-self: center;
+}
+
+.nav-link-btn { 
+  background: none; border: none; font-size: 16px; font-weight: 500; 
+  color: var(--text-muted); cursor: pointer; transition: color 0.2s; 
+}
+.nav-link-btn:hover { color: var(--text-main); }
+
+/* ============================================================
+   FOOTER GLOBAL (Présent sur toutes les pages)
+   ============================================================ */
+.footer { background: var(--swiss-dark); color: #fff; padding: 60px 0; text-align: center; }
+.footer-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.footer-brand { font-size: 24px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.footer .disclaimer { color: rgba(255,255,255,0.6); font-size: 14px; line-height: 1.6; }
+
+/* Mode sombre Footer */
+body.dark .footer, body.dark-mode .footer, .dark .footer, .dark-mode .footer {
+  background: #ffffff !important;
+  border-top: 1px solid #E2E8F0 !important;
+}
+body.dark .footer *, body.dark-mode .footer *, .dark .footer *, .dark-mode .footer * {
+  color: #000000 !important;
+}
+body.dark .footer .logo-red-letter, body.dark-mode .footer .logo-red-letter, .dark .footer .logo-red-letter, .dark-mode .footer .logo-red-letter {
+  color: var(--swiss-red) !important;
+}
+body.dark .footer .disclaimer, body.dark-mode .footer .disclaimer, .dark .footer .disclaimer, .dark-mode .footer .disclaimer {
+  color: #333333 !important; 
+}
+
+/* Boutons Nav Globaux */
+.btn-nav-cta { background: var(--swiss-dark); color: #fff; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.2s; }
+.btn-nav-cta:hover { transform: translateY(-2px); }
+.btn-nav-logout { background: #f1f1f1; color: #1A202C; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; position: relative; z-index: 1001; }
+.nav-lang-btn { background: #f1f5f9; color: #1A202C; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; margin-left: 10px; }
+.nav-lang-btn:hover { background: #e2e8f0; border-color: #94a3b8; }

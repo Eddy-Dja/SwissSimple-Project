@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import './GlobalNavbar.css';
 
 export default function GlobalNavbar() {
   const navigate = useNavigate();
@@ -16,10 +17,10 @@ export default function GlobalNavbar() {
   return (
     <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
       <div className="nav-container">
-        <div className="nav-logo" onClick={() => navigate('/')}>
-          <img src="/favicon.svg" alt="Drapeau Suisse" className="logo-icon" />
-          <span><span className="logo-red-letter">S</span>wiss<span className="logo-red-letter">S</span>imple</span>
-        </div>
+<div className="nav-logo" onClick={() => navigate('/')}>
+  <img src="/favicon.svg" alt="Drapeau Suisse" className="logo-icon" style={{ width: '26px', height: '26px', flexShrink: 0 }} />
+  <span><span className="logo-red-letter">S</span>wiss<span className="logo-red-letter">S</span>imple</span>
+</div>
         <div className="nav-links">
           <button className="nav-link-btn" onClick={() => navigate('/radar-fiscal')}>{t('nav.impots')}</button>
           <button className="nav-link-btn" onClick={() => navigate('/assurance')}>{t('nav.assurance')}</button>

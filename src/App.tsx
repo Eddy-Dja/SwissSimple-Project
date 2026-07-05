@@ -67,18 +67,18 @@ function App() {
       <ScrollToTop />
       
       {/* CONTENEUR PRINCIPAL qui pousse le footer vers le bas */}
-      {/* On ajoute un padding-top pour ne pas que le contenu soit caché sous le menu fixe */}
-      <div style={{ minHeight: '80vh', paddingTop: '100px' }}>
+      {/* On garde la marge ici pour TOUTES les pages */}
+      <div style={{ minHeight: '80vh', paddingTop: '110px' }}>
         <AppRoutes />
       </div>
 
       {/* LE FOOTER GLOBAL (Sur toutes les pages) */}
-      <footer className="footer">
+            <footer className="footer">
         <div className="footer-container">
           <div className="footer-brand">
-            <img src="/favicon.svg" alt="Drapeau Suisse" className="logo-icon" />
-            <span><span className="logo-red-letter">S</span>wiss<span className="logo-red-letter">S</span>imple</span>
-          </div>
+  <img src="/favicon.svg" alt="Drapeau Suisse" className="logo-icon" style={{ width: '26px', height: '26px', flexShrink: 0 }} />
+  <span><span className="logo-red-letter">S</span>wiss<span className="logo-red-letter">S</span>imple</span>
+</div>
           <p className="disclaimer">
             {t('footer.copyright')} <br/>
             {t('footer.disclaimer')}<br/>
