@@ -117,3 +117,30 @@ body.dark .footer .disclaimer, body.dark-mode .footer .disclaimer, .dark .footer
 .btn-nav-logout { background: #f1f1f1; color: #1A202C; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; position: relative; z-index: 1001; }
 .nav-lang-btn { background: #f1f5f9; color: #1A202C; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; margin-left: 10px; }
 .nav-lang-btn:hover { background: #e2e8f0; border-color: #94a3b8; }
+
+/* ============================================================
+   RÉGLAGES MOBILE POUR LA NAVBAR
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav-container {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  
+  .nav-logo {
+    font-size: 18px !important;
+  }
+  
+  .nav-links {
+    gap: 10px !important;
+    flex-wrap: nowrap !important;
+  }
+  
+  .nav-link-btn {
+    font-size: 11px !important;
+    padding: 4px 0 !important;
+    white-space: nowrap !important;
+  }
+}

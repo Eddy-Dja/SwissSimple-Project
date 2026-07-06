@@ -25,7 +25,6 @@ const formatColoredAmount = (amount: number | null | undefined): any => {
   const sign = isPositive ? '+' : '-';
   const text = `${sign} ${Math.abs(amount).toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CHF`;
   const color = isPositive ? [22, 163, 74] : [220, 38, 38]; 
-  // On ajoute 'as const' ici pour dire à TypeScript que c'est bien le type 'bold' et pas juste un string
   return { content: text, styles: { textColor: color, fontStyle: 'bold' as const } };
 };
 
@@ -51,34 +50,34 @@ export const generateDemenagementPDF = (data: any, t: any) => {
   doc.setTextColor(59, 130, 246);
   doc.text(t('pdf.title_move'), 14, 45);
 
-  // Tableau 1: Détails Fiscaux (Impôts) - Type any[] pour éviter les erreurs TS
+  // Tableau 1: Détails Fiscaux
   const taxBody: any[] = [];
   if (data.taxDep && data.taxArr) {
-    taxBody.push(["Revenu Net", `${fmt(data.taxDep.revenuNet)} CHF`, `${fmt(data.taxArr.revenuNet)} CHF`]);
-    taxBody.push(["Déductions Cantonales", `- ${fmt(data.taxDep.totalDeductionsCant)} CHF`, `- ${fmt(data.taxArr.totalDeductionsCant)} CHF`]);
-    taxBody.push(["Revenu Imposable Cantonal", `${fmt(data.taxDep.revenuImposableCantonal)} CHF`, `${fmt(data.taxArr.revenuImposableCantonal)} CHF`]);
-    taxBody.push(["Impôt Cantonal", `${fmt(data.taxDep.impotCantonal)} CHF`, `${fmt(data.taxArr.impotCantonal)} CHF`]);
-    taxBody.push(["Impôt Communal", `${fmt(data.taxDep.impotCommunal)} CHF`, `${fmt(data.taxArr.impotCommunal)} CHF`]);
+    taxBody.push([t('pdf.revenu_net'), `${fmt(data.taxDep.revenuNet)} CHF`, `${fmt(data.taxArr.revenuNet)} CHF`]);
+    taxBody.push([t('pdf.deductions_cant'), `- ${fmt(data.taxDep.totalDeductionsCant)} CHF`, `- ${fmt(data.taxArr.totalDeductionsCant)} CHF`]);
+    taxBody.push([t('pdf.revenu_imposable_cant'), `${fmt(data.taxDep.revenuImposableCantonal)} CHF`, `${fmt(data.taxArr.revenuImposableCantonal)} CHF`]);
+    taxBody.push([t('pdf.impot_cantonal'), `${fmt(data.taxDep.impotCantonal)} CHF`, `${fmt(data.taxArr.impotCantonal)} CHF`]);
+    taxBody.push([t('pdf.impot_communal'), `${fmt(data.taxDep.impotCommunal)} CHF`, `${fmt(data.taxArr.impotCommunal)} CHF`]);
     if (data.taxDep.impotParoissial > 0 || data.taxArr.impotParoissial > 0) {
-      taxBody.push(["Impôt Paroissial", `${fmt(data.taxDep.impotParoissial)} CHF`, `${fmt(data.taxArr.impotParoissial)} CHF`]);
+      taxBody.push([t('pdf.impot_paroissial'), `${fmt(data.taxDep.impotParoissial)} CHF`, `${fmt(data.taxArr.impotParoissial)} CHF`]);
     }
-    taxBody.push(["Impôt Fédéral", `${fmt(data.taxDep.impotFederal)} CHF`, `${fmt(data.taxArr.impotFederal)} CHF`]);
+    taxBody.push([t('pdf.impot_federal'), `${fmt(data.taxDep.impotFederal)} CHF`, `${fmt(data.taxArr.impotFederal)} CHF`]);
     taxBody.push([
-      { content: "Total Impôt", styles: { fontStyle: 'bold' } }, 
+      { content: t('pdf.total_impot'), styles: { fontStyle: 'bold' } }, 
       { content: `${fmt(data.taxDep.impotTotal)} CHF`, styles: { fontStyle: 'bold' } }, 
       { content: `${fmt(data.taxArr.impotTotal)} CHF`, styles: { fontStyle: 'bold' } }
     ]);
     taxBody.push([
-      { content: "Différence Fiscale", colSpan: 2, styles: { fontStyle: 'bold', halign: 'right' } }, 
+      { content: t('pdf.diff_fiscale'), colSpan: 2, styles: { fontStyle: 'bold', halign: 'right' } }, 
       formatColoredAmount(data.taxDiff)
     ]);
   } else {
-    taxBody.push([{ content: "Données fiscales non disponibles", colSpan: 3, styles: { halign: 'center', textColor: [150, 150, 150] } }]);
+    taxBody.push([{ content: t('pdf.no_data'), colSpan: 3, styles: { halign: 'center', textColor: [150, 150, 150] } }]);
   }
 
   autoTable(doc, {
     startY: 52,
-    head: [["Détails Fiscaux (Impôts)", data.depName || 'Commune A', data.arrName || 'Commune B']],
+    head: [[t('pdf.tax_details'), data.depName || t('pdf.commune_a'), data.arrName || t('pdf.commune_b')]],
     body: taxBody,
     theme: 'grid',
     headStyles: { fillColor: [26, 32, 44], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -88,14 +87,14 @@ export const generateDemenagementPDF = (data: any, t: any) => {
 
   // Tableau 2: Assurance Maladie
   const insBody: any[] = [
-    ["Prime Annuelle Moyenne (A)", `${data.insuranceAvgA.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-    ["Prime Annuelle Moyenne (B)", `${data.insuranceAvgB.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-    [{ content: "Différence Assurance", styles: { fontStyle: 'bold', halign: 'right' } }, formatColoredAmount(data.insuranceDiff)]
+    [t('pdf.avg_prime_a'), `${data.insuranceAvgA.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+    [t('pdf.avg_prime_b'), `${data.insuranceAvgB.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+    [{ content: t('pdf.diff_assurance'), styles: { fontStyle: 'bold', halign: 'right' } }, formatColoredAmount(data.insuranceDiff)]
   ];
 
   autoTable(doc, {
     startY: (doc as any).lastAutoTable.finalY + 10,
-    head: [["Assurance Maladie", "Montant"]],
+    head: [[t('pdf.assurance_maladie'), t('pdf.amount')]],
     body: insBody,
     theme: 'grid',
     headStyles: { fillColor: [26, 32, 44], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -107,7 +106,7 @@ export const generateDemenagementPDF = (data: any, t: any) => {
   autoTable(doc, {
     startY: (doc as any).lastAutoTable.finalY + 10,
     body: [
-      [{ content: "Total Impact Annuel (Impôts + Assurance)", styles: { fontStyle: 'bold', fontSize: 12, fillColor: [240, 240, 240] } }, formatColoredAmount(data.totalDiff)]
+      [{ content: t('pdf.total_impact_annual'), styles: { fontStyle: 'bold', fontSize: 12, fillColor: [240, 240, 240] } }, formatColoredAmount(data.totalDiff)]
     ],
     theme: 'plain',
     styles: { fontSize: 10, cellPadding: 4 },
@@ -118,37 +117,37 @@ export const generateDemenagementPDF = (data: any, t: any) => {
   if (data.fraisUniques > 0 || data.ancienLoyer > 0 || data.nouveauLoyer > 0 || data.ancienTransport > 0 || data.nouveauTransport > 0) {
     const roiBody: any[] = [];
     
-    if (data.fraisUniques > 0) roiBody.push(["Frais uniques de déménagement", `${data.fraisUniques.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
+    if (data.fraisUniques > 0) roiBody.push([t('pdf.frais_uniques'), `${data.fraisUniques.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
     
     if (data.ancienLoyer > 0 || data.nouveauLoyer > 0) {
       const diffLoyer = (data.ancienLoyer - data.nouveauLoyer) * 12;
-      roiBody.push(["Ancien Loyer (annuel)", `${(data.ancienLoyer * 12).toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
-      roiBody.push(["Nouveau Loyer (annuel)", `${(data.nouveauLoyer * 12).toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
-      roiBody.push([{ content: "Différence Loyer", styles: { halign: 'right' } }, formatColoredAmount(diffLoyer)]);
+      roiBody.push([t('pdf.old_rent'), `${(data.ancienLoyer * 12).toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
+      roiBody.push([t('pdf.new_rent'), `${(data.nouveauLoyer * 12).toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
+      roiBody.push([{ content: t('pdf.diff_rent'), styles: { halign: 'right' } }, formatColoredAmount(diffLoyer)]);
     }
 
     if (data.ancienTransport > 0 || data.nouveauTransport > 0) {
       const diffTransport = data.ancienTransport - data.nouveauTransport;
-      roiBody.push(["Ancien Transport", `${data.ancienTransport.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
-      roiBody.push(["Nouveau Transport", `${data.nouveauTransport.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
-      roiBody.push([{ content: "Différence Transport", styles: { halign: 'right' } }, formatColoredAmount(diffTransport)]);
+      roiBody.push([t('pdf.old_transport'), `${data.ancienTransport.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
+      roiBody.push([t('pdf.new_transport'), `${data.nouveauTransport.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
+      roiBody.push([{ content: t('pdf.diff_transport'), styles: { halign: 'right' } }, formatColoredAmount(diffTransport)]);
     }
 
     if (data.realEco !== 0) {
-      roiBody.push([{ content: "Économies Réelles Annuelles", styles: { fontStyle: 'bold', halign: 'right' } }, formatColoredAmount(data.realEco)]);
+      roiBody.push([{ content: t('pdf.real_savings'), styles: { fontStyle: 'bold', halign: 'right' } }, formatColoredAmount(data.realEco)]);
     }
 
     if (data.pointMortMois !== null && data.pointMortMois > 0) {
       const years = Math.floor(data.pointMortMois / 12);
       const months = data.pointMortMois % 12;
-      roiBody.push([{ content: "Amortissement des frais", styles: { fontStyle: 'bold', halign: 'right' } }, { content: `${data.pointMortMois} mois (env. ${years} an(s) et ${months} mois)`, styles: { fontStyle: 'bold', textColor: [59, 130, 246] } }]);
+      roiBody.push([{ content: t('pdf.amortization'), styles: { fontStyle: 'bold', halign: 'right' } }, { content: t('pdf.amortization_detail', { months: data.pointMortMois, years, remMonths: months }), styles: { fontStyle: 'bold', textColor: [59, 130, 246] } }]);
     } else if (data.pointMortMois === -1) {
-      roiBody.push([{ content: "Rentabilité", styles: { fontStyle: 'bold', halign: 'right' } }, { content: "Non rentable", styles: { fontStyle: 'bold', textColor: [220, 38, 38] } }]);
+      roiBody.push([{ content: t('pdf.profitability'), styles: { fontStyle: 'bold', halign: 'right' } }, { content: t('pdf.not_profitable'), styles: { fontStyle: 'bold', textColor: [220, 38, 38] } }]);
     }
 
     autoTable(doc, {
       startY: (doc as any).lastAutoTable.finalY + 10,
-      head: [["Analyse de Rentabilité (Détails)", "Montant"]],
+      head: [[t('pdf.roi_details'), t('pdf.amount')]],
       body: roiBody,
       theme: 'grid',
       headStyles: { fillColor: [22, 163, 74], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -201,11 +200,11 @@ export const generateRetraitePDF = (data: any, t: any) => {
   // Tableau 1: Revenus
   autoTable(doc, {
     startY: 52,
-    head: [["Revenus de Retraite", "Montant Mensuel"]],
+    head: [[t('pdf.ret_income'), t('pdf.monthly_amount')]],
     body: [
-      ["Rente AVS (1er Pilier)", `${data.renteAVS.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-      ["Rente LPP (2ème Pilier)", `${data.renteLPP.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-      [{ content: "Total Revenu Retraite", styles: { fontStyle: 'bold', halign: 'right' } }, { content: `${data.totalRetraite.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`, styles: { fontStyle: 'bold', textColor: [22, 163, 74] } }],
+      [t('pdf.rente_avs'), `${data.renteAVS.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+      [t('pdf.rente_lpp'), `${data.renteLPP.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+      [{ content: t('pdf.total_ret_income'), styles: { fontStyle: 'bold', halign: 'right' } }, { content: `${data.totalRetraite.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`, styles: { fontStyle: 'bold', textColor: [22, 163, 74] } }],
     ],
     theme: 'grid',
     headStyles: { fillColor: [26, 32, 44], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -219,10 +218,10 @@ export const generateRetraitePDF = (data: any, t: any) => {
   if (data.dernierSalaire > 0) {
     autoTable(doc, {
       startY: nextY,
-      head: [["Taux de Remplacement", "Valeur"]],
+      head: [[t('pdf.replacement_rate'), t('pdf.value')]],
       body: [
-        ["Dernier Salaire", `${data.dernierSalaire.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-        ["Taux de Remplacement", `${data.tauxRemplacement} %`],
+        [t('pdf.last_salary'), `${data.dernierSalaire.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+        [t('pdf.replacement_rate'), `${data.tauxRemplacement} %`],
       ],
       theme: 'grid',
       headStyles: { fillColor: [26, 32, 44], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -236,10 +235,10 @@ export const generateRetraitePDF = (data: any, t: any) => {
   if (data.retraitLPP > 0) {
     autoTable(doc, {
       startY: nextY,
-      head: [["Impact Retrait LPP (Immobilier)", "Montant"]],
+      head: [[t('pdf.lpp_impact_title'), t('pdf.amount')]],
       body: [
-        ["Capital retiré", `${data.retraitLPP.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-        [{ content: "Perte de rente mensuelle", styles: { halign: 'right' } }, { content: `- ${data.perteRenteLPPRetrait.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`, styles: { textColor: [220, 38, 38], fontStyle: 'bold' } }],
+        [t('pdf.capital_withdrawn'), `${data.retraitLPP.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+        [{ content: t('pdf.rent_loss'), styles: { halign: 'right' } }, { content: `- ${data.perteRenteLPPRetrait.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`, styles: { textColor: [220, 38, 38], fontStyle: 'bold' } }],
       ],
       theme: 'grid',
       headStyles: { fillColor: [220, 38, 38], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -253,11 +252,11 @@ export const generateRetraitePDF = (data: any, t: any) => {
   if (data.pourcentageCapital > 0) {
     autoTable(doc, {
       startY: nextY,
-      head: [["Option: Capital ou Rente (Retraite)", "Montant"]],
+      head: [[t('pdf.capital_option_title'), t('pdf.amount')]],
       body: [
-        ["Pourcentage de capital choisi", `${data.pourcentageCapital} %`],
-        ["Capital cash reçu", `${data.capitalCash.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-        ["Nouvelle rente LPP mensuelle", `${data.renteLPP.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+        [t('pdf.capital_percent'), `${data.pourcentageCapital} %`],
+        [t('pdf.capital_cash'), `${data.capitalCash.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+        [t('pdf.new_lpp_rent'), `${data.renteLPP.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
       ],
       theme: 'grid',
       headStyles: { fillColor: [245, 158, 11], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -270,20 +269,20 @@ export const generateRetraitePDF = (data: any, t: any) => {
   // Tableau 5: Objectif de revenu
   if (data.revenuSouhaite > 0) {
     const objBody: any[] = [
-      ["Revenu souhaité", `${data.revenuSouhaite.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
+      [t('pdf.desired_income'), `${data.revenuSouhaite.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
     ];
     
     if (data.trouMensuel > 0) {
-      objBody.push([{ content: "Manque à gagner mensuel", styles: { halign: 'right' } }, { content: `- ${data.trouMensuel.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`, styles: { textColor: [220, 38, 38], fontStyle: 'bold' } }]);
-      objBody.push(["Capital nécessaire à constituer", `${data.capitalNecessaire.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
-      objBody.push(["Versement mensuel recommandé (3a)", `${data.versementMensuel3a.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
+      objBody.push([{ content: t('pdf.monthly_gap'), styles: { halign: 'right' } }, { content: `- ${data.trouMensuel.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`, styles: { textColor: [220, 38, 38], fontStyle: 'bold' } }]);
+      objBody.push([t('pdf.capital_needed'), `${data.capitalNecessaire.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
+      objBody.push([t('pdf.monthly_3a'), `${data.versementMensuel3a.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`]);
     } else {
-      objBody.push([{ content: "Rentabilité", styles: { halign: 'right' } }, { content: "Votre retraite couvre votre objectif !", styles: { textColor: [22, 163, 74], fontStyle: 'bold' } }]);
+      objBody.push([{ content: t('pdf.profitability'), styles: { halign: 'right' } }, { content: t('pdf.goal_success'), styles: { textColor: [22, 163, 74], fontStyle: 'bold' } }]);
     }
 
     autoTable(doc, {
       startY: nextY,
-      head: [["Objectif de Revenu", "Montant"]],
+      head: [[t('pdf.income_goal_title'), t('pdf.amount')]],
       body: objBody,
       theme: 'grid',
       headStyles: { fillColor: [59, 130, 246], textColor: 255, fontStyle: 'bold', halign: 'left' },
@@ -296,10 +295,10 @@ export const generateRetraitePDF = (data: any, t: any) => {
   // Tableau 6: Recommandation 3a
   autoTable(doc, {
     startY: nextY,
-    head: [["Recommandation: 3ème Pilier (3a)", "Détails"]],
+    head: [[t('pdf.3a_reco_title'), t('pdf.details')]],
     body: [
-      ["Plafond maximal déductible", "7'258 CHF / an"],
-      [{ content: "Économie d'impôts estimée", styles: { halign: 'right' } }, { content: `~ ${data.estimatedTaxSaving} CHF / an`, styles: { textColor: [22, 163, 74], fontStyle: 'bold' } }],
+      [t('pdf.3a_max_deductible'), "7'258 CHF / an"],
+      [{ content: t('pdf.estimated_tax_saving'), styles: { halign: 'right' } }, { content: `~ ${data.estimatedTaxSaving} CHF / an`, styles: { textColor: [22, 163, 74], fontStyle: 'bold' } }],
     ],
     theme: 'grid',
     headStyles: { fillColor: [245, 158, 11], textColor: 255, fontStyle: 'bold', halign: 'left' },

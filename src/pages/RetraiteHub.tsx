@@ -331,8 +331,8 @@ const RetraiteHub: React.FC = () => {
 
             {/* LA MAGIE EST ICI : LES BOUTONS SONT SORTIS DU BLOC ISUNLOCKED */}
             {/* LES BOUTONS SONT TOUJOURS AFFICHÉS EN BAS DE LA SYNTHÈSE */}
-            <div className="hub-navigation" style={{ marginTop: '30px', marginBottom: '40px' }}>
-              <button className="btn-hub-next" onClick={() => setActiveTab('avs')}>
+            <div className="hub-navigation">
+                <button className="btn-hub-next" onClick={() => setActiveTab('avs')}>
                 {t('hub.back_avs', '← Retour à la rente AVS')}
               </button>
               <button className="btn-hub-next" onClick={() => setActiveTab('lpp')}>

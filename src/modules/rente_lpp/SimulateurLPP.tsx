@@ -263,8 +263,8 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
       {/* L'avertissement s'affiche uniquement si hideWarning n'est pas vrai (pour le fonctionnement indépendant) */}
       {!hideWarning && (
         <div className="avertissement-legal">
-          <span className="titre-avertissement">⚖️ Avertissement</span>
-          <span className="texte-avertissement">Ce simulateur est basé sur le taux de conversion minimum légal (OPB) de 6.8% à 65 ans et sur les barèmes de cotisation légaux (Art. 16). L'employeur et l'employé se partagent les cotisations, mais c'est le total (ex: 10% à 40 ans) qui est crédité sur le compte. Les intérêts composés sont calculés de manière linéaire selon le taux que vous avez saisi. Ce résultat est indicatif et ne remplace pas votre certificat de prévoyance officiel.</span>
+          <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>
+          <span className="texte-avertissement">{t('lpp.warning')}</span>
         </div>
       )}
     </div>

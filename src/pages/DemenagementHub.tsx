@@ -105,7 +105,8 @@ const DemenagementHub: React.FC = () => {
 
         {/* --- ÉTAPE 2 : ASSURANCE --- */}
         <div className={`hub-step ${activeTab === 'assurance' ? 'visible' : 'hidden'}`}>
-          <Assurance 
+        <Assurance 
+            hideWarning // <-- ASSUREZ-VOUS QUE C'EST LÀ
             initialMode="comparaison" 
             onPrevStep={() => setActiveTab('impots')} 
             onNextStep={() => setActiveTab('synthese')}
@@ -281,12 +282,12 @@ const DemenagementHub: React.FC = () => {
 
             {/* LA MAGIE EST ICI : ON SORT LES BOUTONS DU BLOC ISUNLOCKED */}
             {/* LES BOUTONS SONT TOUJOURS AFFICHÉS EN BAS DE LA SYNTHÈSE */}
-            <div className="hub-navigation" style={{ display: 'flex', gap: '15px', marginTop: '30px', marginBottom: '40px' }}>
-              <button className="btn-hub-next" style={{ flex: 1, width: '50%' }} onClick={() => setActiveTab('impots')}>
-                {t('hub.back_impots', '← Détails Impôts')}
+                <div className="hub-navigation">
+                <button className="btn-hub-next" onClick={() => setActiveTab('impots')}>
+                  {t('hub.back_impots', '← Détails Impôts')}
               </button>
-              <button className="btn-hub-next" style={{ flex: 1, width: '50%' }} onClick={() => setActiveTab('assurance')}>
-                {t('hub.back_assurance', '← Détails Assurance')}
+              <button className="btn-hub-next" onClick={() => setActiveTab('assurance')}> 
+                 {t('hub.back_assurance', '← Détails Assurance')}
               </button>
             </div>
 

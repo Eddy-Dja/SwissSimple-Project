@@ -37,8 +37,11 @@
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  margin-bottom: 2rem;
-  overflow: visible !important; /* FORCE LE CADRE À LAISSER PASSER LE MENU */
+  margin: 0 auto 2rem auto;
+  overflow: visible !important;
+  max-width: 800px !important; /* CORRIGÉ : 800px au lieu de 1450px */
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .mode-selector {
@@ -143,7 +146,13 @@
 
 .select-wrapper {
   position: relative;
-  z-index: 50; /* PLUS HAUT QUE LES AUTRES CHAMPS */
+  z-index: 10;
+}
+
+/* Quand le menu est ouvert, il passe tout au-dessus */
+.select-wrapper.is-open,
+.select-wrapper:focus-within {
+  z-index: 9999 !important;
 }
 
 .select-trigger {
@@ -167,7 +176,7 @@
   color: #64748b;
 }
 
-/* MENU DÉROULANT FORCÉ AVEC BORDURE ROUGE POUR TEST */
+/* MENU DÉROULANT */
 .dropdown-container {
   position: absolute !important;
   top: 100% !important;
@@ -175,11 +184,11 @@
   right: 0 !important;
   margin-top: 5px !important;
   background: #ffffff !important;
-  border: 1px solid #cbd5e1 !important; /* Bordure grise discrète */
+  border: 1px solid #cbd5e1 !important; 
   border-radius: 8px !important;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.1) !important; /* Ombre légère */
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1) !important; 
   z-index: 9999 !important;
-  max-height: 600px !important;
+  max-height: 450px !important; /* RÉDUIT pour cacher la barre de scroll */
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
@@ -192,13 +201,19 @@
 }
 
 .dropdown-search-input {
-  border-radius: 6px;
+  border-radius: 60px;
 }
 
 .dropdown-list {
   overflow-y: auto;
   flex: 1;
   background: #fff;
+  scrollbar-width: none; /* Cacher scrollbar Firefox */
+  -ms-overflow-style: none; /* Cacher scrollbar IE/Edge */
+}
+
+.dropdown-list::-webkit-scrollbar {
+  display: none; /* Cacher scrollbar Chrome/Safari */
 }
 
 .dropdown-no-result {
@@ -220,7 +235,7 @@
 
 .dropdown-item.selected {
   background: #eff6ff;
-  color: #2563eb;
+  color: #256eb;
 }
 
 .dropdown-item-canton {
@@ -250,11 +265,13 @@
   cursor: not-allowed;
 }
 
+/* ESPACE ENTRE LES RÉSULTATS ET LES BOUTONS VERTS */
 .result-container {
   background: white;
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0 !important;
 }
 
 .result-row {
@@ -315,17 +332,9 @@
   margin-top: 1rem;
 }
 
-.result-diff-container.benefice {
-  background: #f0fdf4;
-}
-
-.result-diff-container.perte {
-  background: #fef2f2;
-}
-
-.result-diff-container.neutre {
-  background: #f8fafc;
-}
+.result-diff-container.benefice { background: #f0fdf4; }
+.result-diff-container.perte { background: #fef2f2; }
+.result-diff-container.neutre { background: #f8fafc; }
 
 .diff-title {
   font-size: 1rem;
@@ -335,17 +344,9 @@
   margin: 0 0 0.5rem 0;
 }
 
-.benefice-text {
-  color: #16a34a;
-}
-
-.perte-text {
-  color: #dc2626;
-}
-
-.neutre-text {
-  color: #64748b;
-}
+.benefice-text { color: #16a34a; }
+.perte-text { color: #dc2626; }
+.neutre-text { color: #64748b; }
 
 .diff-amount {
   font-size: 2.5rem;
@@ -353,8 +354,12 @@
   margin: 0;
 }
 
+/* MODIFIÉ : Largeur réduite à 600px et centré pour le mode simple */
 .simple-result {
   padding: 3rem 2rem;
+  max-width: 600px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .simple-center {
@@ -386,45 +391,14 @@
   margin-bottom: 0.5rem;
 }
 
-.simple-box.light {
-  background: #f8fafc;
-}
+.simple-box.light { background: #f8fafc; }
+.simple-box.dark { background: #0f172a; color: white; }
+.simple-box.total-box { background: #3b82f6; color: white; margin-top: 1rem; padding: 1.5rem; }
 
-.simple-box.dark {
-  background: #0f172a;
-  color: white;
-}
-
-.simple-box.total-box {
-  background: #3b82f6;
-  color: white;
-  margin-top: 1rem;
-  padding: 1.5rem;
-}
-
-.simple-box-label {
-  font-size: 0.875rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.simple-box-value {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
-}
-
-.simple-box-label-dark {
-  font-size: 0.875rem;
-  opacity: 0.8;
-}
-
-.simple-box-value-dark {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0;
-}
+.simple-box-label { font-size: 0.875rem; color: #64748b; font-weight: 500; }
+.simple-box-value { font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0; }
+.simple-box-label-dark { font-size: 0.875rem; opacity: 0.8; }
+.simple-box-value-dark { font-size: 1.1rem; font-weight: 700; margin: 0; }
 
 .taux-effectif {
   text-align: center;
@@ -433,9 +407,7 @@
   font-size: 0.9rem;
 }
 
-.taux-effectif strong {
-  color: #0f172a;
-}
+.taux-effectif strong { color: #0f172a; }
 
 @media (max-width: 640px) {
   .result-row {
@@ -447,20 +419,21 @@
   }
 }
 
-.simple-result[style*="border-color: rgb(220, 38, 38)"] {
-  background-color: #fef2f2;
-}
-
-/* AVERTISSEMENT LÉGAL */
+/* AVERTISSEMENT LÉGAL (Module Impôts) */
 .avertissement-legal {
-  margin-top: 2rem;
+  max-width: 800px;
+  margin: 3rem auto 0 auto !important;
+  margin-bottom: 0 !important;
   padding: 1.5rem;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background-color: #fffbeb !important;
+  border: 1px solid #fcd34d !important;
   border-radius: 8px;
   font-size: 0.85rem;
-  color: #475569;
+  color: #92400e !important;
   line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .avertissement-legal .titre-avertissement {
@@ -468,7 +441,7 @@
   text-align: center;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #b45309 !important;
   margin-bottom: 1rem;
 }
 
@@ -480,11 +453,69 @@
 
 /* Espace entre le résultat global et les détails des communes */
 .result-spacing-wrapper {
-  margin-top: 60px;
-  margin-bottom: 60px;
+  margin-top: 30px;
+  margin-bottom: 30px; 
 }
 
 /* Espace entre les détails et le bouton de navigation du bas */
 .hub-nav-spacing {
-  margin-top: 0px;
+  margin-top: 24px !important; 
+  margin-bottom: 24px !important;
+}
+
+/* ALERTE CANTON NON SUPPORTÉ (ex: Valais) - MODIFIÉ pour réduire et centrer */
+.result-container.unsupported-result {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  margin-top: 2.5rem !important;
+  margin-bottom: 2.5rem !important;
+  margin-left: auto !important; /* Centré */
+  margin-right: auto !important; /* Centré */
+  max-width: 600px !important; /* Largeur réduite */
+  box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.1);
+}
+
+.unsupported-result .simple-center {
+  max-width: 100%;
+}
+
+.unsupported-title {
+  color: #dc2626;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.unsupported-text {
+  color: #991b1b;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.unsupported-text a {
+  color: #dc2626;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   RÉGLAGE MOBILE : DÉCOLLER LES AVERTISSEMENTS DES BORDS
+   ============================================================ */
+@media (max-width: 768px) {
+  .avertissement-legal {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  /* Pour l'avertissement non disponible (Valais) */
+  .result-container.unsupported-result {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
 }

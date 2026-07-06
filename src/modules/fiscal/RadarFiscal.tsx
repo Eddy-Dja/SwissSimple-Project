@@ -170,9 +170,9 @@ const SearchableSelect: React.FC<{
   );
 
   return (
-    <div className="filter-group select-wrapper" ref={wrapperRef}>
+    <div className={`filter-group select-wrapper ${isOpen ? 'is-open' : ''}`} ref={wrapperRef}>
       <label>{label} {emoji}</label>
-      <div className="form-input select-trigger" onClick={() => { console.log("Clic sur le menu déroulant !"); setIsOpen(!isOpen); setSearch(''); }}>
+      <div className="form-input select-trigger" onClick={() => { setIsOpen(!isOpen); setSearch(''); }}>
          <span className={`select-text ${selected ? 'has-value' : ''}`}>
           {selected ? `${selected.commune} (${selected.canton})` : '-- Choisir --'}
         </span>
@@ -241,9 +241,6 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     const fetchCommunes = async (): Promise<void> => {
       const { data, error } = await supabase.from('communes').select('id, commune, canton, canton_id, coeff_revenu_canton, coeff_revenu_commune, coeff_revenu_eglise_reforme, coeff_revenu_eglise_catholique').order('commune').limit(5000);
       
-      console.log("Réponse de Supabase - Data:", data);
-      console.log("Réponse de Supabase - Error:", error);
-
       if (error) console.error('Erreur chargement communes:', error);
       if (data) setCommunes(data as Commune[]);
     };
@@ -496,7 +493,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
       }
     }
 
-    return totalDeductions;
+return totalDeductions;
   };
 
   const calculateTax = (revenuImposable: number, bareme: BaremeTranche[]): number => {
@@ -806,14 +803,6 @@ const calculerImpotPrecis = (baseRevenuInput: number, baremeCantonal: BaremeTran
                   </div>
               </div>
             </div>
-
-            {onNextStep && (
-              <div className="hub-navigation hub-nav-spacing">
-                <button className="btn-hub-next" onClick={onNextStep}>
-                  {t('radar.next_step')}
-                </button>
-              </div>
-            )}
           </div>
         ) : (
           <div className="result-container simple-result">
@@ -834,6 +823,15 @@ const calculerImpotPrecis = (baseRevenuInput: number, baremeCantonal: BaremeTran
             </div>
           </div>
         )
+      )}
+
+      {/* BOUTONS DE NAVIGATION HUB - DÉPLACÉS À L'EXTÉRIEUR POUR UNIFORMISER L'ESPACE */}
+      {mode === 'comparaison' && onNextStep && (
+        <div className="hub-navigation hub-nav-spacing">
+          <button className="btn-hub-next" onClick={onNextStep}>
+            {t('radar.next_step')}
+          </button>
+        </div>
       )}
       
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />

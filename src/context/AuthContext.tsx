@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+    useEffect(() => {
     // Vérifie la session au chargement
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -27,9 +27,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     getSession();
 
-    // Écoute les changements de connexion
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    // Écoute les changements de connexion ET la récupération de mot de passe
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      
+      // NOUVEAU : Si l'utilisateur revient de son email de réinitialisation
+      if (event === 'PASSWORD_RECOVERY') {
+        // On met l'utilisateur en session temporaire pour qu'il puisse changer son mot de passe
+        setUser(session?.user ?? null);
+        
+        // On force l'ouverture du modal de connexion en mode "Nouveau mot de passe"
+        // Pour cela, on déclenche un événement global que ton App.tsx écoutera
+        window.dispatchEvent(new CustomEvent('open-password-reset-modal'));
+      } else {
+        // Comportement normal (connexion / déconnexion classique)
+        setUser(session?.user ?? null);
+      }
+      
       setLoading(false);
     });
 

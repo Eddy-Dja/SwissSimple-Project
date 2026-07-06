@@ -144,9 +144,10 @@ interface AssuranceProps {
   onPrevStep?: () => void;
   onNextStep?: () => void;
   onResultChange?: (diff: number | null, details?: { avgA: number, avgB: number }) => void;
+  hideWarning?: boolean;
 }
 
-export default function Assurance({ initialMode = 'simple', onPrevStep, onNextStep, onResultChange }: AssuranceProps) {
+export default function Assurance({ initialMode = 'simple', onPrevStep, onNextStep, onResultChange, hideWarning }: AssuranceProps) {
   const { t } = useTranslation();
 
   const mode = initialMode;
@@ -249,7 +250,7 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
 
   const displayedResults = mode === 'simple' ? resultsA : (activeTab === 'A' ? resultsA : resultsB);
 
-  return (
+        return (
     <div className="assurance-container">
 
       <div className="assurance-header">
@@ -344,7 +345,7 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
           <div className="no-results">{t('assurance.no_results')}</div>
         )}
 
-        {/* 1. RÉSUMÉ COMPARAISON (L'APPÂT) --- S'AFFICHE APRÈS LE CLIC */}
+        {/* 1. RÉSUMÉ COMPARAISON */}
         {mode === 'comparaison' && resultsA.length > 0 && resultsB.length > 0 && (
           <div className="comparison-summary">
             <div className="comparison-avg-row">
@@ -372,9 +373,9 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
           </div>
         )}
 
-        {/* 2. BOUTONS DE NAVIGATION (TOUJOURS VISIBLES EN MODE COMPARAISON) */}
-                {mode === 'comparaison' && (
-          <div className="hub-navigation">
+        {/* 2. BOUTONS DE NAVIGATION - DÉPLACÉS ICI (juste après le résumé) */}
+        {mode === 'comparaison' && (onPrevStep || onNextStep) && (
+          <div className="hub-navigation hub-nav-spacing">
             {onPrevStep && (
               <button className="btn-hub-prev" onClick={onPrevStep}>
                 {t('assurance.prev_step', '← Retour aux Impôts')}
@@ -388,7 +389,7 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
           </div>
         )}
 
-        {/* 3. DÉTAILS DES CAISSES (SI DÉBLOQUÉ) */}
+        {/* 3. DÉTAILS DES CAISSES (Maintenant en dessous des boutons) */}
         {mode === 'comparaison' && resultsA.length > 0 && resultsB.length > 0 && (
           <>
             <div className="region-tabs">
@@ -445,6 +446,15 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
           </>
         )}
       </div>
+
+      {/* AVERTISSEMENT LÉGAL SPÉCIFIQUE À L'ASSURANCE */}
+      {!hideWarning && (
+        <div className="avertissement-legal">
+          <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>
+          <span className="texte-avertissement">{t('assurance.warning')}</span>
+        </div>
+      )}
+      
     </div>
   );
 }

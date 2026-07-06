@@ -2,9 +2,9 @@
 
 .radar-container {
   width: 100%;
-  max-width: 100%;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 0; /* Padding 0 sur les côtés pour laisser les résultats respirer */
+  padding: 2rem 1rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #1e293b;
   box-sizing: border-box;
@@ -28,7 +28,7 @@
 
 /* --- FORMULAIRE PETIT ET CENTRÉ --- */
 .avs-form-small {
-  max-width: 700px !important; /* Format compact pour célibataire */
+  max-width: 700px !important;
   margin: 0 auto 3rem auto !important;
   background: #ffffff;
   padding: 2rem;
@@ -36,10 +36,9 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   border: 1px solid #e2e8f0;
   box-sizing: border-box !important;
-  transition: max-width 0.3s ease; /* Animation fluide quand on change de statut */
+  transition: max-width 0.3s ease;
 }
 
-/* --- ÉLARGISSEMENT AUTOMATIQUE SI MARIÉ --- */
 .avs-form-small.avs-form-wide {
   max-width: 950px !important;
 }
@@ -102,23 +101,21 @@
 }
 .avs-marriage-label { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
 
-/* --- RÉSULTATS PLEINE LARGEUR (CASSE LA LIMITE DU PARENT) --- */
+/* --- RÉSULTATS (Largeur propre et centrée) --- */
 .avs-full-width {
-  /* Astuce pour forcer la pleine largeur malgré le dashboard-container */
-  width: 100vw !important;
-  max-width: 100vw !important;
-  margin-left: calc(50% - 50vw) !important;
-  margin-right: calc(50% - 50vw) !important;
-  padding: 3rem 5vw !important; /* 5vw donne de l'air sur les bords */
-  background: #f8fafc; /* Fond gris clair pour bien voir les panneaux */
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
+  width: 100% !important;
+  max-width: 900px !important;
+  margin: 1.5rem auto !important;
+  padding: 3rem 1.5rem !important;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px !important;
   box-sizing: border-box !important;
   overflow: visible !important;
 }
 
 .simple-center { 
-  max-width: 1600px; /* Limite interne pour que ce soit lisible sur très grands écrans */
+  max-width: 100% !important;
   margin: 0 auto;
   display: flex; 
   flex-direction: column; 
@@ -159,19 +156,19 @@
   border-radius: 8px;
 }
 
-/* --- PANNEAUX CÔTE À CÔTE (FORCÉ AVEC !IMPORTANT) --- */
+/* --- PANNEAUX CÔTE À CÔTE --- */
 .avs-panels-wrapper {
   display: flex !important;
   flex-direction: row !important;
   gap: 2rem !important;
   width: 100% !important;
   margin-top: 1.5rem !important;
-  align-items: stretch !important; /* Force la même hauteur */
+  align-items: stretch !important;
 }
 
 .avs-panel {
-  flex: 1 1 0 !important; /* Force 50% de largeur exactement */
-  min-width: 0 !important; /* Empêche le texte de faire déborder */
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
   padding: 2rem !important;
   border-radius: 16px !important;
   display: flex !important;
@@ -230,29 +227,55 @@
 
 .avs-box-borderless { border: none; }
 
+/* AVERTISSEMENT LÉGAL (Uniformisé) */
 .avertissement-legal {
   max-width: 800px;
-  margin: 3rem auto 0 auto;
+  margin: 3rem auto 0 auto !important;
+  margin-bottom: 0 !important;
   padding: 1.5rem;
-  background-color: #fffbeb;
-  border: 1px solid #fcd34d;
-  border-radius: 12px;
+  background-color: #fffbeb !important;
+  border: 1px solid #fcd34d !important;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #92400e !important;
+  line-height: 1.6;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.titre-avertissement { font-weight: 700; color: #b45309; font-size: 0.95rem; }
-.texte-avertissement { font-size: 0.85rem; color: #92400e; line-height: 1.5; }
 
+.avertissement-legal .titre-avertissement {
+  display: block;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #b45309 !important;
+  margin-bottom: 1rem;
+}
+
+.avertissement-legal .texte-avertissement {
+  display: block;
+  text-align: justify;
+  text-align-last: center;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .radar-title { font-size: 2rem; }
-  .avs-form-small { padding: 1.5rem; }
+  .avs-form-small { padding: 1.5rem 1rem; }
   .simple-box {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
   .avs-panels-wrapper {
-    flex-direction: column !important; /* Sur mobile, on empile */
+    flex-direction: column !important;
+  }
+  .avs-full-width {
+    padding: 2rem 1rem !important;
+  }
+  .avertissement-legal {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }
