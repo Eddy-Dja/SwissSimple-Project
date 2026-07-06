@@ -45,14 +45,14 @@ function AppRoutes() {
 
 function App() {
   const { t } = useTranslation();
+  const { recoveryMode, setRecoveryMode, signOut } = useAuth(); // AJOUT de signOut
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // USE EFFECT MIS À JOUR : Détecte le lien de réinitialisation dès le chargement
   useEffect(() => {
-    if (window.location.hash.includes('type=recovery')) {
+    if (recoveryMode) {
       setIsAuthModalOpen(true);
     }
-  }, []);
+  }, [recoveryMode]);
 
   return (
     <BrowserRouter>
@@ -80,7 +80,24 @@ function App() {
         </div>
       </footer>
 
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        forceUpdateMode={recoveryMode} 
+        onClose={() => { 
+          setIsAuthModalOpen(false); 
+          
+          // Si on fermait la fenêtre de récupération de mot de passe, on détruit la session temporaire !
+          if (recoveryMode) {
+            signOut();
+            setRecoveryMode(false);
+          }
+
+          // Nettoie l'URL des paramètres de récupération
+          if (window.location.href.includes('type=recovery')) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        }} 
+      />
 
     </BrowserRouter>
   );

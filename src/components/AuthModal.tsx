@@ -3,30 +3,29 @@ import { supabase } from '../lib/supabaseClient';
 import { useTranslation } from 'react-i18next';
 import './AuthModal.css';
 
-export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+export default function AuthModal({ isOpen, onClose, forceUpdateMode }: { isOpen: boolean, onClose: () => void, forceUpdateMode?: boolean }) {
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [isResetMode, setIsResetMode] = useState(false);
-  const [isUpdateMode, setIsUpdateMode] = useState(false); // Mode pour entrer le nouveau mot de passe
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // Pour la confirmation
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const { t } = useTranslation();
 
-  // Détecte si l'URL contient le token de réinitialisation de Supabase
   useEffect(() => {
-    if (isOpen && window.location.hash.includes('type=recovery')) {
+    if (isOpen && forceUpdateMode) {
       setIsUpdateMode(true);
       setIsResetMode(false);
       setIsLogin(false);
+      setMessage(null);
     }
-  }, [isOpen]);
+  }, [isOpen, forceUpdateMode]);
 
   if (!isOpen) return null;
 
   const handleClose = () => {
-    // Nettoie les modes spéciaux quand on ferme la fenêtre
     setIsUpdateMode(false);
     setIsResetMode(false);
     setMessage(null);
@@ -36,13 +35,8 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
   const handleGoogleLogin = async () => {
     setLoading(true);
     setMessage(null);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-    });
-    if (error) {
-      setMessage(error.message);
-      setLoading(false);
-    }
+    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    if (error) { setMessage(error.message); setLoading(false); }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,7 +51,6 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
       } else {
         const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-        
         if (data.user && data.user.identities && data.user.identities.length === 0) {
           setMessage(t('auth.email_exists', 'Cet email est déjà utilisé. Essayez de vous connecter.'));
           setIsLogin(true);
@@ -68,13 +61,9 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
       }
     } catch (error: any) {
       const errorMsg = error.message || '';
-      if (errorMsg.includes('Email not confirmed')) {
-        setMessage(t('auth.error_email_not_confirmed'));
-      } else if (errorMsg.includes('Invalid login credentials')) {
-        setMessage(t('auth.error_invalid_credentials'));
-      } else {
-        setMessage(error.error_description || errorMsg);
-      }
+      if (errorMsg.includes('Email not confirmed')) setMessage(t('auth.error_email_not_confirmed'));
+      else if (errorMsg.includes('Invalid login credentials')) setMessage(t('auth.error_invalid_credentials'));
+      else setMessage(error.error_description || errorMsg);
     } finally {
       setLoading(false);
     }
@@ -86,10 +75,9 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
     setMessage(null);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin,
+        redirectTo: window.location.origin 
       });
       if (error) throw error;
-      
       setMessage(t('auth.reset_success', 'Un email de réinitialisation a été envoyé. Vérifiez votre boîte de réception.'));
       setIsResetMode(false);
       setIsLogin(true);
@@ -100,7 +88,6 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
     }
   };
 
-  // Fonction pour mettre à jour le mot de passe après avoir cliqué sur le lien email
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -116,15 +103,13 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
       const { error } = await supabase.auth.updateUser({ password: password });
       if (error) throw error;
 
-      setMessage(t('auth.password_updated_success', 'Mot de passe mis à jour avec succès ! Vous pouvez vous connecter.'));
-      setIsUpdateMode(false);
-      setIsLogin(true);
-      setPassword('');
-      setConfirmPassword('');
+      setMessage(t('auth.password_updated_success', 'Mot de passe mis à jour avec succès ! Redirection...'));
       
-      // Nettoie l'URL des paramètres de récupération
-      window.history.replaceState({}, document.title, window.location.pathname);
-      
+      setTimeout(() => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        window.location.reload();
+      }, 1500);
+
     } catch (error: any) {
       setMessage(error.message || "Erreur lors de la mise à jour du mot de passe.");
     } finally {
@@ -164,19 +149,13 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
 
         {message && (
           <div className="modal-message" style={{ 
-            padding: '12px', 
-            marginBottom: '15px', 
-            borderRadius: '8px', 
-            backgroundColor: '#eff6ff', 
-            color: '#1e40af', 
-            fontSize: '14px',
-            border: '1px solid #bfdbfe'
+            padding: '12px', marginBottom: '15px', borderRadius: '8px', 
+            backgroundColor: '#eff6ff', color: '#1e40af', fontSize: '14px', border: '1px solid #bfdbfe'
           }}>
             {message}
           </div>
         )}
 
-        {/* MODE MISE À JOUR DU MOT DE PASSE */}
         {isUpdateMode ? (
           <form onSubmit={handleUpdatePassword} className="modal-form">
             <div className="form-group">
@@ -192,7 +171,6 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
             </button>
           </form>
         ) : isResetMode ? (
-          /* MODE MOT DE PASSE OUBLIÉ */
           <form onSubmit={handlePasswordReset} className="modal-form">
             <div className="form-group">
               <label>{t('auth.email')}</label>
@@ -208,7 +186,6 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
             </div>
           </form>
         ) : (
-          /* MODE CONNEXION / INSCRIPTION NORMAL */
           <>
             <button className="btn-google-login" onClick={handleGoogleLogin} disabled={loading}>
               <svg width="18" height="18" viewBox="0 0 24 24">
@@ -220,9 +197,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
               {loading ? t('auth.loading_google') : t('auth.google_btn')}
             </button>
 
-            <div className="modal-divider">
-              <span>{t('auth.or')}</span>
-            </div>
+            <div className="modal-divider"><span>{t('auth.or')}</span></div>
 
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-group">

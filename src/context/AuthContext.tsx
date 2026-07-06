@@ -2,47 +2,59 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import type { User } from '@supabase/supabase-js';
 
-// On définit le type avec la fonction signOut
 interface AuthContextType {
   user: User | null;
   signOut: () => Promise<void>;
+  recoveryMode: boolean;
+  setRecoveryMode: (val: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({ 
   user: null, 
-  signOut: async () => {} 
+  signOut: async () => {},
+  recoveryMode: false,
+  setRecoveryMode: () => {}
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [recoveryMode, setRecoveryMode] = useState(false);
 
-    useEffect(() => {
-    // Vérifie la session au chargement
+  useEffect(() => {
+    // 1. On vérifie IMMÉDIATEMENT si l'URL de cet onglet est un lien de récupération
+    const isRecoveryURL = window.location.href.includes('type=recovery');
+    let isRecoveryMode = isRecoveryURL;
+
+    if (isRecoveryURL) {
+      setRecoveryMode(true);
+    }
+
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
+      // Si on est en mode récupération, on ne connecte pas l'utilisateur
+      if (!isRecoveryMode) {
+        setUser(session?.user ?? null);
+      }
       setLoading(false);
     };
 
     getSession();
 
-    // Écoute les changements de connexion ET la récupération de mot de passe
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      
-      // NOUVEAU : Si l'utilisateur revient de son email de réinitialisation
       if (event === 'PASSWORD_RECOVERY') {
-        // On met l'utilisateur en session temporaire pour qu'il puisse changer son mot de passe
-        setUser(session?.user ?? null);
-        
-        // On force l'ouverture du modal de connexion en mode "Nouveau mot de passe"
-        // Pour cela, on déclenche un événement global que ton App.tsx écoutera
-        window.dispatchEvent(new CustomEvent('open-password-reset-modal'));
+        // Si Supabase confirme la récupération, on s'assure que c'est bien cet onglet
+        if (window.location.href.includes('type=recovery')) {
+          isRecoveryMode = true;
+          setRecoveryMode(true);
+          setUser(null); 
+        }
+      } else if (event === 'SIGNED_IN' && isRecoveryMode) {
+        // Supabase essaie de nous connecter avec la session temporaire, on bloque !
+        // On ne fait rien, on garde l'utilisateur déconnecté jusqu'au changement de mot de passe.
       } else {
-        // Comportement normal (connexion / déconnexion classique)
         setUser(session?.user ?? null);
       }
-      
       setLoading(false);
     });
 
@@ -51,7 +63,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  // La fonction de déconnexion
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
@@ -74,9 +85,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  // On fournit le user ET la fonction signOut à toute l'application
   return (
-    <AuthContext.Provider value={{ user, signOut }}>
+    <AuthContext.Provider value={{ user, signOut, recoveryMode, setRecoveryMode }}>
       {children}
     </AuthContext.Provider>
   );
