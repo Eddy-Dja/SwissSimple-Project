@@ -147,6 +147,7 @@ const SearchableSelect: React.FC<{
   communes: Commune[];
   onSelect: (c: Commune) => void;
 }> = ({ label, emoji, communes, onSelect }) => {
+  const { t } = useTranslation(); // <-- AJOUTE CETTE LIGNE
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Commune | null>(null);
@@ -174,14 +175,14 @@ const SearchableSelect: React.FC<{
       <label>{label} {emoji}</label>
       <div className="form-input select-trigger" onClick={() => { setIsOpen(!isOpen); setSearch(''); }}>
          <span className={`select-text ${selected ? 'has-value' : ''}`}>
-          {selected ? `${selected.commune} (${selected.canton})` : '-- Choisir --'}
+          {selected ? `${selected.commune} (${selected.canton})` : t('radar.choose', '-- Choisir --')}
         </span>
         <span className="select-arrow">▼</span>
       </div>
       {isOpen && (
         <div className="dropdown-container">
           <div className="dropdown-search-wrapper">
-            <input type="text" placeholder="Rechercher..." value={search} onChange={(e) => setSearch(e.target.value)} className="form-input dropdown-search-input" autoFocus onClick={(e) => e.stopPropagation()} onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }} />
+            <input type="text" placeholder={t('radar.search_placeholder', 'Rechercher...')} value={search} onChange={(e) => setSearch(e.target.value)} className="form-input dropdown-search-input" autoFocus onClick={(e) => e.stopPropagation()} onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }} />
           </div>
           <div className="dropdown-list">
             {filteredCommunes.length === 0 && <div className="dropdown-no-result">Aucun résultat</div>}
