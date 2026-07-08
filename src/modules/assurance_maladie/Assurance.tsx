@@ -129,14 +129,31 @@ const INSURER_NAMES: Record<string, string> = {
 };
 
 const REGION_NAMES: Record<string, Record<string, string>> = {
-  'BE': { 'PR-REG CH1': 'Région 1 (Bernois alémanique - Oberland)', 'PR-REG CH2': 'Région 2 (Bernois alémanique - Seeland/Bienne)', 'PR-REG CH3': 'Région 3 (Bernois francophone - Mittelland)' },
-  'FR': { 'PR-REG CH1': 'Région 1 (Sarine / Sense)', 'PR-REG CH2': 'Région 2 (Reste du canton - Gruyère / Broye)' },
-  'GR': { 'PR-REG CH1': 'Région 1 (Prättigau / Davos)', 'PR-REG CH2': 'Région 2 (Engadine)', 'PR-REG CH3': 'Région 3 (Mittelbünden / Rheinwald)' },
-  'SG': { 'PR-REG CH1': 'Région 1 (Fürstenland / Toggenburg)', 'PR-REG CH2': 'Région 2 (St. Gallen / Rorschach)', 'PR-REG CH3': 'Région 3 (Linth / Sargans)' },
+  'BE': { 'PR-REG CH1': 'Région 1 (Oberland bernois)', 'PR-REG CH2': 'Région 2 (Seeland / Bienne)', 'PR-REG CH3': 'Région 3 (Jura bernois / Mittelland)' },
+  'BL': { 'PR-REG CH1': 'Région 1', 'PR-REG CH2': 'Région 2' },
+  'FR': { 'PR-REG CH1': 'Région 1 (Sarine / Singine)', 'PR-REG CH2': 'Région 2 (Reste du canton - Gruyère / Broye)' },
+  'GR': { 'PR-REG CH1': 'Région 1 (Prättigau / Davos)', 'PR-REG CH2': 'Région 2 (Engadine)', 'PR-REG CH3': 'Région 3 (Grisons centraux / Rheinwald)' },
+  'LU': { 'PR-REG CH1': 'Région 1 (Lucerne-Ville / Hinterland)', 'PR-REG CH2': 'Région 2 (Emmental)', 'PR-REG CH3': 'Région 3 (Willisau / Sursee)' },
+  'SG': { 'PR-REG CH1': 'Région 1 (Fürstenland / Toggenbourg)', 'PR-REG CH2': 'Région 2 (Saint-Gall / Rorschach)', 'PR-REG CH3': 'Région 3 (Linth / Sargans)' },
+  'SH': { 'PR-REG CH1': 'Région 1', 'PR-REG CH2': 'Région 2' },
   'TI': { 'PR-REG CH1': 'Région 1 (Sopraceneri - Bellinzona / Locarno)', 'PR-REG CH2': 'Région 2 (Sottoceneri - Lugano / Mendrisio)' },
   'VD': { 'PR-REG CH1': 'Région 1 (La Côte, Morges, Nyon)', 'PR-REG CH2': 'Région 2 (Lausanne, Riviera, Chablais)' },
-  'VS': { 'PR-REG CH1': 'Région 1 (Haut-Valais - Oberwallis)', 'PR-REG CH2': 'Région 2 (Bas-Valais / Chablais - Unterwallis)' },
-  'ZH': { 'PR-REG CH1': 'Région 1 (Ville de Zürich / Winterthur)', 'PR-REG CH2': 'Région 2 (Reste du canton de Zürich)' }
+  'VS': { 'PR-REG CH1': 'Région 1 (Haut-Valais)', 'PR-REG CH2': 'Région 2 (Bas-Valais / Chablais)' },
+  'ZH': { 'PR-REG CH1': 'Région 1 (Ville de Zurich / Winterthour)', 'PR-REG CH2': 'Région 2 (Agglomération)', 'PR-REG CH3': 'Région 3 (Reste du canton)' }
+};
+
+const REGION_NAMES_DE: Record<string, Record<string, string>> = {
+  'BE': { 'PR-REG CH1': 'Region 1 (Berner Oberland)', 'PR-REG CH2': 'Region 2 (Seeland / Biel)', 'PR-REG CH3': 'Region 3 (Berner Jura / Mittelland)' },
+  'BL': { 'PR-REG CH1': 'Region 1', 'PR-REG CH2': 'Region 2' },
+  'FR': { 'PR-REG CH1': 'Region 1 (Saane / Sense)', 'PR-REG CH2': 'Region 2 (Rest des Kantons - Greyerz / Broye)' },
+  'GR': { 'PR-REG CH1': 'Region 1 (Prättigau / Davos)', 'PR-REG CH2': 'Region 2 (Engadin)', 'PR-REG CH3': 'Region 3 (Mittelbünden / Rheinwald)' },
+  'LU': { 'PR-REG CH1': 'Region 1 (Stadt Luzern / Hinterland)', 'PR-REG CH2': 'Region 2 (Emmental)', 'PR-REG CH3': 'Region 3 (Willisau / Sursee)' },
+  'SG': { 'PR-REG CH1': 'Region 1 (Fürstenland / Toggenburg)', 'PR-REG CH2': 'Region 2 (St. Gallen / Rorschach)', 'PR-REG CH3': 'Region 3 (Linth / Sargans)' },
+  'SH': { 'PR-REG CH1': 'Region 1', 'PR-REG CH2': 'Region 2' },
+  'TI': { 'PR-REG CH1': 'Region 1 (Sopraceneri - Bellinzona / Locarno)', 'PR-REG CH2': 'Region 2 (Sottoceneri - Lugano / Mendrisio)' },
+  'VD': { 'PR-REG CH1': 'Region 1 (La Côte, Morges, Nyon)', 'PR-REG CH2': 'Region 2 (Lausanne, Riviera, Chablais)' },
+  'VS': { 'PR-REG CH1': 'Region 1 (Oberwallis)', 'PR-REG CH2': 'Region 2 (Unterwallis / Chablais)' },
+  'ZH': { 'PR-REG CH1': 'Region 1 (Stadt Zürich / Winterthur)', 'PR-REG CH2': 'Region 2 (Agglomeration)', 'PR-REG CH3': 'Region 3 (Rest des Kantons)' }
 };
 
 interface AssuranceProps {
@@ -148,7 +165,8 @@ interface AssuranceProps {
 }
 
 export default function Assurance({ initialMode = 'simple', onPrevStep, onNextStep, onResultChange, hideWarning }: AssuranceProps) {
-  const { t } = useTranslation();
+
+  const { t, i18n } = useTranslation();
 
   const mode = initialMode;
   
@@ -180,11 +198,21 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
     else if (!isChild && !FRACT_ERW.includes(franchise)) setFranchise(300); 
   }, [selectedAge, franchise, isChild]);
 
-  const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<React.SetStateAction<RegionOption[]>>, setSelectedRegion: React.Dispatch<React.SetStateAction<string>>) => {
+const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<React.SetStateAction<RegionOption[]>>, setSelectedRegion: React.Dispatch<React.SetStateAction<string>>) => {
     const { data, error } = await supabase.from('primes_lamal').select('Region').eq('Kanton', canton).eq('Geschäftsjahr', 2026);
     if (error || !data) { setAvailableRegions([]); return; }
     const uniqueRegions = [...new Set(data.map((p: { Region: string }) => p.Region))];
-    const options: RegionOption[] = uniqueRegions.map(reg => ({ value: reg, label: REGION_NAMES[canton]?.[reg] || reg.replace('PR-REG CH', 'Région ') })).sort((a, b) => a.value.localeCompare(b.value));
+    
+    // On utilise i18n.language pour savoir quelle langue est active
+    const currentLang = i18n.language;
+    const dict = currentLang === 'de' ? REGION_NAMES_DE : REGION_NAMES;
+    const defaultWord = currentLang === 'de' ? 'Region ' : 'Région ';
+
+    const options: RegionOption[] = uniqueRegions.map(reg => ({ 
+      value: reg, 
+      label: dict[canton]?.[reg] || reg.replace('PR-REG CH', defaultWord) 
+    })).sort((a, b) => a.value.localeCompare(b.value));
+    
     setAvailableRegions(options);
     if (options.length > 0) setSelectedRegion(options[0].value);
   };

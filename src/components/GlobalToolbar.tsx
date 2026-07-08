@@ -27,7 +27,10 @@ const GlobalToolbar: React.FC = () => {
   }, [isDark]);
 
   const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'fr' ? 'de' : 'fr');
+    const newLang = i18n.language === 'fr' ? 'de' : 'fr';
+    i18n.changeLanguage(newLang);
+    // --- ON SAUVEGARDE MANUELLEMENT ICI ---
+    localStorage.setItem('app_language', newLang);
   };
 
   const isHome = location.pathname === '/';

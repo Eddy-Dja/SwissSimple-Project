@@ -12,6 +12,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.107.0",
     "i18next": "^26.3.4",
+    "i18next-browser-languagedetector": "^8.2.1",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
     "react": "^19.2.6",
