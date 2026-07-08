@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabaseClient';
 import './Assurance.css';
@@ -43,7 +42,6 @@ const TARIFTYP_LABELS: Record<string, string> = {
 };
 
 const INSURER_NAMES: Record<string, string> = {
-  // Caisses principales (conformes à la liste OFSP 2026)
   '8': 'CSS', 
   '32': 'Aquilana', 
   '134': 'Einsiedler Krankenkasse', 
@@ -78,12 +76,8 @@ const INSURER_NAMES: Record<string, string> = {
   '1560': 'Agrisano', 
   '1562': 'Helsana', 
   '1568': 'sana24 (Groupe Visana)',
-  
-  // Fusions 2026 (mappage historique pour la base de données)
   '901': 'curaulta (ex-Sanavals)', 
   '1570': 'Galenos (ex-Vivacare)',
-  
-  // Sous-marques et tarifs spécifiques (présents dans l'Open Data des primes)
   '12': 'Helsana', 
   '17': 'Assura', 
   '48': 'SWICA', 
@@ -165,7 +159,6 @@ interface AssuranceProps {
 }
 
 export default function Assurance({ initialMode = 'simple', onPrevStep, onNextStep, onResultChange, hideWarning }: AssuranceProps) {
-
   const { t, i18n } = useTranslation();
 
   const mode = initialMode;
@@ -198,27 +191,47 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
     else if (!isChild && !FRACT_ERW.includes(franchise)) setFranchise(300); 
   }, [selectedAge, franchise, isChild]);
 
-const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<React.SetStateAction<RegionOption[]>>, setSelectedRegion: React.Dispatch<React.SetStateAction<string>>) => {
+  // Fonction pour obtenir le nom de la région dans la bonne langue
+  const getRegionLabel = (canton: string, reg: string) => {
+    const isDe = i18n.language.startsWith('de');
+    const dict = isDe ? REGION_NAMES_DE : REGION_NAMES;
+    const defaultWord = isDe ? 'Region ' : 'Région ';
+    return dict[canton]?.[reg] || reg.replace('PR-REG CH', defaultWord);
+  };
+
+  const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<React.SetStateAction<RegionOption[]>>, setSelectedRegion: React.Dispatch<React.SetStateAction<string>>) => {
     const { data, error } = await supabase.from('primes_lamal').select('Region').eq('Kanton', canton).eq('Geschäftsjahr', 2026);
     if (error || !data) { setAvailableRegions([]); return; }
     const uniqueRegions = [...new Set(data.map((p: { Region: string }) => p.Region))];
     
-    // On utilise i18n.language pour savoir quelle langue est active
-    const currentLang = i18n.language;
-    const dict = currentLang === 'de' ? REGION_NAMES_DE : REGION_NAMES;
-    const defaultWord = currentLang === 'de' ? 'Region ' : 'Région ';
-
     const options: RegionOption[] = uniqueRegions.map(reg => ({ 
       value: reg, 
-      label: dict[canton]?.[reg] || reg.replace('PR-REG CH', defaultWord) 
+      label: getRegionLabel(canton, reg)
     })).sort((a, b) => a.value.localeCompare(b.value));
     
     setAvailableRegions(options);
     if (options.length > 0) setSelectedRegion(options[0].value);
   };
 
-  useEffect(() => { fetchRegions(cantonA, setAvailableRegionsA, setSelectedRegionA); }, [cantonA, i18n.language]);
-  useEffect(() => { fetchRegions(cantonB, setAvailableRegionsB, setSelectedRegionB); }, [cantonB, i18n.language]);
+  // Charger les régions quand le canton A change
+  useEffect(() => {
+    fetchRegions(cantonA, setAvailableRegionsA, setSelectedRegionA);
+  }, [cantonA]);
+
+  // Charger les régions quand le canton B change
+  useEffect(() => {
+    fetchRegions(cantonB, setAvailableRegionsB, setSelectedRegionB);
+  }, [cantonB]);
+
+  // Met à jour les textes des régions A quand la langue change
+  useEffect(() => {
+    setAvailableRegionsA(prev => prev.map(opt => ({ ...opt, label: getRegionLabel(cantonA, opt.value) })));
+  }, [i18n.language, cantonA]);
+
+  // Met à jour les textes des régions B quand la langue change
+  useEffect(() => {
+    setAvailableRegionsB(prev => prev.map(opt => ({ ...opt, label: getRegionLabel(cantonB, opt.value) })));
+  }, [i18n.language, cantonB]);
 
   const getFilteredPrimes = async (targetCanton: string, targetRegion: string) => {
     const targetConfig = AGE_CONFIG[selectedAge];
@@ -250,7 +263,7 @@ const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<
         const calculatedDiff = avgA.annuel - avgB.annuel;
         
         if (onResultChange) onResultChange(calculatedDiff, { avgA: avgA.annuel, avgB: avgB.annuel });
-                } else {
+      } else {
         setResultsB([]);
         if (onResultChange) onResultChange(null);
       }
@@ -278,9 +291,8 @@ const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<
 
   const displayedResults = mode === 'simple' ? resultsA : (activeTab === 'A' ? resultsA : resultsB);
 
-        return (
+  return (
     <div className="assurance-container">
-
       <div className="assurance-header">
         <h1 className="assurance-title">{t('assurance.title')}</h1>
         <p className="assurance-subtitle">
@@ -373,7 +385,6 @@ const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<
           <div className="no-results">{t('assurance.no_results')}</div>
         )}
 
-        {/* 1. RÉSUMÉ COMPARAISON */}
         {mode === 'comparaison' && resultsA.length > 0 && resultsB.length > 0 && (
           <div className="comparison-summary">
             <div className="comparison-avg-row">
@@ -401,7 +412,6 @@ const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<
           </div>
         )}
 
-        {/* 2. BOUTONS DE NAVIGATION - DÉPLACÉS ICI (juste après le résumé) */}
         {mode === 'comparaison' && (onPrevStep || onNextStep) && (
           <div className="hub-navigation hub-nav-spacing">
             {onPrevStep && (
@@ -417,7 +427,6 @@ const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<
           </div>
         )}
 
-        {/* 3. DÉTAILS DES CAISSES (Maintenant en dessous des boutons) */}
         {mode === 'comparaison' && resultsA.length > 0 && resultsB.length > 0 && (
           <>
             <div className="region-tabs">
@@ -475,14 +484,12 @@ const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<
         )}
       </div>
 
-      {/* AVERTISSEMENT LÉGAL SPÉCIFIQUE À L'ASSURANCE */}
       {!hideWarning && (
         <div className="avertissement-legal">
           <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>
           <span className="texte-avertissement">{t('assurance.warning')}</span>
         </div>
       )}
-      
     </div>
   );
 }
