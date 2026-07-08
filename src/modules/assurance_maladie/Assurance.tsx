@@ -217,8 +217,8 @@ const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<
     if (options.length > 0) setSelectedRegion(options[0].value);
   };
 
-  useEffect(() => { fetchRegions(cantonA, setAvailableRegionsA, setSelectedRegionA); }, [cantonA]);
-  useEffect(() => { fetchRegions(cantonB, setAvailableRegionsB, setSelectedRegionB); }, [cantonB]);
+  useEffect(() => { fetchRegions(cantonA, setAvailableRegionsA, setSelectedRegionA); }, [cantonA, i18n.language]);
+  useEffect(() => { fetchRegions(cantonB, setAvailableRegionsB, setSelectedRegionB); }, [cantonB, i18n.language]);
 
   const getFilteredPrimes = async (targetCanton: string, targetRegion: string) => {
     const targetConfig = AGE_CONFIG[selectedAge];
