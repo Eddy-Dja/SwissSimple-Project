@@ -171,6 +171,8 @@
     "age_35_44": "35 - 44 Jahre",
     "age_45_54": "45 - 54 Jahre",
     "age_55_65": "55 - 65 Jahre",
+    "age_65_70_actif": "65 bis 70 Jahre (Aktiv)",
+    "age_65_retraite": "Über 65 Jahre (Rentner AHV/IV)",
     "age_hint": "Bestimmt den Beitragssatz der 2. Säule (BVG).",
     "statut_label": "Zivilstand",
     "statut_celibataire": "Ledig",

@@ -519,3 +519,34 @@
     margin-right: 0 !important;
   }
 }
+
+/* ============================================================
+   NOUVEAU : DÉTAILS DES DÉDUCTIONS (pour le visuel transparent)
+   ============================================================ */
+.deduction-detail, .result-deduction-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  color: #64748b;
+  background-color: rgba(248, 250, 252, 0.5); /* Fond semi-transparent */
+  border-left: 3px solid #cbd5e1;
+  margin-bottom: 0.25rem;
+  border-radius: 4px;
+}
+
+.deduction-detail.secondary, .result-deduction-detail.secondary {
+  background-color: rgba(241, 245, 249, 0.5); /* Fond semi-transparent */
+  border-left-color: #94a3b8;
+}
+
+.deduction-detail-nom, .result-deduction-detail span {
+  margin-right: 1rem;
+  text-align: left;
+}
+
+.deduction-detail-montant, .result-deduction-detail span:last-child {
+  font-weight: 600;
+  white-space: nowrap;
+}

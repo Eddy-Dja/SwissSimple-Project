@@ -172,6 +172,8 @@
     "age_35_44": "35 - 44 ans",
     "age_45_54": "45 - 54 ans",
     "age_55_65": "55 - 65 ans",
+    "age_65_70_actif": "65 à 70 ans (Actif)",
+    "age_65_retraite": "Plus de 65 ans (Retraité AVS/AI)",
     "age_hint": "Détermine le taux du 2ème pilier (LPP).",
     "statut_label": "Statut",
     "statut_celibataire": "Célibataire",
