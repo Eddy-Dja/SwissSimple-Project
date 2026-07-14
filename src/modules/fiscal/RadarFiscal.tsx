@@ -345,7 +345,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     // On ajoute le canton 26 (Jura) ici
     if (cantonId === 25 || cantonId === 12 || cantonId === 26 || cantonId === 7 || cantonId === 6 || cantonId === 4 ||
       cantonId === 3 || cantonId === 14 || cantonId === 5 || cantonId === 21 ||
-       cantonId === 23 || cantonId === 22 || cantonId === 9) {
+       cantonId === 23 || cantonId === 22 || cantonId === 9 || cantonId === 18) {
       return calculerAvecFallback(deductionsData, statut, nbEnfants, cantonId, isMarie2Revenus, nbMineurs, nbMajeurs, revenuNet);
     }
     return calculerGenerique(deductionsData, paliersData, statut, nbEnfants, nbMineurs, nbMajeurs, revenuNet, revenuBrut, cantonId);
@@ -391,6 +391,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         details.push({ nom: 'Déductions pour enfants', montant: v });
       }
 
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
+      }
+
       return { total: totalDeductions, details };
     }
 
@@ -421,6 +431,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         const totalEnfant = mainEnfant + eigenbetreuung;
         totalDeductions += totalEnfant;
         details.push({ nom: 'Déductions pour enfants', montant: totalEnfant });
+      }
+
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
       }
 
       return { total: totalDeductions, details };
@@ -467,6 +487,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         }
       }
 
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
+      }
+
       return { total: totalDeductions, details };
     }
 
@@ -503,6 +533,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         }
       }
 
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
+      }
+
       return { total: totalDeductions, details };
     }
         // ==========================================
@@ -532,6 +572,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         const totalEnfant = mainEnfant + eigenbetreuung;
         totalDeductions += totalEnfant;
         details.push({ nom: 'Déductions pour enfants', montant: totalEnfant });
+      }
+
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
       }
 
       return { total: totalDeductions, details };
@@ -585,6 +635,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         details.push({ nom: 'Déduction sociale supplémentaire', montant: entlastungsabzug });
       }
 
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
+      }
+
       return { total: totalDeductions, details };
     }
 
@@ -613,6 +673,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         const v = 11500 * nbEnfants;
         totalDeductions += v;
         details.push({ nom: 'Déductions pour enfants', montant: v });
+      }
+
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
       }
 
       return { total: totalDeductions, details };
@@ -654,6 +724,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         details.push({ nom: 'Déductions pour enfants', montant: v });
       }
 
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
+      }
+
       return { total: totalDeductions, details };
     }
 
@@ -693,6 +773,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
           const bonus = 1240 * (nbEnfants - 2);
           totalDeductions += bonus;
           details.push({ nom: 'Bonus dès 3 enfants', montant: bonus });
+        }
+      }
+
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
         }
       }
 
@@ -761,6 +851,17 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         details.push({ nom: 'Déduction pour revenu modeste', montant: baseModeste });
       }
 
+            // --- Rajouter ceci avant le return de VAUD ---
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
+      }
+
       return { total: totalDeductions, details };
     }
 
@@ -801,9 +902,61 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         details.push({ nom: 'Déductions pour enfants', montant: totalEnfant });
       }
 
+          
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: 'Pilier 3a', montant: total3a });
+        }
+      }
+
       return { total: totalDeductions, details };
     }
 
+        // ==========================================
+    // LOGIQUE SPÉCIFIQUE GRAUBÜNDEN (18)
+    // ==========================================
+    if (cantonId === 18) {
+      const fraisProf = statut === 'marie' ? 6600 : 3300;
+      totalDeductions += fraisProf;
+      details.push({ nom: t('radar.frais_prof'), montant: fraisProf });
+
+      // 9200 pour marié, 4600 pour célibataire + 1000 par enfant
+      const assBase = statut === 'marie' ? 9200 : 4600;
+      let totalAss = assBase;
+      if (nbEnfants > 0) totalAss += 1000 * nbEnfants;
+      totalDeductions += totalAss;
+      details.push({ nom: t('radar.assurances'), montant: totalAss });
+
+      if (isMarie2Revenus) {
+        totalDeductions += 2200;
+        details.push({ nom: t('radar.couple_2_rev'), montant: 2200 });
+      }
+
+      if (nbEnfants > 0) {
+        // 13700 par enfant (âge scolaire / formation)
+        const v = 13700 * nbEnfants;
+        totalDeductions += v;
+        details.push({ nom: t('radar.enfants'), montant: v });
+      }
+
+      // --- Pilier 3a ---
+      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+      if (max3a > 0) {
+        let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
+        if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
+        if (total3a > 0) {
+          totalDeductions += total3a;
+          details.push({ nom: t('radar.pilier_3a'), montant: total3a });
+        }
+      }
+
+      return { total: totalDeductions, details };
+    }
+    
     // ==========================================
     // LOGIQUE DES AUTRES CANTONS (Inchangée)
     // ==========================================
@@ -1042,12 +1195,12 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
       }
     }
 
-    if (totalProf > 0) { totalDeductions += totalProf; details.push({ nom: 'Frais professionnels', montant: totalProf }); }
-    if (maxAssurance > 0) { totalDeductions += maxAssurance; details.push({ nom: 'Primes assurances et intérêts', montant: maxAssurance }); }
-    if (maxCouple > 0) { totalDeductions += maxCouple; details.push({ nom: 'Couple à deux revenus', montant: maxCouple }); }
-    if (maxStatut > 0) { totalDeductions += maxStatut; details.push({ nom: 'Déductions de statut (Célibataire/Marié/Retraité)', montant: maxStatut }); }
+    if (totalProf > 0) { totalDeductions += totalProf; details.push({ nom: t('radar.frais_prof'), montant: totalProf }); }
+    if (maxAssurance > 0) { totalDeductions += maxAssurance; details.push({ nom: t('radar.assurances'), montant: maxAssurance }); }
+    if (maxCouple > 0) { totalDeductions += maxCouple; details.push({ nom: t('radar.couple_2_rev'), montant: maxCouple }); }
+    if (maxStatut > 0) { totalDeductions += maxStatut; details.push({ nom: t('radar.statut'), montant: maxStatut }); }
     const assEnfant = maxAssuranceEnfant * nbEnfants;
-    if (assEnfant > 0) { totalDeductions += assEnfant; details.push({ nom: 'Assurances enfants', montant: assEnfant }); }
+    if (assEnfant > 0) { totalDeductions += assEnfant; details.push({ nom: t('radar.assu_enfants'), montant: assEnfant }); }
     
     const valMajeur = maxDeductionEnfantMajeur > 0 ? maxDeductionEnfantMajeur : maxDeductionEnfantMineur;
     
@@ -1058,14 +1211,14 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
       dedEnfant = (maxDeductionEnfantMineur * nbMineurs) + (valMajeur * nbMajeurs);
     }
     
-    if (dedEnfant > 0) { totalDeductions += dedEnfant; details.push({ nom: 'Déductions pour enfants', montant: dedEnfant }); }
+    if (dedEnfant > 0) { totalDeductions += dedEnfant; details.push({ nom: t('radar.enfants'), montant: dedEnfant }); }
     
-    if (totalGarde > 0) { totalDeductions += totalGarde; details.push({ nom: 'Frais de garde', montant: totalGarde }); }
+    if (totalGarde > 0) { totalDeductions += totalGarde; details.push({ nom: t('radar.frais_garde'), montant: totalGarde }); }
 
     if (max3a > 0) {
       let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
       if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
-      if (total3a > 0) { totalDeductions += total3a; details.push({ nom: 'Pilier 3a', montant: total3a }); }
+      if (total3a > 0) { totalDeductions += total3a; details.push({ nom: t('radar.pilier_3a'), montant: total3a }); }
     }
 
     if (paliersData && paliersData.length > 0) {
@@ -1355,22 +1508,22 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         </div>
 
         {/* MENU DÉROULANT POUR LES ENFANTS (PLACÉ AVANT LES OPTIONS AVANCÉES) */}
-        <button type="button" className="advanced-toggle" onClick={() => setShowEnfantOptions(!showEnfantOptions)}>
-          {showEnfantOptions ? '▼ Masquer les options enfants' : '▶ Options enfants (Familles)'}
+               <button type="button" className="advanced-toggle" onClick={() => setShowEnfantOptions(!showEnfantOptions)}>
+          {showEnfantOptions ? t('radar.hide_enfants') : t('radar.show_enfants')}
         </button>
         {showEnfantOptions && (
           <div className="advanced-options">
             <div className="radar-filters base-filters">
               <div className="filter-group">
-                <label>Enfants mineurs (0-17 ans)</label>
+                <label>{t('radar.enfants_mineurs')}</label>
                 <input type="number" min="0" value={enfantsMineurs} onChange={(e) => setEnfantsMineurs(parseInt(e.target.value) || 0)} className="form-input" />
-                <small className="filter-hint">Bénéficient des frais de garde (0-14 ans)</small>
+                <small className="filter-hint">{t('radar.enfants_hint')}</small>
               </div>
               
               <div className="filter-group">
-                <label>Enfants en formation (18-25 ans)</label>
+                <label>{t('radar.enfants_majeurs')}</label>
                 <input type="number" min="0" value={enfantsMajeurs} onChange={(e) => setEnfantsMajeurs(parseInt(e.target.value) || 0)} className="form-input" />
-                <small className="filter-hint">Études ou apprentissage</small>
+                <small className="filter-hint">{t('radar.etudes_hint')}</small>
               </div>
 
               {enfantsMineurs > 0 && (
