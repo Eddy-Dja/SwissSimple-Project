@@ -361,26 +361,26 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 26) {
       const fraisProf = statut === 'marie' ? 8200 : 4100;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       const assBase = statut === 'marie' ? 6800 : 3400;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 1020 * nbEnfants; // Bonus assurance enfant Jura
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       // Le Jura donne 2700 pour les couples à 2 revenus ET 2700 pour les parents seuls
       if (isMarie2Revenus) {
         totalDeductions += 2700;
-        details.push({ nom: 'Couple à deux revenus', montant: 2700 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 2700 });
       } else if (statut === 'celibataire' && nbEnfants > 0) {
         totalDeductions += 2700;
-        details.push({ nom: 'Déduction pour famille monoparentale', montant: 2700 });
+        details.push({ nom: 'radar.monoparentale', montant: 2700 });
       }
 
       if (statut === 'marie') {
         totalDeductions += 3700;
-        details.push({ nom: 'Déductions de statut', montant: 3700 });
+        details.push({ nom: 'radar.statut', montant: 3700 });
       }
 
       if (nbEnfants > 0) {
@@ -388,7 +388,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         const montEnfant = nbEnfants >= 3 ? 6400 : 5700;
         const v = montEnfant * nbEnfants;
         totalDeductions += v;
-        details.push({ nom: 'Déductions pour enfants', montant: v });
+        details.push({ nom: 'radar.enfants', montant: v });
       }
 
       const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
@@ -397,7 +397,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -410,18 +410,18 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 3) {
       const fraisProf = statut === 'marie' ? 5378 : 2689;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 5200 pour marié, 2600 pour célibataire + 700 par enfant
       const assBase = statut === 'marie' ? 5200 : 2600;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 700 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 5000;
-        details.push({ nom: 'Couple à deux revenus', montant: 5000 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 5000 });
       }
 
       if (nbEnfants > 0) {
@@ -430,7 +430,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         const eigenbetreuung = 2000 * nbEnfants;
         const totalEnfant = mainEnfant + eigenbetreuung;
         totalDeductions += totalEnfant;
-        details.push({ nom: 'Déductions pour enfants', montant: totalEnfant });
+        details.push({ nom: 'radar.enfants', montant: totalEnfant });
       }
 
       const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
@@ -439,7 +439,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -452,15 +452,15 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 6) {
       const fraisProf = statut === 'marie' ? 5378 : 2689;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       const assBase = statut === 'marie' ? 6800 : 5200;
       totalDeductions += assBase;
-      details.push({ nom: 'Primes assurances et intérêts', montant: assBase });
+      details.push({ nom: 'radar.assurances', montant: assBase });
 
       if (isMarie2Revenus) {
         totalDeductions += 3400;
-        details.push({ nom: 'Couple à deux revenus', montant: 3400 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 3400 });
       }
 
       // Obwalden a 10'000 de base + 10'000 social pour les mariés ET les parents seuls
@@ -471,19 +471,19 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         statutDed = 10000;
       }
       totalDeductions += statutDed;
-      details.push({ nom: 'Déductions de statut', montant: statutDed });
+      details.push({ nom: 'radar.statut', montant: statutDed });
 
       if (nbEnfants > 0) {
         const v = 6200 * nbEnfants;
         totalDeductions += v;
-        details.push({ nom: 'Déductions pour enfants', montant: v });
+        details.push({ nom: 'radar.enfants', montant: v });
 
         // Sonderabzug : 10% de la différence entre 100'000 et le Reineinkommen
         const reineinkommen = revenuNet - fraisProf - assBase;
         if (reineinkommen < 100000) {
           const sonderabzug = Math.round((100000 - reineinkommen) * 0.10);
           totalDeductions += sonderabzug;
-          details.push({ nom: 'Sonderabzug (Revenu modeste)', montant: sonderabzug });
+          details.push({ nom: 'radar.revenu_modeste', montant: sonderabzug });
         }
       }
 
@@ -493,7 +493,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -506,30 +506,30 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 14) {
       const fraisProf = statut === 'marie' ? 5378 : 2689;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 7500 pour marié, 3750 pour célibataire + 1000 par enfant
       const assBase = statut === 'marie' ? 7500 : 3750;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 1000 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 800;
-        details.push({ nom: 'Couple à deux revenus', montant: 800 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 800 });
       }
 
       if (nbEnfants > 0) {
         const mainEnfant = 8400 * nbEnfants;
         totalDeductions += mainEnfant;
-        details.push({ nom: 'Déductions pour enfants', montant: mainEnfant });
+        details.push({ nom: 'radar.enfants', montant: mainEnfant });
 
         // Déduction pour enfants d'âge préscolaire (3'000 CHF par enfant mineur)
         const prescolaire = 3000 * nbMineurs;
         if (prescolaire > 0) {
           totalDeductions += prescolaire;
-          details.push({ nom: 'Enfants d\'âge préscolaire', montant: prescolaire });
+          details.push({ nom: 'radar.prescolaire', montant: prescolaire });
         }
       }
 
@@ -539,7 +539,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -551,18 +551,18 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 7) {
       const fraisProf = statut === 'marie' ? 8966 : 4483;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 3700 pour marié, 1800 pour célibataire + 700 par enfant
       const assBase = statut === 'marie' ? 3700 : 1800;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 700 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 1200;
-        details.push({ nom: 'Couple à deux revenus', montant: 1200 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 1200 });
       }
 
       if (nbEnfants > 0) {
@@ -571,16 +571,16 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         const eigenbetreuung = 3200 * nbMineurs;
         const totalEnfant = mainEnfant + eigenbetreuung;
         totalDeductions += totalEnfant;
-        details.push({ nom: 'Déductions pour enfants', montant: totalEnfant });
+        details.push({ nom: 'radar.enfants', montant: totalEnfant });
       }
 
-      const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+ const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
       if (max3a > 0) {
         let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -593,18 +593,18 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 5) {
       const fraisProf = statut === 'marie' ? 13800 : 6900;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 8400 pour marié, 4200 pour célibataire + 500 par enfant
       const assBase = statut === 'marie' ? 8400 : 4200;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 500 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 2100;
-        details.push({ nom: 'Couple à deux revenus', montant: 2100 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 2100 });
       }
 
       // Statut (8400 marié, 4200 célibataire + 7800 si parent seul)
@@ -616,12 +616,12 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (nbEnfants > 0) statutDed += 7800; // Déduction famille monoparentale
       }
       totalDeductions += statutDed;
-      details.push({ nom: 'Déductions de statut', montant: statutDed });
+      details.push({ nom: 'radar.statut', montant: statutDed });
 
       if (nbEnfants > 0) {
         const v = 10000 * nbEnfants;
         totalDeductions += v;
-        details.push({ nom: 'Déductions pour enfants', montant: v });
+        details.push({ nom: 'radar.enfants', montant: v });
       }
 
       // Entlastungsabzug (Déduction sociale supplémentaire)
@@ -632,7 +632,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
       if (bemessungsgrundlage > 0) {
         const entlastungsabzug = Math.round(bemessungsgrundlage * 0.30);
         totalDeductions += entlastungsabzug;
-        details.push({ nom: 'Déduction sociale supplémentaire', montant: entlastungsabzug });
+        details.push({ nom: 'radar.sociale_supp', montant: entlastungsabzug });
       }
 
       const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
@@ -641,7 +641,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -655,24 +655,24 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
       // 3000 par personne (forfait fixe tessinois)
       const fraisProf = statut === 'marie' ? 6000 : 3000;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 10900 pour marié, 5500 pour célibataire + 1200 par enfant
       const assBase = statut === 'marie' ? 10900 : 5500;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 1200 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 8100;
-        details.push({ nom: 'Couple à deux revenus', montant: 8100 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 8100 });
       }
 
       if (nbEnfants > 0) {
         const v = 11500 * nbEnfants;
         totalDeductions += v;
-        details.push({ nom: 'Déductions pour enfants', montant: v });
+        details.push({ nom: 'radar.enfants', montant: v });
       }
 
       const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
@@ -681,7 +681,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -694,18 +694,18 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 4) {
       const fraisProf = statut === 'marie' ? 5378 : 2689;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 3700 pour marié, 1800 pour célibataire + 700 par enfant
       const assBase = statut === 'marie' ? 3700 : 1800;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 700 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 3700;
-        details.push({ nom: 'Couple à deux revenus', montant: 3700 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 3700 });
       }
 
       // Uri a 26900 pour marié, 21200 pour parent seul, 15300 pour célibataire
@@ -716,12 +716,12 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         statutDed = nbEnfants > 0 ? 21200 : 15300;
       }
       totalDeductions += statutDed;
-      details.push({ nom: 'Déductions de statut', montant: statutDed });
+      details.push({ nom: 'radar.statut', montant: statutDed });
 
       if (nbEnfants > 0) {
         const v = 8500 * nbEnfants;
         totalDeductions += v;
-        details.push({ nom: 'Déductions pour enfants', montant: v });
+        details.push({ nom: 'radar.enfants', montant: v });
       }
 
       const max3a = deductionsData.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
@@ -730,7 +730,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -743,36 +743,36 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 23) {
       const fraisProf = statut === 'marie' ? 5378 : 2689;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 7600 pour marié, 3800 pour célibataire + 1130 par enfant
       const assBase = statut === 'marie' ? 7600 : 3800;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 1130 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 7000;
-        details.push({ nom: 'Couple à deux revenus', montant: 7000 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 7000 });
       }
 
       if (nbEnfants > 0) {
         // Approximation: 8940 par enfant (6-15 ans)
         const mainEnfant = 8940 * nbEnfants;
         totalDeductions += mainEnfant;
-        details.push({ nom: 'Déductions pour enfants', montant: mainEnfant });
+        details.push({ nom: 'radar.enfants', montant: mainEnfant });
 
         // Garde des enfants (3130 par enfant)
         const garde = 3130 * nbEnfants;
         totalDeductions += garde;
-        details.push({ nom: 'Garde des enfants', montant: garde });
+        details.push({ nom: 'radar.garde', montant: garde });
 
         // Bonus dès 3 enfants (1240 par enfant dès le 3ème)
         if (nbEnfants >= 3) {
           const bonus = 1240 * (nbEnfants - 2);
           totalDeductions += bonus;
-          details.push({ nom: 'Bonus dès 3 enfants', montant: bonus });
+          details.push({ nom: 'radar.bonus_3', montant: bonus });
         }
       }
 
@@ -782,7 +782,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -795,25 +795,25 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 22) {
       const fraisProf = statut === 'marie' ? 5378 : 2689;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // L'AFC utilise des forfaits fixes de 4560 / 9120 + 1200 par enfant
       const assBase = statut === 'marie' ? 9120 : 4560;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 1200 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 1700;
-        details.push({ nom: 'Couple à deux revenus', montant: 1700 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 1700 });
       }
 
       // Art 39 LI (Déduction pour le logement - L'AFC ne la donne par défaut qu'aux parents seuls)
       if (statut === 'celibataire' && nbEnfants > 0) {
         const logement = 6800;
         totalDeductions += logement;
-        details.push({ nom: 'Déduction pour le logement', montant: logement });
+        details.push({ nom: 'radar.logement', montant: logement });
       }
 
       // Art 42a LI (Déduction pour famille)
@@ -821,7 +821,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         const famBase = statut === 'marie' ? 1300 : 2800;
         const totalFam = famBase + (1000 * nbEnfants);
         totalDeductions += totalFam;
-        details.push({ nom: 'Déduction pour famille', montant: totalFam });
+        details.push({ nom: 'radar.famille', montant: totalFam });
       }
 
       // Art 42 LI (Déduction pour contribuable à revenu modeste)
@@ -844,11 +844,11 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         const dedModeste = Math.max(0, baseModeste - reduction);
         if (dedModeste > 0) {
           totalDeductions += dedModeste;
-          details.push({ nom: 'Déduction pour revenu modeste', montant: dedModeste });
+          details.push({ nom: 'radar.revenu_modeste', montant: dedModeste });
         }
       } else {
         totalDeductions += baseModeste;
-        details.push({ nom: 'Déduction pour revenu modeste', montant: baseModeste });
+        details.push({ nom: 'radar.revenu_modeste', montant: baseModeste });
       }
 
             // --- Rajouter ceci avant le return de VAUD ---
@@ -858,7 +858,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -871,35 +871,35 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 9) {
       const fraisProf = statut === 'marie' ? 5378 : 2689;
       totalDeductions += fraisProf;
-      details.push({ nom: 'Frais professionnels', montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 9120 pour marié, 4560 pour célibataire + 1200 par enfant
       const assBase = statut === 'marie' ? 9120 : 4560;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 1200 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: 'Primes assurances et intérêts', montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 4600;
-        details.push({ nom: 'Couple à deux revenus', montant: 4600 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 4600 });
       }
 
       // Logement (Mieterabzug)
       const logement = statut === 'marie' ? 10800 : 6726;
       totalDeductions += logement;
-      details.push({ nom: 'Déduction pour le logement', montant: logement });
+      details.push({ nom: 'radar.logement', montant: logement });
 
       // Statut (Persönlicher Abzug)
       let statutDed = (statut === 'marie' || (statut === 'celibataire' && nbEnfants > 0)) ? 24000 : 12000;
       totalDeductions += statutDed;
-      details.push({ nom: 'Déductions de statut', montant: statutDed });
+      details.push({ nom: 'radar.statut', montant: statutDed });
 
       if (nbEnfants > 0) {
         // 12600 (base) + 12200 (Eigenbetreuung) par enfant
         const totalEnfant = 24800 * nbEnfants;
         totalDeductions += totalEnfant;
-        details.push({ nom: 'Déductions pour enfants', montant: totalEnfant });
+        details.push({ nom: 'radar.enfants', montant: totalEnfant });
       }
 
           
@@ -909,7 +909,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: 'Pilier 3a', montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -922,25 +922,25 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     if (cantonId === 18) {
       const fraisProf = statut === 'marie' ? 6600 : 3300;
       totalDeductions += fraisProf;
-      details.push({ nom: t('radar.frais_prof'), montant: fraisProf });
+      details.push({ nom: 'radar.frais_prof', montant: fraisProf });
 
       // 9200 pour marié, 4600 pour célibataire + 1000 par enfant
       const assBase = statut === 'marie' ? 9200 : 4600;
       let totalAss = assBase;
       if (nbEnfants > 0) totalAss += 1000 * nbEnfants;
       totalDeductions += totalAss;
-      details.push({ nom: t('radar.assurances'), montant: totalAss });
+      details.push({ nom: 'radar.assurances', montant: totalAss });
 
       if (isMarie2Revenus) {
         totalDeductions += 2200;
-        details.push({ nom: t('radar.couple_2_rev'), montant: 2200 });
+        details.push({ nom: 'radar.couple_2_rev', montant: 2200 });
       }
 
       if (nbEnfants > 0) {
         // 13700 par enfant (âge scolaire / formation)
         const v = 13700 * nbEnfants;
         totalDeductions += v;
-        details.push({ nom: t('radar.enfants'), montant: v });
+        details.push({ nom: 'radar.enfants', montant: v });
       }
 
       // --- Pilier 3a ---
@@ -950,7 +950,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
         if (total3a > 0) {
           totalDeductions += total3a;
-          details.push({ nom: t('radar.pilier_3a'), montant: total3a });
+          details.push({ nom: 'radar.pilier_3a', montant: total3a });
         }
       }
 
@@ -965,20 +965,20 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
 
     if (fallback?.fraisProf) {
       const v = statut === 'marie' ? fallback.fraisProf.marie : fallback.fraisProf.celibataire;
-      totalDeductions += v; details.push({ nom: 'Frais professionnels', montant: v });
+      totalDeductions += v; details.push({ nom: 'radar.frais_prof', montant: v });
     }
     if (fallback?.assuranceMaladie) {
       const v = statut === 'marie' ? fallback.assuranceMaladie.marie : fallback.assuranceMaladie.celibataire;
-      totalDeductions += v; details.push({ nom: 'Primes assurances et intérêts', montant: v });
+      totalDeductions += v; details.push({ nom: 'radar.assurances', montant: v });
     }
     if (fallback?.couple2Revenus && isMarie2Revenus) {
       const v = fallback.couple2Revenus;
-      totalDeductions += v; details.push({ nom: 'Couple à deux revenus', montant: v });
+      totalDeductions += v; details.push({ nom: 'radar.couple_2_rev', montant: v });
     }
     
     if (fallback?.statut) {
       let v = statut === 'marie' ? fallback.statut.marie : fallback.statut.celibataire;
-      let nomStatut = 'Déductions de statut';
+      let nomStatut = 'radar.statut';
       
       if (statut === 'celibataire' && nbEnfants > 0) {
         const parentRow = validDeds.find(d => 
@@ -998,20 +998,20 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
       if (enfantRow) {
         let amount = enfantRow.maximum > 0 ? enfantRow.maximum : (enfantRow.montant > 0 ? enfantRow.montant : 0);
         const v = amount * nbEnfants;
-        totalDeductions += v; details.push({ nom: 'Déductions pour enfants', montant: v });
+        totalDeductions += v; details.push({ nom: 'radar.enfants', montant: v });
       }
     }
 
-    const max3a = validDeds.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
+const max3a = validDeds.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum || 0;
     if (max3a > 0) {
       let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
       if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
-      if (total3a > 0) { totalDeductions += total3a; details.push({ nom: 'Pilier 3a', montant: total3a }); }
+      if (total3a > 0) { totalDeductions += total3a; details.push({ nom: 'radar.pilier_3a', montant: total3a }); }
     }
     return { total: totalDeductions, details };
-  };  
-  
-     const calculerGenerique = (deductionsData: DeductionRow[], paliersData: DeductionPalier[], statut: StatutCivil, nbEnfants: number, nbMineurs: number, nbMajeurs: number, revenuNet: number, revenuBrut: number, cantonId: number): DeductionResult => {
+  };
+
+    const calculerGenerique = (deductionsData: DeductionRow[], paliersData: DeductionPalier[], statut: StatutCivil, nbEnfants: number, nbMineurs: number, nbMajeurs: number, revenuNet: number, revenuBrut: number, cantonId: number): DeductionResult => {
     let totalDeductions = 0;
     let details: DeductionDetail[] = [];
     let maxDeductionEnfantMineur = 0;
@@ -1195,12 +1195,12 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
       }
     }
 
-    if (totalProf > 0) { totalDeductions += totalProf; details.push({ nom: t('radar.frais_prof'), montant: totalProf }); }
-    if (maxAssurance > 0) { totalDeductions += maxAssurance; details.push({ nom: t('radar.assurances'), montant: maxAssurance }); }
-    if (maxCouple > 0) { totalDeductions += maxCouple; details.push({ nom: t('radar.couple_2_rev'), montant: maxCouple }); }
-    if (maxStatut > 0) { totalDeductions += maxStatut; details.push({ nom: t('radar.statut'), montant: maxStatut }); }
+    if (totalProf > 0) { totalDeductions += totalProf; details.push({ nom: 'radar.frais_prof', montant: totalProf }); }
+    if (maxAssurance > 0) { totalDeductions += maxAssurance; details.push({ nom: 'radar.assurances', montant: maxAssurance }); }
+    if (maxCouple > 0) { totalDeductions += maxCouple; details.push({ nom: 'radar.couple_2_rev', montant: maxCouple }); }
+    if (maxStatut > 0) { totalDeductions += maxStatut; details.push({ nom: 'radar.statut', montant: maxStatut }); }
     const assEnfant = maxAssuranceEnfant * nbEnfants;
-    if (assEnfant > 0) { totalDeductions += assEnfant; details.push({ nom: t('radar.assu_enfants'), montant: assEnfant }); }
+    if (assEnfant > 0) { totalDeductions += assEnfant; details.push({ nom: 'radar.assu_enfants', montant: assEnfant }); }
     
     const valMajeur = maxDeductionEnfantMajeur > 0 ? maxDeductionEnfantMajeur : maxDeductionEnfantMineur;
     
@@ -1211,14 +1211,14 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
       dedEnfant = (maxDeductionEnfantMineur * nbMineurs) + (valMajeur * nbMajeurs);
     }
     
-    if (dedEnfant > 0) { totalDeductions += dedEnfant; details.push({ nom: t('radar.enfants'), montant: dedEnfant }); }
+    if (dedEnfant > 0) { totalDeductions += dedEnfant; details.push({ nom: 'radar.enfants', montant: dedEnfant }); }
     
-    if (totalGarde > 0) { totalDeductions += totalGarde; details.push({ nom: t('radar.frais_garde'), montant: totalGarde }); }
+    if (totalGarde > 0) { totalDeductions += totalGarde; details.push({ nom: 'radar.frais_garde', montant: totalGarde }); }
 
     if (max3a > 0) {
       let total3a = Math.min(parseFloat(pilier3a) || 0, max3a);
       if (statut === 'marie') total3a += Math.min(parseFloat(pilier3aConjoint) || 0, max3a);
-      if (total3a > 0) { totalDeductions += total3a; details.push({ nom: t('radar.pilier_3a'), montant: total3a }); }
+      if (total3a > 0) { totalDeductions += total3a; details.push({ nom: 'radar.pilier_3a', montant: total3a }); }
     }
 
     if (paliersData && paliersData.length > 0) {
@@ -1443,7 +1443,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     return amount.toLocaleString('fr-CH');
   };
 
-  return (
+return (
     <div className="radar-container">
       <div className="radar-title-container">
         <h1 className="radar-title">{t('radar.title')}</h1>
@@ -1600,14 +1600,14 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
                     <p className="result-small-text">{t('radar.deductions_cant')} : - {formatCHF(resultatDepart.totalDeductionsCant)} CHF</p>
                     {resultatDepart.detailsDeductionsCant.map((d, i) => (
                       <div key={`dc-${i}`} className="result-deduction-detail">
-                        <span>{d.nom}</span> : - {formatCHF(d.montant)} CHF
+                        <span>{t(d.nom, d.nom)}</span> : - {formatCHF(d.montant)} CHF
                       </div>
                     ))}
                     <p className="result-small-text">{t('radar.revenu_imposable_cant')} : {formatCHF(resultatDepart.revenuImposableCantonal)} CHF</p>
                     <p className="result-small-text">{t('radar.deductions_fed')} : - {formatCHF(resultatDepart.totalDeductionsFed)} CHF</p>
                     {resultatDepart.detailsDeductionsFed.map((d, i) => (
                       <div key={`df-${i}`} className="result-deduction-detail secondary">
-                        <span>{d.nom}</span> : - {formatCHF(d.montant)} CHF
+                        <span>{t(d.nom, d.nom)}</span> : - {formatCHF(d.montant)} CHF
                       </div>
                     ))}
                     <p className="result-small-text">{t('radar.revenu_imposable_fed')} : {formatCHF(resultatDepart.revenuImposableFederal)} CHF</p>
@@ -1626,14 +1626,14 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
                     <p className="result-small-text">{t('radar.deductions_cant')} : - {formatCHF(resultatArrivee.totalDeductionsCant)} CHF</p>
                     {resultatArrivee.detailsDeductionsCant.map((d, i) => (
                       <div key={`dc2-${i}`} className="result-deduction-detail">
-                        <span>{d.nom}</span> : - {formatCHF(d.montant)} CHF
+                        <span>{t(d.nom, d.nom)}</span> : - {formatCHF(d.montant)} CHF
                       </div>
                     ))}
                     <p className="result-small-text">{t('radar.revenu_imposable_cant')} : {formatCHF(resultatArrivee.revenuImposableCantonal)} CHF</p>
                     <p className="result-small-text">{t('radar.deductions_fed')} : - {formatCHF(resultatArrivee.totalDeductionsFed)} CHF</p>
                     {resultatArrivee.detailsDeductionsFed.map((d, i) => (
                       <div key={`df2-${i}`} className="result-deduction-detail secondary">
-                        <span>{d.nom}</span> : - {formatCHF(d.montant)} CHF
+                        <span>{t(d.nom, d.nom)}</span> : - {formatCHF(d.montant)} CHF
                       </div>
                     ))}
                     <p className="result-small-text">{t('radar.revenu_imposable_fed')} : {formatCHF(resultatArrivee.revenuImposableFederal)} CHF</p>
@@ -1655,7 +1655,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
               <div className="simple-box light"><span className="simple-box-label">{t('radar.deductions_cant')}</span><h3 className="simple-box-value">- {formatCHF(resultatDepart.totalDeductionsCant)} CHF</h3></div>
               {resultatDepart.detailsDeductionsCant.map((d, i) => (
                 <div key={`dc-${i}`} className="deduction-detail">
-                  <span className="deduction-detail-nom">{d.nom}</span>
+                  <span className="deduction-detail-nom">{t(d.nom, d.nom)}</span>
                   <span className="deduction-detail-montant">- {formatCHF(d.montant)} CHF</span>
                 </div>
               ))}
@@ -1663,7 +1663,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
               <div className="simple-box light secondary"><span className="simple-box-label">{t('radar.deductions_fed')}</span><h3 className="simple-box-value">- {formatCHF(resultatDepart.totalDeductionsFed)} CHF</h3></div>
               {resultatDepart.detailsDeductionsFed.map((d, i) => (
                 <div key={`df-${i}`} className="deduction-detail secondary">
-                  <span className="deduction-detail-nom">{d.nom}</span>
+                  <span className="deduction-detail-nom">{t(d.nom, d.nom)}</span>
                   <span className="deduction-detail-montant">- {formatCHF(d.montant)} CHF</span>
                 </div>
               ))}
