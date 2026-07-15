@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabaseClient';
 import AuthModal from '../../components/AuthModal';
 import './RadarFiscal.css';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
+import { Helmet } from 'react-helmet-async';
 
 // ============================================================
 // INTERFACES STRICTES
@@ -1446,6 +1447,13 @@ const max3a = validDeds.find(d => d.categorie === 'pilier_3a_max_avec')?.maximum
 
 return (
     <div className="radar-container">
+      {/* CECI CHANGE L'ONGLET DU NAVIGATEUR ET AIDE GOOGLE */}
+
+      <Helmet>
+        <title>Simulateur d'Impôts Suisse 2026 | Comparateur 26 Cantons</title>
+        <meta name="description" content="Estimez votre charge fiscale dans tous les cantons suisses. Comparez les impôts, les déductions et le 3ème pilier gratuitement." />
+      </Helmet>
+      
       <div className="radar-title-container">
         <h1 className="radar-title">{t('radar.title')}</h1>
         <p className="radar-subtitle">{mode === 'comparaison' ? t('radar.subtitle_compare') : t('radar.subtitle_simple')}</p>

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
+import { Helmet } from 'react-helmet-async';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -16,6 +17,12 @@ export default function Home() {
 
   return (
     <div className="swiss-app">
+      
+<Helmet>
+  <title>SwissSimple | Simulateur Financier Suisse (Impôts, Retraite, Assurances)</title>
+  <meta name="description" content="SwissSimple: Le simulateur financier suisse 100% gratuit. Calculez vos impôts, comparez votre assurance maladie et estimez votre retraite (AVS/LPP) dans tous les cantons." />
+</Helmet>
+
       <header className="hero-section">
         <div className="hero-glow"></div>
         <div className="hero-container-simple">

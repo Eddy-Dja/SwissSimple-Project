@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import './SimulateurLPP.css';
+import { Helmet } from 'react-helmet-async';
 
 const LPP_CONSTANTS = {
   DEDUCTION_COORDINATION: 26460,
@@ -120,6 +121,12 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
 
   return (
     <div className="lpp-container">
+
+<Helmet>
+  <title>Simulateur LPP 2026 | Calculateur 2ème Pilier & Capital Retraite</title>
+  <meta name="description" content="Projetez votre capital de prévoyance professionnelle (LPP/2ème pilier) et estimez votre rente de retraite. Simulez l'impact de vos rachats 3a gratuitement." />
+</Helmet>
+
       <div className="lpp-title-container">
         <h1 className="lpp-title">{t('lpp.title')}</h1>
         <p className="lpp-subtitle">{t('lpp.subtitle')}</p>

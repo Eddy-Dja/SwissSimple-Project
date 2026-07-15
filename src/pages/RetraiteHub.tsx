@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { generateRetraitePDF } from '../utils/pdfGenerator';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import './RetraiteHub.css';
+import { Helmet } from 'react-helmet-async';
 
 const RetraiteHub: React.FC = () => {
   const { t } = useTranslation();
@@ -59,6 +60,12 @@ const RetraiteHub: React.FC = () => {
 
   return (
     <div className="hub-container">
+
+<Helmet>
+  <title>Simulateur Retraite Suisse | AVS, LPP & Impôts réunis</title>
+  <meta name="description" content="Planifiez votre retraite en Suisse. Simulez vos rentes AVS et LPP, calculez l'impact fiscal et estimez votre taux de remplacement pour partir l'esprit tranquille." />
+</Helmet>
+
       <div className="hub-header">
         <h1 className="radar-title">{t('hub.retraite_title')}</h1>
         <p>{t('hub.retraite_subtitle')}</p>
