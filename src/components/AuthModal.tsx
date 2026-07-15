@@ -35,7 +35,13 @@ export default function AuthModal({ isOpen, onClose, forceUpdateMode }: { isOpen
   const handleGoogleLogin = async () => {
     setLoading(true);
     setMessage(null);
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    // CORRECTION ICI : On indique à Google de renvoyer l'utilisateur sur la page EXACTE où il se trouvait
+    const { error } = await supabase.auth.signInWithOAuth({ 
+      provider: 'google',
+      options: {
+        redirectTo: window.location.href 
+      }
+    });
     if (error) { setMessage(error.message); setLoading(false); }
   };
 

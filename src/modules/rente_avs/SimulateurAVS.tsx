@@ -1,11 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import './SimulateurAVS.css';
 
-// ============================================================
-// CONSTANTES OFFICIELLES AVS (2025)
-// ============================================================
 const AVS_CONSTANTS = {
   RENTE_MIN_MENSUELLE: 1260,
   RENTE_MAX_MENSUELLE: 2520,
@@ -15,26 +12,11 @@ const AVS_CONSTANTS = {
 };
 
 interface ResultatAVS {
-  ageReference: number;
-  anneeRetraiteUser: number;
-  isSplitting: boolean;
-  hasPhase1User: boolean;
-  renteMensuelleProvisoire: number;
-  ramUser: number; 
-  anneesValidesUser: number;
-  tauxReduction: number;
-  renteMensuelleDefinitive: number;
-  renteAnnuelleDefinitive: number;
-  supplementVeuf: number;
-  isPlafondCouple: boolean;
-  anneeRetraiteConjoint: number;
-  ramConjoint: number; 
-  tauxReductionConjoint: number;
-  renteMensuelleConjoint: number;
-  renteAnnuelleConjoint: number;
-  anneesValidesConjoint: number;
-  hasPhase1Conjoint: boolean;
-  renteMensuelleProvisoireConjoint: number;
+  ageReference: number; anneeRetraiteUser: number; isSplitting: boolean; hasPhase1User: boolean;
+  renteMensuelleProvisoire: number; ramUser: number; anneesValidesUser: number; tauxReduction: number;
+  renteMensuelleDefinitive: number; renteAnnuelleDefinitive: number; supplementVeuf: number; isPlafondCouple: boolean;
+  anneeRetraiteConjoint: number; ramConjoint: number; tauxReductionConjoint: number; renteMensuelleConjoint: number;
+  renteAnnuelleConjoint: number; anneesValidesConjoint: number; hasPhase1Conjoint: boolean; renteMensuelleProvisoireConjoint: number;
 }
 
 type EtatCivil = 'celibataire' | 'marie' | 'divorce' | 'veuf';
@@ -47,26 +29,26 @@ interface SimulateurAVSProps {
 const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarning }) => {
   const { t } = useTranslation();
   
-  const [sexe, setSexe] = useState<'homme' | 'femme'>('homme');
-  const [anneeNaissance, setAnneeNaissance] = useState('1990');
-  const [salaireAnnuel, setSalaireAnnuel] = useState('50000');
-  const [anneesCotisation, setAnneesCotisation] = useState('44');
-  const [ageRetraite, setAgeRetraite] = useState<number>(65);
-  const [etatCivil, setEtatCivil] = useState<EtatCivil>('celibataire');
+  const [sexe, setSexe] = useLocalStorageState<'homme' | 'femme'>('avs_sexe', 'homme');
+  const [anneeNaissance, setAnneeNaissance] = useLocalStorageState('avs_anneeNaissance', '1990');
+  const [salaireAnnuel, setSalaireAnnuel] = useLocalStorageState('avs_salaireAnnuel', '50000');
+  const [anneesCotisation, setAnneesCotisation] = useLocalStorageState('avs_anneesCotisation', '44');
+  const [ageRetraite, setAgeRetraite] = useLocalStorageState<number>('avs_ageRetraite', 65);
+  const [etatCivil, setEtatCivil] = useLocalStorageState<EtatCivil>('avs_etatCivil', 'celibataire');
   
-  const [nombreEnfants, setNombreEnfants] = useState('0');
-  const [anneesRachetees, setAnneesRachetees] = useState('0');
-  const [anneesRacheteesConjoint, setAnneesRacheteesConjoint] = useState('0');
+  const [nombreEnfants, setNombreEnfants] = useLocalStorageState('avs_nombreEnfants', '0');
+  const [anneesRachetees, setAnneesRachetees] = useLocalStorageState('avs_anneesRachetees', '0');
+  const [anneesRacheteesConjoint, setAnneesRacheteesConjoint] = useLocalStorageState('avs_anneesRacheteesConjoint', '0');
 
-  const [sexeConjoint, setSexeConjoint] = useState<'homme' | 'femme'>('femme');
-  const [anneeNaissanceConjoint, setAnneeNaissanceConjoint] = useState('1992');
-  const [salaireConjoint, setSalaireConjoint] = useState('0');
+  const [sexeConjoint, setSexeConjoint] = useLocalStorageState<'homme' | 'femme'>('avs_sexeConjoint', 'femme');
+  const [anneeNaissanceConjoint, setAnneeNaissanceConjoint] = useLocalStorageState('avs_anneeNaissanceConjoint', '1992');
+  const [salaireConjoint, setSalaireConjoint] = useLocalStorageState('avs_salaireConjoint', '0');
   
-  const [anneeMariage, setAnneeMariage] = useState('2020');
-  const [anneesMariagePassees, setAnneesMariagePassees] = useState('0');
+  const [anneeMariage, setAnneeMariage] = useLocalStorageState('avs_anneeMariage', '2020');
+  const [anneesMariagePassees, setAnneesMariagePassees] = useLocalStorageState('avs_anneesMariagePassees', '0');
   
-  const [anneesCotisationConjoint, setAnneesCotisationConjoint] = useState('44');
-  const [ageRetraiteConjoint, setAgeRetraiteConjoint] = useState<number>(65);
+  const [anneesCotisationConjoint, setAnneesCotisationConjoint] = useLocalStorageState('avs_anneesCotisationConjoint', '44');
+  const [ageRetraiteConjoint, setAgeRetraiteConjoint] = useLocalStorageState<number>('avs_ageRetraiteConjoint', 65);
 
   const [resultat, setResultat] = useState<ResultatAVS | null>(null);
 
@@ -97,15 +79,15 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
   const optionsAgeRetraite = useMemo(() => generateOptionsAge(ageReference, isFemmeTransitoire), [ageReference, isFemmeTransitoire]);
   const optionsAgeRetraiteConjoint = useMemo(() => generateOptionsAge(ageReferenceConjoint, isFemmeTransitoireConjoint), [ageReferenceConjoint, isFemmeTransitoireConjoint]);
 
-  useEffect(() => { if (!optionsAgeRetraite.includes(ageRetraite)) setAgeRetraite(optionsAgeRetraite[0]); }, [optionsAgeRetraite, ageRetraite]);
-  useEffect(() => { if (etatCivil === 'marie' && !optionsAgeRetraiteConjoint.includes(ageRetraiteConjoint)) setAgeRetraiteConjoint(optionsAgeRetraiteConjoint[0]); }, [optionsAgeRetraiteConjoint, ageRetraiteConjoint, etatCivil]);
+  useEffect(() => { if (!optionsAgeRetraite.includes(ageRetraite)) setAgeRetraite(optionsAgeRetraite[0]); }, [optionsAgeRetraite, ageRetraite, setAgeRetraite]);
+  useEffect(() => { if (etatCivil === 'marie' && !optionsAgeRetraiteConjoint.includes(ageRetraiteConjoint)) setAgeRetraiteConjoint(optionsAgeRetraiteConjoint[0]); }, [optionsAgeRetraiteConjoint, ageRetraiteConjoint, etatCivil, setAgeRetraiteConjoint]);
 
   const minMariageYear = Math.max(parseInt(anneeNaissance) || 1950, parseInt(anneeNaissanceConjoint) || 1950) + 18;
   useEffect(() => {
     if (etatCivil === 'marie' && parseInt(anneeMariage) < minMariageYear) {
       setAnneeMariage(String(minMariageYear));
     }
-  }, [minMariageYear, anneeMariage, etatCivil]);
+  }, [minMariageYear, anneeMariage, etatCivil, setAnneeMariage]);
 
   const getTauxReduction = (yearsEarly: number, ram: number, isTransitoire: boolean): number => {
     if (yearsEarly <= 0) return 0;
@@ -250,25 +232,13 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
 
       return {
         ageReference: Math.floor(ageReference), 
-        anneeRetraiteUser, 
-        isSplitting, 
-        hasPhase1User, 
-        renteMensuelleProvisoire,
-        hasPhase1Conjoint,
-        renteMensuelleProvisoireConjoint,
-        ramUser: Math.round(ramUser), 
-        anneesValidesUser: anneesValides, 
-        tauxReduction, 
-        renteMensuelleDefinitive,
-        renteAnnuelleDefinitive: renteMensuelleDefinitive * 13, 
-        supplementVeuf, 
-        isPlafondCouple, 
-        anneeRetraiteConjoint,
-        ramConjoint: Math.round(ramConjoint), 
-        tauxReductionConjoint, 
-        renteMensuelleConjoint, 
-        renteAnnuelleConjoint: renteMensuelleConjoint * 13, 
-        anneesValidesConjoint
+        anneeRetraiteUser, isSplitting, hasPhase1User, renteMensuelleProvisoire,
+        hasPhase1Conjoint, renteMensuelleProvisoireConjoint,
+        ramUser: Math.round(ramUser), anneesValidesUser: anneesValides, tauxReduction, 
+        renteMensuelleDefinitive, renteAnnuelleDefinitive: renteMensuelleDefinitive * 13, 
+        supplementVeuf, isPlafondCouple, anneeRetraiteConjoint,
+        ramConjoint: Math.round(ramConjoint), tauxReductionConjoint, 
+        renteMensuelleConjoint, renteAnnuelleConjoint: renteMensuelleConjoint * 13, anneesValidesConjoint
       };
     };
   }, [salaireAnnuel, salaireConjoint, anneeMariage, anneesMariagePassees, anneesCotisation, anneesCotisationConjoint, ageRetraite, ageRetraiteConjoint, nombreEnfants, anneesRachetees, anneesRacheteesConjoint, etatCivil, sexe, anneeNaissance, sexeConjoint, anneeNaissanceConjoint, ageReference, ageReferenceConjoint, isFemmeTransitoire, isFemmeTransitoireConjoint]);
@@ -277,26 +247,22 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
     e.preventDefault();
     const res = calculerRente();
     setResultat(res);
-    
     if (res && onResultChange) {
       onResultChange({ rente: res.renteMensuelleDefinitive });
     }
   };
 
   const formatCHF = (amount: number | null | undefined) => !amount ? '0' : amount.toLocaleString('fr-CH');
-
   const formClass = `radar-form avs-form-small ${etatCivil === 'marie' ? 'avs-form-wide' : ''}`;
 
   return (
     <div className="radar-container">
-
       <div className="radar-title-container">
         <h1 className="radar-title">{t('avs.title')}</h1>
         <p className="radar-subtitle">{t('avs.subtitle')}</p>
       </div>
 
       <form onSubmit={handleCalcul} className={formClass}>
-        
         <div className="filter-group avs-state-group">
           <label>{t('avs.etat_civil')}</label>
           <select value={etatCivil} onChange={(e) => setEtatCivil(e.target.value as EtatCivil)} className="form-input">
@@ -410,7 +376,7 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
             </div>
           )}
         </div>
-
+        
         <div className="avs-form-row">
           <div className="filter-group avs-form-col">
             <label>{t('avs.enfants')}</label>
@@ -461,7 +427,6 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
             <p className="simple-location-text avs-result-title">{t('avs.result_title')}</p>
             
             <div className="avs-panels-wrapper">
-              
               <div className="avs-panel avs-panel-blue">
                 <h3 className="avs-panel-header avs-header-blue">{t('avs.your_rent')}</h3>
                 
@@ -587,10 +552,9 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
         </div>
       )}
 
-      {/* L'avertissement s'affiche uniquement si hideWarning n'est pas vrai (pour le fonctionnement indépendant) */}
       {!hideWarning && (
         <div className="avertissement-legal">
-          <span className="titre-avertissement">⚖️ Avertissement</span>
+          <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>
           <span className="texte-avertissement">{t('avs.warning')}</span>
         </div>
       )}

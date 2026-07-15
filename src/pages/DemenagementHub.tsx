@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import RadarFiscal from '../modules/fiscal/RadarFiscal';
 import Assurance from '../modules/assurance_maladie/Assurance';
@@ -7,20 +6,22 @@ import EmailGate from '../components/EmailGate';
 import AuthModal from '../components/AuthModal';
 import { useAuth } from '../context/AuthContext';
 import { generateDemenagementPDF } from '../utils/pdfGenerator';
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import './DemenagementHub.css';
 
 const DemenagementHub: React.FC = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<'impots' | 'assurance' | 'synthese'>('impots');
+  const [activeTab, setActiveTab] = useLocalStorageState<'impots' | 'assurance' | 'synthese'>('dem_activeTab', 'impots');
   
   const [taxDiff, setTaxDiff] = useState<number | null>(null);
   const [insuranceDiff, setInsuranceDiff] = useState<number | null>(null);
 
-  const [fraisUniquesInput, setFraisUniquesInput] = useState('');
-  const [ancienLoyerInput, setAncienLoyerInput] = useState('');
-  const [nouveauLoyerInput, setNouveauLoyerInput] = useState('');
-  const [ancienTransportInput, setAncienTransportInput] = useState('');
-  const [nouveauTransportInput, setNouveauTransportInput] = useState('');
+  const [fraisUniquesInput, setFraisUniquesInput] = useLocalStorageState('dem_fraisUniques', '');
+  const [ancienLoyerInput, setAncienLoyerInput] = useLocalStorageState('dem_ancienLoyer', '');
+  const [nouveauLoyerInput, setNouveauLoyerInput] = useLocalStorageState('dem_nouveauLoyer', '');
+  const [ancienTransportInput, setAncienTransportInput] = useLocalStorageState('dem_ancienTransport', '');
+  const [nouveauTransportInput, setNouveauTransportInput] = useLocalStorageState('dem_nouveauTransport', '');
+  
   const [pointMortMois, setPointMortMois] = useState<number | null>(null);
   const [analyseDetails, setAnalyseDetails] = useState<{loyer: number, transport: number, economiesReelles: number} | null>(null);
 
@@ -106,7 +107,7 @@ const DemenagementHub: React.FC = () => {
         {/* --- ÉTAPE 2 : ASSURANCE --- */}
         <div className={`hub-step ${activeTab === 'assurance' ? 'visible' : 'hidden'}`}>
         <Assurance 
-            hideWarning // <-- ASSUREZ-VOUS QUE C'EST LÀ
+            hideWarning
             initialMode="comparaison" 
             onPrevStep={() => setActiveTab('impots')} 
             onNextStep={() => setActiveTab('synthese')}
@@ -280,14 +281,12 @@ const DemenagementHub: React.FC = () => {
               </div>
             )}
 
-            {/* LA MAGIE EST ICI : ON SORT LES BOUTONS DU BLOC ISUNLOCKED */}
-            {/* LES BOUTONS SONT TOUJOURS AFFICHÉS EN BAS DE LA SYNTHÈSE */}
-                <div className="hub-navigation">
-                <button className="btn-hub-next" onClick={() => setActiveTab('impots')}>
-                  {t('hub.back_impots', '← Détails Impôts')}
+            <div className="hub-navigation">
+              <button className="btn-hub-next" onClick={() => setActiveTab('impots')}>
+                {t('hub.back_impots', '← Détails Impôts')}
               </button>
               <button className="btn-hub-next" onClick={() => setActiveTab('assurance')}> 
-                 {t('hub.back_assurance', '← Détails Assurance')}
+                {t('hub.back_assurance', '← Détails Assurance')}
               </button>
             </div>
 
@@ -295,7 +294,6 @@ const DemenagementHub: React.FC = () => {
         </div>
         </div>
 
-      {/* AVERTISSEMENT TRADUIT AJOUTÉ EN BAS DE PAGE POUR LE MODULE DÉMÉNAGEMENT */}
       <div className="avertissement-legal">
         <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>
         <span className="texte-avertissement">{t('hub.warning_move')}</span>

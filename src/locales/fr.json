@@ -273,6 +273,8 @@
     "calc_btn_simple": "Comparer les primes 🔍",
     "calc_loading": "Recherche en cours...",
     "no_results": "Aucune prime trouvée pour ces critères.",
+  "per_month": "mois",
+  "per_year": "an",
     "depart_moyenne": "Région de départ (Moyenne)",
     "arrivee_moyenne": "Région d'arrivée (Moyenne)",
     "economy": "Économie à l'arrivée : + ",

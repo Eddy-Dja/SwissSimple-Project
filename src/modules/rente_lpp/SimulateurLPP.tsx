@@ -1,11 +1,8 @@
-import React, { useState, useMemo } from 'react';
-//import { useNavigate } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import './SimulateurLPP.css';
 
-// ============================================================
-// CONSTANTES OFFICIELLES LPP (2025) - Conformes à l'Art. 8
-// ============================================================
 const LPP_CONSTANTS = {
   DEDUCTION_COORDINATION: 26460,
   SALAIRE_COORDONNE_MAX: 90720,
@@ -14,14 +11,7 @@ const LPP_CONSTANTS = {
 };
 
 const TAUX_CONVERSION: Record<number, number> = {
-  63: 5.5,
-  64: 6.2,
-  65: 6.8,
-  66: 7.2,
-  67: 7.6,
-  68: 8.0,
-  69: 8.4,
-  70: 8.8
+  63: 5.5, 64: 6.2, 65: 6.8, 66: 7.2, 67: 7.6, 68: 8.0, 69: 8.4, 70: 8.8
 };
 
 const getCotisationInfo = (age: number): { taux: number; tranche: string } => {
@@ -40,12 +30,12 @@ interface SimulateurLPPProps {
 const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarning }) => {
   const { t } = useTranslation();
 
-  const [anneeNaissance, setAnneeNaissance] = useState('1985');
-  const [salaireBrut, setSalaireBrut] = useState('90000');
-  const [capitalActuel, setCapitalActuel] = useState('80000');
-  const [rachatAnnuel, setRachatAnnuel] = useState('0');
-  const [ageRetraite, setAgeRetraite] = useState<number>(65);
-  const [tauxInteret, setTauxInteret] = useState('1.5');
+  const [anneeNaissance, setAnneeNaissance] = useLocalStorageState('lpp_anneeNaissance', '1985');
+  const [salaireBrut, setSalaireBrut] = useLocalStorageState('lpp_salaireBrut', '90000');
+  const [capitalActuel, setCapitalActuel] = useLocalStorageState('lpp_capitalActuel', '80000');
+  const [rachatAnnuel, setRachatAnnuel] = useLocalStorageState('lpp_rachatAnnuel', '0');
+  const [ageRetraite, setAgeRetraite] = useLocalStorageState<number>('lpp_ageRetraite', 65);
+  const [tauxInteret, setTauxInteret] = useLocalStorageState('lpp_tauxInteret', '1.5');
   
   const [resultat, setResultat] = useState<NonNullable<typeof calculerLPPMemo> | null>(null);
 
@@ -130,7 +120,6 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
 
   return (
     <div className="lpp-container">
-
       <div className="lpp-title-container">
         <h1 className="lpp-title">{t('lpp.title')}</h1>
         <p className="lpp-subtitle">{t('lpp.subtitle')}</p>
@@ -193,25 +182,20 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
           <h2 className="lpp-result-title">{t('lpp.result_title')}</h2>
           
           <div className="lpp-panels-wrapper">
-            
             <div className="lpp-panel lpp-panel-blue">
               <h3 className="lpp-panel-header">{t('lpp.epargne')}</h3>
-              
               <div className="simple-box light">
                 <span className="simple-box-label">{t('lpp.salaire_assure')}</span>
                 <h3 className="simple-box-value">{formatCHF(resultat.salaireAssure)} CHF</h3>
               </div>
-              
               <div className="simple-box light">
                 <span className="simple-box-label">{t('lpp.tranche_age')}</span>
                 <h3 className="simple-box-value">{resultat.trancheAge} ({resultat.tauxCotisation.toFixed(0)}%)</h3>
               </div>
-
               <div className="simple-box light">
                 <span className="simple-box-label">{t('lpp.cotisations')}</span>
                 <h3 className="simple-box-value">{formatCHF(resultat.cotisationAnnuelleActuelle)} CHF</h3>
               </div>
-              
               <div className="lpp-push-bottom">
                 <div className="simple-box dark">
                   <span className="simple-box-label-dark">{t('lpp.capital_projete', { age: ageRetraite })}</span>
@@ -225,7 +209,6 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
 
             <div className="lpp-panel lpp-panel-green">
               <h3 className="lpp-panel-header">{t('lpp.rente_title')}</h3>
-              
               <div className="simple-box light">
                 <span className="simple-box-label">{t('lpp.taux_conversion')}</span>
                 <h3 className="simple-box-value">{resultat.tauxConversion.toFixed(1)} %</h3>
@@ -234,7 +217,6 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
                 <span className="simple-box-label">{t('lpp.age_retraite')}</span>
                 <h3 className="simple-box-value">{ageRetraite} ans</h3>
               </div>
-
               <div className="lpp-push-bottom">
                 <div className="simple-box dark">
                   <span className="simple-box-label-dark">{t('lpp.rente_mensuelle')}</span>
@@ -246,7 +228,6 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
                 </div>
               </div>
             </div>
-
           </div>
           
           <div className="lpp-recap-box">
@@ -260,7 +241,6 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
         </div>
       )}
 
-      {/* L'avertissement s'affiche uniquement si hideWarning n'est pas vrai (pour le fonctionnement indépendant) */}
       {!hideWarning && (
         <div className="avertissement-legal">
           <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>

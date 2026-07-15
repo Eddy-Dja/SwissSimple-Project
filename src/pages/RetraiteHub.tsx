@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SimulateurAVS from '../modules/rente_avs/SimulateurAVS';
 import SimulateurLPP from '../modules/rente_lpp/SimulateurLPP';
@@ -7,11 +6,12 @@ import EmailGate from '../components/EmailGate';
 import AuthModal from '../components/AuthModal';
 import { useAuth } from '../context/AuthContext';
 import { generateRetraitePDF } from '../utils/pdfGenerator';
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import './RetraiteHub.css';
 
 const RetraiteHub: React.FC = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<'avs' | 'lpp' | 'synthese'>('avs');
+  const [activeTab, setActiveTab] = useLocalStorageState<'avs' | 'lpp' | 'synthese'>('ret_activeTab', 'avs');
   
   const { user } = useAuth();
   const isUnlocked = !!user;
@@ -20,9 +20,9 @@ const RetraiteHub: React.FC = () => {
   const [avsData, setAvsData] = useState<{ rente: number } | null>(null);
   const [lppData, setLppData] = useState<{ rente: number, capital: number, salaire: number, moisRestants: number } | null>(null);
 
-  const [retraitLPPInput, setRetraitLPPInput] = useState('0');
-  const [pourcentageCapital, setPourcentageCapital] = useState(0);
-  const [revenuSouhaiteInput, setRevenuSouhaiteInput] = useState('');
+  const [retraitLPPInput, setRetraitLPPInput] = useLocalStorageState('ret_retraitLPP', '0');
+  const [pourcentageCapital, setPourcentageCapital] = useLocalStorageState<number>('ret_pourcentageCapital', 0);
+  const [revenuSouhaiteInput, setRevenuSouhaiteInput] = useLocalStorageState('ret_revenuSouhaite', '');
 
   const formatCHF = (amount: number) => Math.round(amount).toLocaleString('de-CH');
   const formatCHFPrecis = (amount: number) => amount.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -97,7 +97,6 @@ const RetraiteHub: React.FC = () => {
             onResultChange={(data) => setLppData(data)}
           />
           <div className="hub-navigation">
-            {/* MODIFICATION ICI : Texte plus clair */}
             <button className="btn-hub-prev" onClick={() => setActiveTab('avs')}>
               ← {t('hub.back_avs', 'Retour à la rente AVS')}
             </button>
@@ -329,10 +328,8 @@ const RetraiteHub: React.FC = () => {
               </div>
             )}
 
-            {/* LA MAGIE EST ICI : LES BOUTONS SONT SORTIS DU BLOC ISUNLOCKED */}
-            {/* LES BOUTONS SONT TOUJOURS AFFICHÉS EN BAS DE LA SYNTHÈSE */}
             <div className="hub-navigation">
-                <button className="btn-hub-next" onClick={() => setActiveTab('avs')}>
+              <button className="btn-hub-next" onClick={() => setActiveTab('avs')}>
                 {t('hub.back_avs', '← Retour à la rente AVS')}
               </button>
               <button className="btn-hub-next" onClick={() => setActiveTab('lpp')}>
@@ -344,7 +341,6 @@ const RetraiteHub: React.FC = () => {
         </div>
       </div>
 
-      {/* AVERTISSEMENT TRADUIT TOUT EN BAS */}
       <div className="avertissement-legal">
         <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>
         <span className="texte-avertissement">{t('hub.warning_ret')}</span>

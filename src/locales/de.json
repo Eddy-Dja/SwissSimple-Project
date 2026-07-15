@@ -272,6 +272,8 @@
     "calc_btn_simple": "Prämien vergleichen 🔍",
     "calc_loading": "Suche läuft...",
     "no_results": "Keine Prämien für diese Kriterien gefunden.",
+  "per_month": "Monat",
+  "per_year": "Jahr",
     "depart_moyenne": "Abzugsregion (Durchschnitt)",
     "arrivee_moyenne": "Zielregion (Durchschnitt)",
     "economy": "Ersparnis am Ziel: + ",

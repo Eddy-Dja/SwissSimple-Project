@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabaseClient';
 import './Assurance.css';
+import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 
 interface Prime {
   id: number;
@@ -163,21 +164,23 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
 
   const mode = initialMode;
   
-  const [activeTab, setActiveTab] = useState<'A' | 'B'>('A');
+  const [activeTab, setActiveTab] = useLocalStorageState<'A' | 'B'>('ass_activeTab', 'A');
 
-  const [selectedAge, setSelectedAge] = useState('ERW'); 
-  const [franchise, setFranchise] = useState(300);
-  const [accident, setAccident] = useState('MIT-UNF');
-  const [tariftyp, setTariftyp] = useState(''); 
+  const [selectedAge, setSelectedAge] = useLocalStorageState('ass_selectedAge', 'ERW'); 
+  const [franchise, setFranchise] = useLocalStorageState('ass_franchise', 300);
+  const [accident, setAccident] = useLocalStorageState('ass_accident', 'MIT-UNF');
+  const [tariftyp, setTariftyp] = useLocalStorageState('ass_tariftyp', ''); 
   
-  const [cantonA, setCantonA] = useState('VD');
+  const [cantonA, setCantonA] = useLocalStorageState('ass_cantonA', 'VD');
+  // availableRegionsA et selectedRegionA sont gérés dynamiquement par le fetch, on laisse en useState normal
   const [availableRegionsA, setAvailableRegionsA] = useState<RegionOption[]>([]);
-  const [selectedRegionA, setSelectedRegionA] = useState('');
+  const [selectedRegionA, setSelectedRegionA] = useLocalStorageState('ass_selectedRegionA', '');
 
-  const [cantonB, setCantonB] = useState('GE');
+  const [cantonB, setCantonB] = useLocalStorageState('ass_cantonB', 'GE');
   const [availableRegionsB, setAvailableRegionsB] = useState<RegionOption[]>([]);
-  const [selectedRegionB, setSelectedRegionB] = useState('');
+  const [selectedRegionB, setSelectedRegionB] = useLocalStorageState('ass_selectedRegionB', '');
 
+  // Les résultats de recherche n'ont pas besoin d'être sauvegardés dans le localStorage
   const [resultsA, setResultsA] = useState<Prime[]>([]);
   const [resultsB, setResultsB] = useState<Prime[]>([]);
   const [loading, setLoading] = useState(false);
@@ -390,20 +393,20 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
             <div className="comparison-avg-row">
               <div className="comparison-avg-col">
                 <h4>{t('assurance.depart_moyenne')}</h4>
-                <h2>{formatCHF(avgA.mensuel)} CHF<span>/mois</span></h2>
+                <h2>{formatCHF(avgA.mensuel)} CHF<span>/{t('assurance.per_month')}</span></h2>
               </div>
               <div className="comparison-vs">VS</div>
               <div className="comparison-avg-col">
                 <h4>{t('assurance.arrivee_moyenne')}</h4>
-                <h2>{formatCHF(avgB.mensuel)} CHF<span>/mois</span></h2>
+                <h2>{formatCHF(avgB.mensuel)} CHF<span>/{t('assurance.per_month')}</span></h2>
               </div>
             </div>
             
             <div className={`comparison-diff ${diffAnnuel > 0 ? 'benefice' : diffAnnuel < 0 ? 'perte' : 'neutre'}`}>
               {diffAnnuel > 0 ? (
-                <h3>{t('assurance.economy')}{formatCHF(diffAnnuel)} CHF / an</h3>
+                <h3>{t('assurance.economy')}{formatCHF(diffAnnuel)} CHF / {t('assurance.per_year')}</h3>
               ) : diffAnnuel < 0 ? (
-                <h3>{t('assurance.surcout')}{formatCHF(Math.abs(diffAnnuel))} CHF / an</h3>
+                <h3>{t('assurance.surcout')}{formatCHF(Math.abs(diffAnnuel))} CHF / {t('assurance.per_year')}</h3>
               ) : (
                 <h3>{t('assurance.diff_neutre')}</h3>
               )}

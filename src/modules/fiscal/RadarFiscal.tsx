@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabaseClient';
 import AuthModal from '../../components/AuthModal';
 import './RadarFiscal.css';
+import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 
 // ============================================================
 // INTERFACES STRICTES
@@ -239,33 +240,33 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
 
   const mode = initialMode;
   
-  const [revenuInput, setRevenuInput] = useState('100000');
+  const [revenuInput, setRevenuInput] = useLocalStorageState('radar_revenuInput', '100000');
   const [typeRevenu] = useState<'brut' | 'net'>('brut');
-  const [statutCivil, setStatutCivil] = useState<StatutCivil>('celibataire');
-  const [religion, setReligion] = useState<Religion>('aucune');
-  const [classeAge, setClasseAge] = useState<ClasseAge>('35-44');
-  const [classeAgeConjoint, setClasseAgeConjoint] = useState<ClasseAge>('35-44');
+  const [statutCivil, setStatutCivil] = useLocalStorageState<StatutCivil>('radar_statutCivil', 'celibataire');
+  const [religion, setReligion] = useLocalStorageState<Religion>('radar_religion', 'aucune');
+  const [classeAge, setClasseAge] = useLocalStorageState<ClasseAge>('radar_classeAge', '35-44');
+  const [classeAgeConjoint, setClasseAgeConjoint] = useLocalStorageState<ClasseAge>('radar_classeAgeConjoint', '35-44');
 
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showEnfantOptions, setShowEnfantOptions] = useState(false);
-  const [enfantsMineurs, setEnfantsMineurs] = useState(0); // 0-17 ans
-  const [enfantsMajeurs, setEnfantsMajeurs] = useState(0); // 18-25 ans en formation
+  const [enfantsMineurs, setEnfantsMineurs] = useLocalStorageState('radar_enfantsMineurs', 0); // 0-17 ans
+  const [enfantsMajeurs, setEnfantsMajeurs] = useLocalStorageState('radar_enfantsMajeurs', 0); // 18-25 ans en formation
   const nombreEnfants = enfantsMineurs + enfantsMajeurs;
 
-  const [cotisationsSociales, setCotisationsSociales] = useState('12000');
-  const [pilier3a, setPilier3a] = useState('0');
-  const [pilier3aConjoint, setPilier3aConjoint] = useState('0');
-  const [fraisGarde, setFraisGarde] = useState('0');
-  const [revenuConjoint, setRevenuConjoint] = useState('100000');
+  const [cotisationsSociales, setCotisationsSociales] = useLocalStorageState('radar_cotisationsSociales', '12000');
+  const [pilier3a, setPilier3a] = useLocalStorageState('radar_pilier3a', '0');
+  const [pilier3aConjoint, setPilier3aConjoint] = useLocalStorageState('radar_pilier3aConjoint', '0');
+  const [fraisGarde, setFraisGarde] = useLocalStorageState('radar_fraisGarde', '0');
+  const [revenuConjoint, setRevenuConjoint] = useLocalStorageState('radar_revenuConjoint', '100000');
 
-  const [communeDepart, setCommuneDepart] = useState<Commune | null>(null);
-  const [communeArrivee, setCommuneArrivee] = useState<Commune | null>(null);
+  const [communeDepart, setCommuneDepart] = useLocalStorageState<Commune | null>('radar_communeDepart', null);
+  const [communeArrivee, setCommuneArrivee] = useLocalStorageState<Commune | null>('radar_communeArrivee', null);
 
+  // Les résultats n'ont pas besoin d'être sauvegardés, on les laisse en useState normal
   const [resultatDepart, setResultatDepart] = useState<ResultatFiscal | null>(null);
   const [resultatArrivee, setResultatArrivee] = useState<ResultatFiscal | null>(null);
   const [difference, setDifference] = useState<number | null>(null);
   const [isUnsupported, setIsUnsupported] = useState(false);
-
   useEffect(() => {
     const fetchCommunes = async (): Promise<void> => {
       const { data, error } = await supabase.from('communes').select('id, commune, canton, canton_id, coeff_revenu_canton, coeff_revenu_commune, coeff_revenu_eglise_reforme, coeff_revenu_eglise_catholique').order('commune').limit(5000);

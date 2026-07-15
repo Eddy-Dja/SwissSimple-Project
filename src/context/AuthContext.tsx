@@ -10,7 +10,7 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType>({ 
-  user: null, 
+  user: null,
   signOut: async () => {},
   recoveryMode: false,
   setRecoveryMode: () => {}
