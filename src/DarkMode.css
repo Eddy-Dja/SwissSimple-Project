@@ -100,13 +100,12 @@ body.dark-mode .navbar, body.dark-mode .navbar-scrolled {
 body.dark-mode .nav-link-btn { color: #94a3B8 !important; }
 body.dark-mode .nav-link-btn:hover { color: #fff !important; }
 body.dark-mode .hero-badge {
-  background: #1E293B !important;
-  border: 1px solid #334155 !important;
-  color: #60A5FA !important;
+  background: rgba(59, 130, 246, 0.1) !important; /* Fond bleu très sombre et transparent */
+  border: 1px solid rgba(59, 130, 246, 0.3) !important; /* Bordure bleue subtile */
+  color: #60A5FA !important; /* Texte en bleu clair (lisible et doux sur fond noir) */
 }
 
 /* --- CARTES, FORMULAIRES, CONTENEURS & PANNEAUX INTERNES --- */
-/* J'ai ajouté ici tous les panneaux internes de AVS, LPP et Assurance */
 body.dark-mode .tool-card,
 body.dark-mode .premium-card, /* Sera surchargé plus bas pour devenir blanc */
 body.dark-mode .radar-form,
@@ -158,7 +157,7 @@ body.dark-mode .premium-card::before {
 
 /* --- FORMULAIRES & INPUTS --- */
 body.dark-mode .form-input, body.dark-mode select.form-input {
-  background-color: #0f172a !important; /* Fond très sombre pour bien distinguer du panneau */
+  background-color: #0f172a !important;
   color: #F8FAFC !important;
   border-color: #334155 !important;
 }
@@ -202,50 +201,45 @@ body.dark-mode .tool-card:hover h3 {
 body.dark-mode .tool-card:hover p {
   color: #64748B !important;
 }
+
+/* ⚠️ CORRECTION ICI : La flèche devient ROUGE au survol au lieu du bleu */
 body.dark-mode .tool-card:hover .tool-cta {
-  color: #3B82F6 !important;
+  color: #C8102E !important;
 }
 
 /* ============================================================
    INVERSION DES CARTES PREMIUM EN MODE SOMBRE
-   (Devient blanche sur fond noir pour un contraste symétrique)
    ============================================================ */
 
 body.dark-mode .premium-card {
   background: #FFFFFF !important;
   border-color: #E2E8F0 !important;
-  color: #1A202C !important; /* Texte principal en noir */
+  color: #1A202C !important;
 }
 
-/* Les titres des cartes deviennent noirs */
 body.dark-mode .premium-card h3 {
   color: #1A202C !important;
 }
 
-/* Les descriptions deviennent gris foncé */
 body.dark-mode .premium-card p {
   color: #64748B !important;
 }
 
-/* Le badge "Module Premium" reste doré */
 body.dark-mode .premium-badge {
   background: linear-gradient(90deg, #F59E0B, #D97706) !important;
   color: #fff !important;
 }
 
-/* Le bouton devient noir avec un texte blanc */
 body.dark-mode .premium-card .btn-premium {
   background: #1A202C !important;
   color: #FFFFFF !important;
 }
 
-/* Au survol en mode sombre, le bouton devient bleu */
 body.dark-mode .premium-card:hover .btn-premium {
   background: #3B82F6 !important;
   color: #fff !important;
 }
 
-/* L'ombre au survol devient plus claire */
 body.dark-mode .premium-card:hover {
   box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1) !important;
 }
@@ -254,14 +248,12 @@ body.dark-mode .premium-card:hover {
    BOUTON "DÉCOUVRIR NOS OUTILS AVANCÉS" EN MODE SOMBRE
    ============================================================ */
 
-/* En mode sombre, le bouton secondaire devient blanc avec un texte noir */
 body.dark-mode .btn-hero-secondary {
   background: #FFFFFF !important;
   color: #1A202C !important;
   border: 1px solid #FFFFFF !important;
 }
 
-/* Au survol, il devient gris très clair pour garder un effet */
 body.dark-mode .btn-hero-secondary:hover {
   background: #F8FAFC !important;
   border-color: #F8FAFC !important;

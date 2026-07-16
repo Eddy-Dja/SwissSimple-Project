@@ -27,14 +27,25 @@
 .hero-container-simple { position: relative; z-index: 1; max-width: 850px; padding: 0 20px; }
 
 .hero-badge {
-  display: inline-block; background: #fff; border: 1px solid var(--border-color);
-  padding: 8px 16px; border-radius: 50px; font-size: 14px; font-weight: 600;
-  color: var(--primary-blue); margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  display: inline-block; 
+  background: #FFF1F2; /* Fond rouge extrêmement pâle */
+  border: 1px solid #FECDD3; /* Bordure rouge pâle */
+  padding: 8px 16px; 
+  border-radius: 50px; 
+  font-size: 14px; 
+  font-weight: 600;
+  color: #C8102E; /* Texte en Rouge Suisse */
+  margin-bottom: 24px; 
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.05); /* Ombre rosée */
 }
 
 .hero-section h1 { font-size: 56px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 24px; }
-.text-gradient { background: linear-gradient(90deg, var(--primary-blue), #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
+.text-gradient { 
+  background: linear-gradient(90deg, #C8102E, #8B5CF6); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+  background-clip: text;
+}
 .hero-subtitle { font-size: 18px; color: var(--text-muted); margin-bottom: 40px; line-height: 1.5; }
 
 .hero-cta-group {
@@ -136,7 +147,7 @@
   content: '';
   position: absolute;
   top: 0; left: 0; width: 100%; height: 4px;
-  background: var(--primary-blue);
+  background: #C8102E; /* ICI : On met le rouge suisse au lieu du bleu */
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -159,9 +170,6 @@
 }
 .tool-card:hover p {
   color: #94A3B8 !important;
-}
-.tool-card:hover .tool-cta {
-  color: #60A5FA !important;
 }
 
 .tool-icon-wrap {
@@ -201,7 +209,8 @@
 .tool-cta {
   font-size: 15px;
   font-weight: 600;
-  color: var(--primary-blue);
+  color: #1A202C; /* NOIR en mode clair par défaut */
+  transition: color 0.3s ease;
 }
 
 /* ============================================================
@@ -345,4 +354,57 @@
 
 @media (max-width: 600px) {
   .tools-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   GESTION DES FLÈCHES & MODE SOMBRE (OVERRIDES)
+   ============================================================ */
+
+/* 1. MODE CLAIR : Flèche noire par défaut, rouge au survol */
+.tool-card:hover .tool-cta {
+  color: #C8102E !important; /* Rouge suisse au survol */
+}
+
+/* 2. MODE SOMBRE : Flèche blanche par défaut, rouge au survol */
+/* On cible toutes les façons de déclarer le mode sombre pour être sûr à 100% que ça passe */
+
+/* Couleur blanche par défaut en mode sombre */
+body.dark-mode .tool-cta,
+.dark-mode .tool-cta,
+[data-theme="dark"] .tool-cta {
+  color: #FFFFFF !important; 
+}
+
+/* Couleur rouge au survol en mode sombre */
+body.dark-mode .tool-card:hover .tool-cta,
+.dark-mode .tool-card:hover .tool-cta,
+[data-theme="dark"] .tool-card:hover .tool-cta {
+  color: #C8102E !important; /* Rouge suisse au survol */
+}
+
+/* Ajustement des cartes en mode sombre pour que ce soit propre */
+body.dark-mode .tool-card,
+.dark-mode .tool-card,
+[data-theme="dark"] .tool-card {
+  background: var(--swiss-dark); 
+  border-color: rgba(255,255,255,0.1);
+}
+
+body.dark-mode .tool-card:hover,
+.dark-mode .tool-card:hover,
+[data-theme="dark"] .tool-card:hover {
+  background: #0F172A !important; 
+  border-color: rgba(255,255,255,0.2);
+}
+
+body.dark-mode .tool-card h3,
+.dark-mode .tool-card h3,
+[data-theme="dark"] .tool-card h3 {
+  color: #FFFFFF;
+}
+
+body.dark-mode .tool-card p,
+.dark-mode .tool-card p,
+[data-theme="dark"] .tool-card p {
+  color: #94A3B8;
 }
