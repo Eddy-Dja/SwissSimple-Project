@@ -122,7 +122,8 @@ export default function Classements() {
   };
 
   const calculerAssurance = async () => {
-    const { data, error } = await supabase
+    // On utilise une réponse non typée pour éviter l'erreur de l'umlaut (Prämie)
+    const result = await supabase
       .from('primes_lamal')
       .select('Kanton, Prämie')
       .eq('Geschäftsjahr', 2026)
@@ -130,24 +131,27 @@ export default function Classements() {
       .eq('Franchise', 300)
       .eq('Unfalleinschluss', 'MIT-UNF');
 
+    const data = result.data as any[] | null;
     if (!data) return;
 
     const grouped: { [key: string]: number[] } = {};
-    data.forEach(p => {
+    
+    data.forEach((p: any) => {
       const cantonKey = (p.Kanton === 'ZR' || p.Kanton === 'ZE') ? 'ZH' : p.Kanton;
       if (!grouped[cantonKey]) grouped[cantonKey] = [];
       grouped[cantonKey].push(p.Prämie);
     });
 
-    const result = Object.keys(grouped).map(kanton => {
+    const assuranceResult = Object.keys(grouped).map(kanton => {
       const primes = grouped[kanton];
       const min = Math.min(...primes);
       const moyenne = primes.reduce((a, b) => a + b, 0) / primes.length;
       return { canton: kanton, min: Math.round(min), moyenne: Math.round(moyenne) };
     }).sort((a, b) => a.moyenne - b.moyenne);
 
-    setDataAssurance(result);
+    setDataAssurance(assuranceResult);
   };
+
 
   const maxImpot = dataImpots.length > 0 ? Math.max(...dataImpots.map(d => d.celib)) : 1;
   const maxPrime = dataAssurance.length > 0 ? Math.max(...dataAssurance.map(d => d.moyenne)) : 1;
