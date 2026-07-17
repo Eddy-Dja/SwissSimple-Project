@@ -408,3 +408,31 @@ body.dark-mode .tool-card p,
 [data-theme="dark"] .tool-card p {
   color: #94A3B8;
 }
+
+/* Bouton Atlas (Dégradé Rouge/Violet) */
+.btn-hero-atlas {
+  background: linear-gradient(90deg, #C8102E, #8B5CF6);
+  color: #ffffff;
+  border: none;
+  padding: 16px 48px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-hero-atlas:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+  filter: brightness(1.1);
+}
+
+body.dark-mode .btn-hero-atlas,
+[data-theme="dark"] .btn-hero-atlas {
+  background: linear-gradient(90deg, rgba(200, 16, 46, 0.6), rgba(139, 92, 246, 0.6));
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}

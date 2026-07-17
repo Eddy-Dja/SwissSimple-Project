@@ -122,7 +122,6 @@ export default function Classements() {
   };
 
   const calculerAssurance = async () => {
-    // On utilise une réponse non typée pour éviter l'erreur de l'umlaut (Prämie)
     const result = await supabase
       .from('primes_lamal')
       .select('Kanton, Prämie')
@@ -152,18 +151,18 @@ export default function Classements() {
     setDataAssurance(assuranceResult);
   };
 
-
   const maxImpot = dataImpots.length > 0 ? Math.max(...dataImpots.map(d => d.celib)) : 1;
   const maxPrime = dataAssurance.length > 0 ? Math.max(...dataAssurance.map(d => d.moyenne)) : 1;
 
   return (
     <div className="classements-container">
       <h1>{t('classements.title', 'Atlas Suisse 2026 📊')}</h1>
-      <p>{t('classements.subtitle', 'Comparatif des cantons pour un revenu de référence de 100\'000 CHF.')}</p>
-      
-      <p className="classements-disclaimer">
-        {t('classements.bl_disclaimer')}
-      </p>
+      <p>{activeTab === 'impots' ? t('classements.subtitle_impots') : t('classements.subtitle_assurance')}</p>      
+      {activeTab === 'impots' && (
+        <p className="classements-disclaimer">
+          {t('classements.bl_disclaimer')}
+        </p>
+      )}
 
       <div className="classements-tabs">
         <button className={activeTab === 'impots' ? 'active' : ''} onClick={() => setActiveTab('impots')}>
@@ -179,6 +178,11 @@ export default function Classements() {
           <p>{t('classements.loading', 'Calcul des indicateurs en cours...')}</p>
         ) : activeTab === 'impots' ? (
           <div className="ranking-list">
+            {/* DISCLAIMER HYPOTHÈSES IMPÔTS */}
+            <p className="classements-disclaimer">
+              {t('classements.impots_disclaimer')}
+            </p>
+            
             {dataImpots.map((item, i) => (
               <div key={i} className="ranking-row">
                 <div className="ranking-label">
@@ -205,6 +209,7 @@ export default function Classements() {
           </div>
         ) : (
           <div className="ranking-list">
+            {/* DISCLAIMER HYPOTHÈSES ASSURANCE */}
             <p className="classements-disclaimer">
               {t('classements.assurance_disclaimer')}
             </p>
@@ -234,7 +239,16 @@ export default function Classements() {
             ))}
           </div>
         )}
+      </div> {/* Fin de classements-content */}
+
+      {/* AVERTISSEMENT LÉGAL DYNAMIQUE */}
+      <div className="avertissement-legal">
+        <span className="titre-avertissement">⚖️ {t('hub.warning_title', 'Avertissement')}</span>
+        <span className="texte-avertissement">
+          {activeTab === 'impots' ? t('classements.impots_warning') : t('classements.assurance_warning')}
+        </span>
       </div>
-    </div>
+
+    </div> // Fin de classements-container
   );
 }

@@ -514,7 +514,12 @@
   "legend_min": "Prime minimale",
   "legend_moy": "Prime moyenne",
   "bl_disclaimer": "* Le canton de Bâle-Campagne (BL) est exclu du classement des impôts en raison de son système de calcul spécifique.",
-"assurance_disclaimer": "Primes LAMal 2026 pour un adulte, franchise à 300 CHF, avec inclusion de l'assurance accidents."
+  "subtitle_impots": "Comparatif des 26 cantons pour un revenu de référence de 100'000 CHF.",
+  "subtitle_assurance": "Comparatif des primes LAMal 2026 (adulte, franchise 300) dans les 26 cantons.",
+  "assurance_disclaimer": "Primes LAMal 2026 pour un adulte, franchise à 300 CHF, avec inclusion de l'assurance accidents.",
+  "impots_disclaimer": "Hypothèses de calcul : Profil 1 (Célibataire, revenu de 100k, 0 enfant) vs Profil 2 (Marié, revenu du ménage de 100k, 2 enfants mineurs). Cotisations sociales (AVS/LPP) calculées pour la classe d'âge 35-44 ans.",
+"impots_warning": "Les calculs sont basés sur les données ouvertes (Open Data) de l'AFC. Ils fournissent une estimation fidèle, mais peuvent légèrement différer du simulateur web de l'AFC en raison de données manquantes dans les fichiers officiels (ex: certaines déductions de logement, multiplicateurs légaux ou caisses de pension réelles). Ce résultat est indicatif et ne remplace pas votre déclaration d'impôts officielle.",
+"assurance_warning": "Ce comparateur est basé sur les données officielles de l'OFSP (Office Fédéral de la Santé Publique) pour 2026 et représente une moyenne des assureurs. Les primes réelles peuvent varier en fonction de l'âge exact, du modèle d'assurance choisi et de la région spécifique. Ce résultat est indicatif et ne remplace pas un conseil professionnel."
 }
 }
 

@@ -513,6 +513,11 @@
   "legend_min": "Minimale Prämie",
   "legend_moy": "Durchschnittliche Prämie",
   "bl_disclaimer": "* Der Kanton Basel-Landschaft (BL) ist aufgrund seines spezifischen Berechnungssystems von der Steuerklassifizierung ausgeschlossen.",
-"assurance_disclaimer": "KVG-Prämien 2026 für einen Erwachsenen, Franchise 300 CHF, inklusive Unfallversicherung."
+  "subtitle_impots": "Vergleich der 26 Kantone für ein Referenzeinkommen von 100'000 CHF.",
+  "subtitle_assurance": "Vergleich der KVG-Prämien 2026 (Erwachsener, Franchise 300) in den 26 Kantonen.",
+  "assurance_disclaimer": "KVG-Prämien 2026 für einen Erwachsenen, Franchise 300 CHF, inklusive Unfallversicherung.",
+  "impots_disclaimer": "Berechnungsannahmen: Profil 1 (Ledig, Einkommen 100k, 0 Kinder) vs Profil 2 (Verheiratet, Haushaltseinkommen 100k, 2 minderjährige Kinder). Sozialabgaben (AHV/BVG) für die Altersklasse 35-44 Jahre berechnet.",
+"impots_warning": "Die Berechnungen basieren auf den Open Data der ESTV. Sie liefern eine treue Schätzung, können jedoch aufgrund fehlender Daten in den offiziellen Dateien (z.B. bestimmte Wohnungsabzüge, gesetzliche Multiplikatoren oder reale Pensionskassen) leicht vom Web-Simulator der ESTV abweichen. Dieses Ergebnis ist indikativ und ersetzt nicht Ihre offizielle Steuererklärung.",
+"assurance_warning": "Dieser Vergleich basiert auf den offiziellen Daten des BAG (Bundesamt für Gesundheit) für 2026 und stellt einen Durchschnitt der Versicherer dar. Die tatsächlichen Prämien können je nach genauer Alter, gewähltem Versicherungsmodell und spezifischer Region variieren. Dieses Ergebnis ist indikativ und ersetzt keine professionelle Beratung."
 }
 }
