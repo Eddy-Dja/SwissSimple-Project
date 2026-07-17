@@ -42,8 +42,9 @@ export default function Home() {
               {t('hero.cta2')}
             </button>
                         {/* NOUVEAU BOUTON POUR L'ATLAS */}
-            <button className="btn-hero-secondary" onClick={() => navigate('/classements')}>
-              📊 Atlas & Statistiques
+            {/* NOUVEAU BOUTON POUR L'ATLAS */}
+            <button className="btn-hero-atlas" onClick={() => navigate('/classements')}>
+              {t('hero.atlas_btn')}
             </button>
             </div>
           

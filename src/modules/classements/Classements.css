@@ -187,3 +187,42 @@ body.dark-mode .bar-legend.marie::before,
   margin-top: 10px;
   margin-bottom: 20px;
 }
+
+/* ============================================================
+   BOUTON ATLAS (Rouge Suisse)
+   ============================================================ */
+
+.btn-hero-atlas {
+  background: #C8102E;
+  color: #ffffff;
+  border: 1px solid #C8102E;
+  padding: 16px 48px; /* <-- J'ai augmenté le padding de 32px à 48px pour l'élargir */
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(200, 16, 46, 0.3);
+}
+
+.btn-hero-atlas:hover {
+  background: #A00C24;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(200, 16, 46, 0.4);
+}
+
+/* Mode Sombre pour le bouton Atlas */
+body.dark-mode .btn-hero-atlas,
+[data-theme="dark"] .btn-hero-atlas {
+  background: rgba(200, 16, 46, 0.1);
+  color: #FF3B5F;
+  border: 2px solid #C8102E;
+  box-shadow: none;
+}
+
+body.dark-mode .btn-hero-atlas:hover,
+[data-theme="dark"] .btn-hero-atlas:hover {
+  background: rgba(200, 16, 46, 0.2);
+  border-color: #FF3B5F;
+  color: #ffffff;
+}
