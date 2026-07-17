@@ -1,0 +1,189 @@
+.classements-container { 
+  max-width: 800px; 
+  margin: 0 auto; 
+  padding: 40px 20px; 
+}
+
+.classements-container h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #1A202C;
+}
+
+.classements-container p {
+  text-align: center;
+  color: #64748B;
+  margin-bottom: 30px;
+}
+
+.classements-tabs { 
+  display: flex; 
+  gap: 10px; 
+  margin-bottom: 30px; 
+  border-bottom: 2px solid #E2E8F0; 
+}
+
+.classements-tabs button { 
+  padding: 10px 20px; 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  font-weight: 600; 
+  color: #64748B; 
+  border-bottom: 3px solid transparent; 
+  transition: all 0.2s;
+}
+
+.classements-tabs button.active { 
+  color: #1A202C; 
+  border-bottom: 3px solid #3B82F6; 
+}
+
+.ranking-row { 
+  margin-bottom: 24px; 
+}
+
+.ranking-label { 
+  display: flex; 
+  justify-content: space-between; 
+  font-weight: 700; 
+  margin-bottom: 6px; 
+  color: #1A202C;
+}
+
+.ranking-value {
+  font-weight: 600;
+  color: #475569;
+}
+
+.bar-container { 
+  display: flex; 
+  width: 100%; 
+  height: 16px; /* Barre plus fine et élégante */
+  border-radius: 8px; 
+  overflow: hidden; 
+  background: #F1F5F9; 
+}
+
+/* IMPÔTS */
+.bar-celib { 
+  background: #3B82F6; /* Bleu */
+  height: 100%; 
+  transition: width 0.5s ease;
+}
+
+.bar-marie { 
+  background: #1A202C; /* Noir anthracite */
+  height: 100%; 
+  transition: width 0.5s ease;
+}
+
+/* ASSURANCE */
+.bar-min { 
+  background: #F59E0B; /* Orange */
+  height: 100%; 
+  transition: width 0.5s ease;
+}
+
+.bar-moyenne { 
+  background: #EF4444; /* Rouge */
+  height: 100%; 
+  transition: width 0.5s ease;
+}
+
+/* ============================================================
+   MODE SOMBRE GLOBAL
+   ============================================================ */
+body.dark-mode .classements-container h1,
+[data-theme="dark"] .classements-container h1 {
+  color: #F8FAFC;
+}
+
+body.dark-mode .classements-container p,
+[data-theme="dark"] .classements-container p {
+  color: #94A3B8;
+}
+
+body.dark-mode .classements-tabs,
+[data-theme="dark"] .classements-tabs {
+  border-bottom-color: #334155;
+}
+
+body.dark-mode .classements-tabs button,
+[data-theme="dark"] .classements-tabs button {
+  color: #94A3B8;
+}
+
+body.dark-mode .classements-tabs button.active,
+[data-theme="dark"] .classements-tabs button.active {
+  color: #F8FAFC;
+  border-bottom-color: #3B82F6;
+}
+
+body.dark-mode .ranking-label,
+[data-theme="dark"] .ranking-label {
+  color: #F8FAFC;
+}
+
+body.dark-mode .ranking-value,
+[data-theme="dark"] .ranking-value {
+  color: #CBD5E1;
+}
+
+body.dark-mode .bar-container,
+[data-theme="dark"] .bar-container {
+  background: #1E293B;
+}
+
+body.dark-mode .bar-marie,
+[data-theme="dark"] .bar-marie {
+  background: #F8FAFC; /* En mode sombre, le noir devient blanc pour contraster */
+}
+
+/* Ligne de légende au-dessus de la barre */
+.bar-label-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* Les petits carrés de couleur devant la légende */
+.bar-legend {
+  display: flex;
+  align-items: center;
+}
+.bar-legend::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+.bar-legend.celib::before { background: #3B82F6; }
+.bar-legend.marie::before { background: #1A202C; }
+.bar-legend.min::before { background: #F59E0B; }
+.bar-legend.moyenne::before { background: #EF4444; }
+
+/* Mode sombre pour la légende */
+body.dark-mode .bar-label-line,
+[data-theme="dark"] .bar-label-line {
+  color: #94A3B8;
+}
+body.dark-mode .bar-legend.marie::before,
+[data-theme="dark"] .bar-legend.marie::before {
+  background: #F8FAFC; /* Carré blanc en mode sombre pour la barre noire */
+}
+
+.classements-disclaimer {
+  font-size: 13px;
+  color: #64748B;
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}

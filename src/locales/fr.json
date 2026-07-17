@@ -461,5 +461,59 @@
     "copyright": "© 2026 SwissSimple. Fait avec ❤️ en Suisse.",
     "disclaimer": "Estimation basée sur les barèmes officiels. Ne remplace pas un conseil fiscal ou d'assurance.",
     "legal_link": "Mentions Légales & Politique de Confidentialité"
-  }
+  },
+
+  "capitaux": {
+  "zurich": "Zurich",
+  "berne": "Berne",
+  "lucerne": "Lucerne",
+  "altdorf": "Altdorf",
+  "schwyz": "Schwytz",
+  "sarnen": "Sarnen",
+  "stans": "Stans",
+  "glaris": "Glaris",
+  "zoug": "Zoug",
+  "fribourg": "Fribourg",
+  "soleure": "Soleure",
+  "bale": "Bâle",
+  "liestal": "Liestal",
+  "schaffhouse": "Schaffhouse",
+  "herisau": "Herisau",
+  "appenzell": "Appenzell",
+  "saintgall": "Saint-Gall",
+  "coire": "Coire",
+  "aarau": "Aarau",
+  "frauenfeld": "Frauenfeld",
+  "bellinzona": "Bellinzona",
+  "lausanne": "Lausanne",
+  "sion": "Sion",
+  "neuchatel": "Neuchâtel",
+  "geneve": "Genève",
+  "delemont": "Delémont"
+},
+
+"cantons": {
+  "ZH": "Zurich", "BE": "Berne", "LU": "Lucerne", "UR": "Uri", 
+  "SZ": "Schwytz", "OW": "Obwald", "NW": "Nidwald", "GL": "Glaris",
+  "ZG": "Zoug", "FR": "Fribourg", "SO": "Soleure", "BS": "Bâle-Ville",
+  "BL": "Bâle-Campagne", "SH": "Schaffhouse", "AR": "Appenzell Rhodes-Extérieures",
+  "AI": "Appenzell Rhodes-Intérieures", "SG": "Saint-Gall", "GR": "Grisons",
+  "AG": "Argovie", "TG": "Thurgovie", "TI": "Tessin", "VD": "Vaud",
+  "VS": "Valais", "NE": "Neuchâtel", "GE": "Genève", "JU": "Jura"
+},
+
+"classements": {
+  "title": "Atlas Suisse 2026 📊",
+  "subtitle": "Comparatif des 26 cantons pour un revenu de référence de 100'000 CHF.",
+  "loading": "Calcul des indicateurs en cours...",
+  "tab_impots": "Impôts (Célibataire vs Marié +2 enfants)",
+  "tab_assurance": "Assurance Maladie",
+  "legend_celib": "Célibataire (Revenu individuel : 100k, 0 enfant)",
+  "legend_marie": "Marié (Revenu du ménage : 100k, 2 enfants)",
+  "legend_min": "Prime minimale",
+  "legend_moy": "Prime moyenne",
+  "bl_disclaimer": "* Le canton de Bâle-Campagne (BL) est exclu du classement des impôts en raison de son système de calcul spécifique.",
+"assurance_disclaimer": "Primes LAMal 2026 pour un adulte, franchise à 300 CHF, avec inclusion de l'assurance accidents."
 }
+}
+

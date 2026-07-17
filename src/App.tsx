@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './context/AuthContext';
 import { useState, useEffect } from 'react';
+import Classements from './modules/classements/Classements';
 
 // Imports Composants Globaux
 import GlobalToolbar from './components/GlobalToolbar';
@@ -39,6 +40,7 @@ function AppRoutes() {
       <Route path="/simulateur-lpp" element={<SimulateurLPP />} />
       <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
       <Route path="*" element={<Navigate to="/" />} />
+      <Route path="/classements" element={<Classements />} />
     </Routes>
   );
 }

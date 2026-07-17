@@ -460,5 +460,58 @@
     "copyright": "© 2026 SwissSimple. Mit ❤️ in der Schweiz gemacht.",
     "disclaimer": "Schätzung basierend auf offiziellen Tarifen. Ersetzt keine steuerliche oder versicherungstechnische Beratung.",
     "legal_link": "Impressum & Datenschutzerklärung"
-  }
+  },
+
+  "capitaux": {
+  "zurich": "Zürich",
+  "berne": "Bern",
+  "lucerne": "Luzern",
+  "altdorf": "Altdorf",
+  "schwyz": "Schwyz",
+  "sarnen": "Sarnen",
+  "stans": "Stans",
+  "glaris": "Glarus",
+  "zoug": "Zug",
+  "fribourg": "Freiburg",
+  "soleure": "Solothurn",
+  "bale": "Basel",
+  "liestal": "Liestal",
+  "schaffhouse": "Schaffhausen",
+  "herisau": "Herisau",
+  "appenzell": "Appenzell",
+  "saintgall": "St. Gallen",
+  "coire": "Chur",
+  "aarau": "Aarau",
+  "frauenfeld": "Frauenfeld",
+  "bellinzona": "Bellinzona",
+  "lausanne": "Lausanne",
+  "sion": "Sion",
+  "neuchatel": "Neuenburg",
+  "geneve": "Genf",
+  "delemont": "Delémont"
+},
+
+"cantons": {
+  "ZH": "Zürich", "BE": "Bern", "LU": "Luzern", "UR": "Uri", 
+  "SZ": "Schwyz", "OW": "Obwalden", "NW": "Nidwalden", "GL": "Glarus",
+  "ZG": "Zug", "FR": "Freiburg", "SO": "Solothurn", "BS": "Basel-Stadt",
+  "BL": "Basel-Landschaft", "SH": "Schaffhausen", "AR": "Appenzell Ausserrhoden",
+  "AI": "Appenzell Innerrhoden", "SG": "St. Gallen", "GR": "Graubünden",
+  "AG": "Aargau", "TG": "Thurgau", "TI": "Tessin", "VD": "Waadt",
+  "VS": "Wallis", "NE": "Neuenburg", "GE": "Genf", "JU": "Jura"
+},
+
+"classements": {
+  "title": "Schweizer Atlas 2026 📊",
+  "subtitle": "Vergleich der 26 Kantone für ein Referenzeinkommen von 100'000 CHF.",
+  "loading": "Indikatoren werden berechnet...",
+  "tab_impots": "Steuern (Ledig vs Verheiratet +2 Kinder)",
+  "tab_assurance": "Krankenversicherung",
+  "legend_celib": "Ledig (Individuelles Einkommen: 100k, 0 Kinder)",
+  "legend_marie": "Verheiratet (Haushaltseinkommen: 100k, 2 Kinder)",
+  "legend_min": "Minimale Prämie",
+  "legend_moy": "Durchschnittliche Prämie",
+  "bl_disclaimer": "* Der Kanton Basel-Landschaft (BL) ist aufgrund seines spezifischen Berechnungssystems von der Steuerklassifizierung ausgeschlossen.",
+"assurance_disclaimer": "KVG-Prämien 2026 für einen Erwachsenen, Franchise 300 CHF, inklusive Unfallversicherung."
+}
 }

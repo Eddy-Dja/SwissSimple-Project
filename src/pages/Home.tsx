@@ -41,7 +41,11 @@ export default function Home() {
             <button className="btn-hero-secondary" onClick={scrollToPremium}>
               {t('hero.cta2')}
             </button>
-          </div>
+                        {/* NOUVEAU BOUTON POUR L'ATLAS */}
+            <button className="btn-hero-secondary" onClick={() => navigate('/classements')}>
+              📊 Atlas & Statistiques
+            </button>
+            </div>
           
           <div className="hero-trust">
             <span>{t('hero.trust1')}</span>
