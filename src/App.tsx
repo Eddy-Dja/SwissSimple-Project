@@ -47,8 +47,28 @@ function AppRoutes() {
 
 function App() {
   const { t } = useTranslation();
-  const { recoveryMode, setRecoveryMode, signOut } = useAuth(); // AJOUT de signOut
+  const { recoveryMode, setRecoveryMode, signOut } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // --- SUPPRESSION DU LOADER UNE FOIS L'APP MONTÉE ---
+  useEffect(() => {
+  const win = window as unknown as { swissLoadingInterval?: ReturnType<typeof setInterval> };
+  if (win.swissLoadingInterval) clearInterval(win.swissLoadingInterval);
+
+    const progressBar = document.getElementById('progress-fill');
+    if (progressBar) progressBar.style.width = '100%';
+
+    const initialLoader = document.getElementById('initial-loader');
+    if (initialLoader) {
+      setTimeout(() => {
+        initialLoader.style.opacity = '0';
+        setTimeout(() => {
+          initialLoader.remove();
+        }, 400);
+      }, 300); // Le temps que l'œil voie la barre à 100%
+    }
+  }, []);
+  // --------------------------------------------------
 
   useEffect(() => {
     if (recoveryMode) {
@@ -88,13 +108,11 @@ function App() {
         onClose={() => { 
           setIsAuthModalOpen(false); 
           
-          // Si on fermait la fenêtre de récupération de mot de passe, on détruit la session temporaire !
           if (recoveryMode) {
             signOut();
             setRecoveryMode(false);
           }
 
-          // Nettoie l'URL des paramètres de récupération
           if (window.location.href.includes('type=recovery')) {
             window.history.replaceState({}, document.title, window.location.pathname);
           }

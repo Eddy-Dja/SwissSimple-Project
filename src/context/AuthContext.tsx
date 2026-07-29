@@ -68,22 +68,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   };
 
+  // --- MODIFICATION ICI ---
+  // Au lieu d'afficher un texte qui cache notre logo HTML, on renvoie 'null'.
+  // Le logo HTML reste donc visible jusqu'à ce que l'application soit prête !
   if (loading) {
-    return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh', 
-        fontFamily: 'Inter, sans-serif',
-        color: '#1A202C',
-        fontSize: '1.2rem',
-        fontWeight: '600'
-      }}>
-        Chargement de SwissSimple...
-      </div>
-    );
+    return null;
   }
+  // ------------------------
 
   return (
     <AuthContext.Provider value={{ user, signOut, recoveryMode, setRecoveryMode }}>
