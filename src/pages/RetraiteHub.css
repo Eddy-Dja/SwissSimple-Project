@@ -31,7 +31,19 @@
 .synthese-container h2 { margin-bottom: 20px; color: #1A202C; }
 .synthese-container p { font-size: 18px; margin-bottom: 10px; color: #64748B; }
 .synthese-recap { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 30px; text-align: left; }
-.recap-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #e2e8f0; }
+
+/* --- MODIFICATION ICI : Flex-direction column pour forcer l'empilement --- */
+.recap-item { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 4px; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 15px 0; 
+  border-bottom: 1px solid #e2e8f0; 
+}
+/* ----------------------------------------------------------------------- */
+
 .recap-item:last-of-type { border-bottom: none; }
 .recap-title { font-weight: 600; color: #334155; font-size: 1.1rem; }
 .recap-value { font-weight: 700; font-size: 1.1rem; }
@@ -134,4 +146,34 @@
 }
 .avertissement-legal .texte-avertissement {
   display: block; text-align: justify; text-align-last: center;
+}
+
+/* ============================================================
+   STRUCTURE DES RÉCAPITULATIFS (Ligne 1: Titre/Montant, Ligne 2: Détails)
+   ============================================================ */
+
+/* Aligne le titre et le montant sur la même ligne (Ligne 1) */
+.recap-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Place les détails sur une ligne séparée en dessous (Ligne 2) */
+.recap-module-detail {
+  width: 100%;
+  font-size: 0.85rem;
+  font-weight: normal;
+  color: #64748b;
+  text-align: left;
+  margin-top: 2px;
+}
+
+/* Centre le bouton de partage */
+.share-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

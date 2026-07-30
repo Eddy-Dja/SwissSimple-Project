@@ -23,7 +23,19 @@ interface ResultatAVS {
 type EtatCivil = 'celibataire' | 'marie' | 'divorce' | 'veuf';
 
 interface SimulateurAVSProps {
-  onResultChange?: (data: { rente: number } | null) => void;
+  onResultChange?: (data: { 
+    rente: number, 
+    params: { 
+      etatCivil: string; 
+      sexe: 'homme' | 'femme';
+      anneeNaissance: number;
+      ageRetraite: number;
+      salaire: number;
+      anneesCotisation: number;
+      anneesRachetees: number;
+      nombreEnfants: number;
+    } 
+  } | null) => void;
   hideWarning?: boolean;
 }
 
@@ -249,10 +261,21 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
     const res = calculerRente();
     setResultat(res);
     if (res && onResultChange) {
-      onResultChange({ rente: res.renteMensuelleDefinitive });
+      onResultChange({ 
+        rente: res.renteMensuelleDefinitive,
+        params: {
+          etatCivil,
+          sexe,
+          anneeNaissance: parseInt(anneeNaissance) || 0,
+          ageRetraite,
+          salaire: parseFloat(salaireAnnuel) || 0,
+          anneesCotisation: parseInt(anneesCotisation) || 0,
+          anneesRachetees: parseInt(anneesRachetees) || 0,
+          nombreEnfants: parseInt(nombreEnfants) || 0
+        }
+      });
     }
   };
-
   const formatCHF = (amount: number | null | undefined) => !amount ? '0' : amount.toLocaleString('fr-CH');
   const formClass = `radar-form avs-form-small ${etatCivil === 'marie' ? 'avs-form-wide' : ''}`;
 
@@ -568,5 +591,4 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
     </div>
   );
 };
-
 export default SimulateurAVS;

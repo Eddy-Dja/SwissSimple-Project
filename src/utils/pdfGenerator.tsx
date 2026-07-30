@@ -30,6 +30,9 @@ const formatColoredAmount = (amount: number | null | undefined): any => {
 
 const fmt = (val: number | undefined) => val ? val.toLocaleString('de-CH') : '0';
 
+// ==========================================================
+// FONCTION 1 : DÉMÉNAGEMENT
+// ==========================================================
 export const generateDemenagementPDF = (data: any, t: any) => {
   const doc = new jsPDF();
   const today = new Date().toLocaleDateString('fr-CH');
@@ -87,19 +90,30 @@ export const generateDemenagementPDF = (data: any, t: any) => {
 
   // Tableau 2: Assurance Maladie
   const insBody: any[] = [
-    [t('pdf.avg_prime_a'), `${data.insuranceAvgA.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-    [t('pdf.avg_prime_b'), `${data.insuranceAvgB.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
-    [{ content: t('pdf.diff_assurance'), styles: { fontStyle: 'bold', halign: 'right' } }, formatColoredAmount(data.insuranceDiff)]
+    [
+      t('pdf.avg_prime_a'), 
+      `${data.insuranceAvgA.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`, 
+      ''
+    ],
+    [
+      t('pdf.avg_prime_b'), 
+      '', 
+      `${data.insuranceAvgB.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`
+    ],
+    [
+      { content: t('pdf.diff_assurance'), colSpan: 2, styles: { fontStyle: 'bold', halign: 'right' } }, 
+      formatColoredAmount(data.insuranceDiff)
+    ]
   ];
 
   autoTable(doc, {
     startY: (doc as any).lastAutoTable.finalY + 10,
-    head: [[t('pdf.assurance_maladie'), t('pdf.amount')]],
+    head: [[t('pdf.assurance_maladie'), data.insuranceDepName || t('pdf.commune_a'), data.insuranceArrName || t('pdf.commune_b')]],
     body: insBody,
     theme: 'grid',
     headStyles: { fillColor: [26, 32, 44], textColor: 255, fontStyle: 'bold', halign: 'left' },
     styles: { fontSize: 9, cellPadding: 3 },
-    columnStyles: { 1: { halign: 'left' } }
+    columnStyles: { 1: { halign: 'left' }, 2: { halign: 'left' } }
   });
 
   // Tableau 3: Total Impact Annuel
@@ -177,6 +191,9 @@ export const generateDemenagementPDF = (data: any, t: any) => {
   document.body.removeChild(link);
 };
 
+// ==========================================================
+// FONCTION 2 : RETRAITE
+// ==========================================================
 export const generateRetraitePDF = (data: any, t: any) => {
   const doc = new jsPDF();
   const today = new Date().toLocaleDateString('fr-CH');
@@ -197,9 +214,53 @@ export const generateRetraitePDF = (data: any, t: any) => {
   doc.setTextColor(59, 130, 246);
   doc.text(t('pdf.title_ret'), 14, 45);
 
-  // Tableau 1: Revenus
+  // ==========================================
+  // TABLEAU 1 : PARAMÈTRES DE SIMULATION (AVS & LPP)
+  // Ce tableau affiche le profil exact de l'utilisateur en haut du PDF
+  // ==========================================
+  const avsP = data.avsParams || {};
+  const lppP = data.lppParams || {};
+  
+  // Construction des lignes du tableau avec les traductions t()
+  const paramBody: any[] = [
+    // --- SOUS-SECTION AVS (Ligne d'en-tête grise) ---
+    [{ content: t('pdf.params_avs', 'Paramètres AVS'), colSpan: 2, styles: { fontStyle: 'bold', fillColor: [241, 245, 249], textColor: [30, 41, 59] } }],
+    [t('pdf.param_civil_state', 'État civil'), t(`avs.${avsP.etatCivil || 'celibataire'}`)],
+    [t('pdf.param_gender', 'Sexe'), t(`avs.${avsP.sexe || 'homme'}`)],
+    [t('pdf.param_birth_year', 'Année de naissance'), `${avsP.anneeNaissance || 0}`],
+    [t('pdf.param_avs_salary', 'Salaire annuel moyen'), `${avsP.salaire || 0} CHF`],
+    [t('pdf.param_avs_years', 'Années de cotisation'), `${avsP.anneesCotisation || 0} ${t('pdf.unit_years', 'ans')}`],
+    [t('pdf.param_avs_bought_years', 'Années rachetées'), `${avsP.anneesRachetees || 0} ${t('pdf.unit_year', 'an')}`],
+    [t('pdf.param_avs_children', 'Enfants'), `${avsP.nombreEnfants || 0}`],
+    [t('pdf.param_avs_age', 'Âge de retraite'), `${avsP.ageRetraite || 65} ${t('pdf.unit_years', 'ans')}`],
+    
+    [{ content: t('pdf.params_lpp', 'Paramètres LPP'), colSpan: 2, styles: { fontStyle: 'bold', fillColor: [241, 245, 249], textColor: [30, 41, 59] } }],
+    [t('pdf.param_birth_year', 'Année de naissance'), `${lppP.anneeNaissance || 0}`],
+    [t('pdf.param_lpp_salary', 'Salaire brut'), `${lppP.salaire || 0} CHF`],
+    [t('pdf.param_lpp_capital', 'Capital LPP actuel'), `${lppP.capitalActuel || 0} CHF`],
+    [t('pdf.param_lpp_buyback', 'Rachat annuel'), `${lppP.rachatAnnuel || 0} CHF`],
+    [t('pdf.param_lpp_age', 'Âge de retraite'), `${lppP.ageRetraite || 65} ${t('pdf.unit_years', 'ans')}`],
+    [t('pdf.param_lpp_interest', 'Taux d\'intérêt'), `${lppP.tauxInteret || 0} %`]
+  ];
+
+  // Génération du tableau PDF via jsPDF-autotable
   autoTable(doc, {
     startY: 52,
+    head: [[t('pdf.simulation_params', 'Profil de simulation'), '']],
+    body: paramBody,
+    theme: 'grid',
+    headStyles: { fillColor: [100, 116, 139], textColor: 255, fontStyle: 'bold', halign: 'left' },
+    styles: { fontSize: 9, cellPadding: 3 },
+    columnStyles: { 1: { halign: 'left', fontStyle: 'bold' } }
+  });
+
+  let nextY = (doc as any).lastAutoTable.finalY + 10;
+
+  // ==========================================
+  // TABLEAU 2 : REVENUS
+  // ==========================================
+  autoTable(doc, {
+    startY: nextY,
     head: [[t('pdf.ret_income'), t('pdf.monthly_amount')]],
     body: [
       [t('pdf.rente_avs'), `${data.renteAVS.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
@@ -211,10 +272,11 @@ export const generateRetraitePDF = (data: any, t: any) => {
     styles: { fontSize: 9, cellPadding: 3 },
     columnStyles: { 1: { halign: 'left' } }
   });
+  nextY = (doc as any).lastAutoTable.finalY + 10;
 
-  let nextY = (doc as any).lastAutoTable.finalY + 10;
-
-  // Tableau 2: Taux de remplacement
+  // ==========================================
+  // TABLEAU 3 : TAUX DE REMPLACEMENT
+  // ==========================================
   if (data.dernierSalaire > 0) {
     autoTable(doc, {
       startY: nextY,
@@ -231,7 +293,9 @@ export const generateRetraitePDF = (data: any, t: any) => {
     nextY = (doc as any).lastAutoTable.finalY + 10;
   }
 
-  // Tableau 3: Impact Retrait LPP
+  // ==========================================
+  // TABLEAU 4 : IMPACT RETRAIT LPP
+  // ==========================================
   if (data.retraitLPP > 0) {
     autoTable(doc, {
       startY: nextY,
@@ -248,7 +312,9 @@ export const generateRetraitePDF = (data: any, t: any) => {
     nextY = (doc as any).lastAutoTable.finalY + 10;
   }
 
-  // Tableau 4: Option Capital (Retraite)
+  // ==========================================
+  // TABLEAU 5 : OPTION CAPITAL (RETRAITE)
+  // ==========================================
   if (data.pourcentageCapital > 0) {
     autoTable(doc, {
       startY: nextY,
@@ -266,7 +332,9 @@ export const generateRetraitePDF = (data: any, t: any) => {
     nextY = (doc as any).lastAutoTable.finalY + 10;
   }
 
-  // Tableau 5: Objectif de revenu
+  // ==========================================
+  // TABLEAU 6 : OBJECTIF DE REVENU
+  // ==========================================
   if (data.revenuSouhaite > 0) {
     const objBody: any[] = [
       [t('pdf.desired_income'), `${data.revenuSouhaite.toLocaleString('de-CH', { minimumFractionDigits: 2 })} CHF`],
@@ -292,7 +360,9 @@ export const generateRetraitePDF = (data: any, t: any) => {
     nextY = (doc as any).lastAutoTable.finalY + 10;
   }
 
-  // Tableau 6: Recommandation 3a
+  // ==========================================
+  // TABLEAU 7 : RECOMMANDATION 3A
+  // ==========================================
   autoTable(doc, {
     startY: nextY,
     head: [[t('pdf.3a_reco_title'), t('pdf.details')]],
@@ -306,7 +376,9 @@ export const generateRetraitePDF = (data: any, t: any) => {
     columnStyles: { 1: { halign: 'left' } }
   });
 
-  // Pied de page
+  // ==========================================
+  // PIED DE PAGE
+  // ==========================================
   const pageCount = (doc as any).internal.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);

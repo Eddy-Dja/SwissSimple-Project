@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import RadarFiscal from '../modules/fiscal/RadarFiscal';
-import Assurance from '../modules/assurance_maladie/Assurance';
+import Assurance, { getRegionLabel } from '../modules/assurance_maladie/Assurance'; // <-- Import ajouté ici
 import EmailGate from '../components/EmailGate';
 import AuthModal from '../components/AuthModal';
 import { useAuth } from '../context/AuthContext';
@@ -11,11 +11,17 @@ import './DemenagementHub.css';
 import { Helmet } from 'react-helmet-async';
 
 const DemenagementHub: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useLocalStorageState<'impots' | 'assurance' | 'synthese'>('dem_activeTab', 'impots');
   
   const [taxDiff, setTaxDiff] = useState<number | null>(null);
   const [insuranceDiff, setInsuranceDiff] = useState<number | null>(null);
+
+  // Variables pour les codes bruts des régions d'assurance
+  const [insuranceDepCanton, setInsuranceDepCanton] = useState<string>('');
+  const [insuranceDepRegion, setInsuranceDepRegion] = useState<string>('');
+  const [insuranceArrCanton, setInsuranceArrCanton] = useState<string>('');
+  const [insuranceArrRegion, setInsuranceArrRegion] = useState<string>('');
 
   const [fraisUniquesInput, setFraisUniquesInput] = useLocalStorageState('dem_fraisUniques', '');
   const [ancienLoyerInput, setAncienLoyerInput] = useLocalStorageState('dem_ancienLoyer', '');
@@ -71,17 +77,45 @@ const DemenagementHub: React.FC = () => {
     }
   };
 
+  // --- FONCTION DE PARTAGE MULTILINGUE ---
+  const handleShare = async () => {
+    const communeDep = taxDetails?.depName || t('share.default_city');
+    const communeArr = taxDetails?.arrName || t('share.default_city');
+    
+    const impactText = totalDiff >= 0 
+      ? t('share.dem_saving', { amount: formatCHF(Math.abs(totalDiff)) })
+      : t('share.dem_cost', { amount: formatCHF(Math.abs(totalDiff)) });
+      
+    const shareText = t('share.dem_text', { from: communeDep, to: communeArr, impact: impactText });
+    const shareUrl = 'https://swisssimple.ch/demenagement';
+    const fullMessage = `${shareText} ${t('share.test_here')} : ${shareUrl}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'SwissSimple - Déménagement',
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.log('Partage annulé');
+      }
+    } else {
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeTab]);
 
   return (
     <div className="hub-container">
-
-<Helmet>
-  <title>Simulateur Déménagement Suisse | Impôts & Assurances comparés</title>
-  <meta name="description" content="Calculez le vrai coût d'un déménagement en Suisse. Comparez impôts, primes d'assurance maladie et loyers pour choisir la meilleure commune pour votre budget." />
-</Helmet>
+      <Helmet>
+        <title>Simulateur Déménagement Suisse | Impôts & Assurances comparés</title>
+        <meta name="description" content="Calculez le vrai coût d'un déménagement en Suisse. Comparez impôts, primes d'assurance maladie et loyers pour choisir la meilleure commune pour votre budget." />
+      </Helmet>
 
       <div className="hub-header">
         <h1 className="radar-title">{t('hub.demenagement_title')}</h1>
@@ -113,14 +147,21 @@ const DemenagementHub: React.FC = () => {
 
         {/* --- ÉTAPE 2 : ASSURANCE --- */}
         <div className={`hub-step ${activeTab === 'assurance' ? 'visible' : 'hidden'}`}>
-        <Assurance 
+          <Assurance 
             hideWarning
             initialMode="comparaison" 
             onPrevStep={() => setActiveTab('impots')} 
             onNextStep={() => setActiveTab('synthese')}
             onResultChange={(diff, details) => { 
               setInsuranceDiff(diff); 
-              if(details) { setInsuranceAvgA(details.avgA); setInsuranceAvgB(details.avgB); }
+              if(details) { 
+                setInsuranceAvgA(details.avgA); 
+                setInsuranceAvgB(details.avgB);
+                setInsuranceDepCanton(details.depCanton);
+                setInsuranceDepRegion(details.depRegion);
+                setInsuranceArrCanton(details.arrCanton);
+                setInsuranceArrRegion(details.arrRegion);
+              }
             }}
           />
         </div>
@@ -138,18 +179,41 @@ const DemenagementHub: React.FC = () => {
             )}
             
             <div className="synthese-recap">
+              {/* 1. MODULE IMPÔTS */}
               <div className="recap-item">
-                <span className="recap-title">{t('hub.recap_impots')}</span>
-                <p className={`recap-value ${taxDiff !== null && taxDiff >= 0 ? 'benefice' : 'perte'}`}>
-                  {taxDiff !== null ? `${taxDiff >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(taxDiff))} CHF / an` : t('hub.waiting_calc')}
-                </p>
+                <div className="recap-line">
+                  <span className="recap-title">{t('hub.recap_impots')}</span>
+                  <p className={`recap-value ${taxDiff !== null && taxDiff >= 0 ? 'benefice' : 'perte'}`}>
+                    {taxDiff !== null ? `${taxDiff >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(taxDiff))} CHF / an` : t('hub.waiting_calc')}
+                  </p>
+                </div>
+                {taxDetails && (taxDetails.depName || taxDetails.arrName) && (
+                  <div className="recap-module-detail">
+                    {t('hub.recap_move_details', { from: taxDetails.depName, to: taxDetails.arrName })}
+                  </div>
+                )}
               </div>
+              
+              {/* 2. MODULE ASSURANCE */}
               <div className="recap-item">
-                <span className="recap-title">{t('hub.recap_assurance')}</span>
-                <p className={`recap-value ${insuranceDiff !== null && insuranceDiff >= 0 ? 'benefice' : 'perte'}`}>
-                  {insuranceDiff !== null ? `${insuranceDiff >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(insuranceDiff))} CHF / an` : t('hub.waiting_calc')}
-                </p>
+                <div className="recap-line">
+                  <span className="recap-title">{t('hub.recap_assurance')}</span>
+                  <p className={`recap-value ${insuranceDiff !== null && insuranceDiff >= 0 ? 'benefice' : 'perte'}`}>
+                    {insuranceDiff !== null ? `${insuranceDiff >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(insuranceDiff))} CHF / an` : t('hub.waiting_calc')}
+                  </p>
+                </div>
+                {/* Traduction dynamique des régions via getRegionLabel importé */}
+                {(insuranceDepCanton || insuranceArrCanton) && (
+                  <div className="recap-module-detail">
+                    {t('hub.recap_move_details', { 
+                      from: `${insuranceDepCanton} - ${getRegionLabel(insuranceDepCanton, insuranceDepRegion, i18n.language)}`, 
+                      to: `${insuranceArrCanton} - ${getRegionLabel(insuranceArrCanton, insuranceArrRegion, i18n.language)}` 
+                    })}
+                  </div>
+                )}
               </div>
+              
+              {/* 3. TOTAL DÉMÉNAGEMENT */}
               <div className="recap-total">
                 <span>{t('hub.recap_total_move')}</span>
                 <h3 className={totalDiff >= 0 ? 'benefice' : 'perte'}>
@@ -157,6 +221,15 @@ const DemenagementHub: React.FC = () => {
                 </h3>
               </div>
             </div>
+
+            {/* --- BOUTON DE PARTAGE --- */}
+            {isDataReady && (
+              <div className="share-btn-container">
+                <button className="btn-hub-blue" onClick={handleShare}>
+                  {t('hub.share_result_btn')}
+                </button>
+              </div>
+            )}
 
             {!isUnlocked ? (
               <EmailGate 
@@ -271,6 +344,8 @@ const DemenagementHub: React.FC = () => {
                         insuranceDiff,
                         insuranceAvgA,
                         insuranceAvgB,
+                        insuranceDepName: `${insuranceDepCanton} - ${getRegionLabel(insuranceDepCanton, insuranceDepRegion, i18n.language)}`,
+                        insuranceArrName: `${insuranceArrCanton} - ${getRegionLabel(insuranceArrCanton, insuranceArrRegion, i18n.language)}`,
                         totalDiff,
                         fraisUniques: parseFloat(fraisUniquesInput) || 0,
                         ancienLoyer: parseFloat(ancienLoyerInput) || 0,
@@ -299,7 +374,7 @@ const DemenagementHub: React.FC = () => {
 
           </div>
         </div>
-        </div>
+      </div>
 
       <div className="avertissement-legal">
         <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>

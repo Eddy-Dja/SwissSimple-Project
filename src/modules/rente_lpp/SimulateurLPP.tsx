@@ -24,7 +24,7 @@ const getCotisationInfo = (age: number): { taux: number; tranche: string } => {
 };
 
 interface SimulateurLPPProps {
-  onResultChange?: (data: { rente: number, capital: number, salaire: number, moisRestants: number } | null) => void;
+  onResultChange?: (data: { rente: number, capital: number, salaire: number, moisRestants: number, params: { anneeNaissance: number, salaire: number, capitalActuel: number, rachatAnnuel: number, ageRetraite: number, tauxInteret: number } } | null) => void;
   hideWarning?: boolean;
 }
 
@@ -112,7 +112,15 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
         rente: calculerLPPMemo.renteMensuelle,
         capital: calculerLPPMemo.capitalFinal,
         salaire: parseFloat(salaireBrut) || 0,
-        moisRestants: anneesRestantes > 0 ? anneesRestantes * 12 : 0
+        moisRestants: anneesRestantes > 0 ? anneesRestantes * 12 : 0,
+        params: {
+          anneeNaissance: parseInt(anneeNaissance) || 0,
+          salaire: parseFloat(salaireBrut) || 0,
+          capitalActuel: parseFloat(capitalActuel) || 0,
+          rachatAnnuel: parseFloat(rachatAnnuel) || 0,
+          ageRetraite,
+          tauxInteret: parseFloat(tauxInteret) || 0
+        }
       });
     }
   };

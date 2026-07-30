@@ -156,9 +156,17 @@ interface AssuranceProps {
   initialMode?: 'simple' | 'comparaison';
   onPrevStep?: () => void;
   onNextStep?: () => void;
-  onResultChange?: (diff: number | null, details?: { avgA: number, avgB: number }) => void;
+  onResultChange?: (diff: number | null, details?: { avgA: number, avgB: number, depCanton: string, depRegion: string, arrCanton: string, arrRegion: string }) => void;
   hideWarning?: boolean;
 }
+
+// On exporte la fonction avec une valeur par défaut pour éviter le crash si la langue est vide
+export const getRegionLabel = (canton: string, reg: string, lang: string = 'fr') => {
+  const isDe = lang ? lang.startsWith('de') : false;
+  const dict = isDe ? REGION_NAMES_DE : REGION_NAMES;
+  const defaultWord = isDe ? 'Region ' : 'Région ';
+  return dict[canton]?.[reg] || reg.replace('PR-REG CH', defaultWord);
+};
 
 export default function Assurance({ initialMode = 'simple', onPrevStep, onNextStep, onResultChange, hideWarning }: AssuranceProps) {
   const { t, i18n } = useTranslation();
@@ -173,7 +181,6 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
   const [tariftyp, setTariftyp] = useLocalStorageState('ass_tariftyp', ''); 
   
   const [cantonA, setCantonA] = useLocalStorageState('ass_cantonA', 'VD');
-  // availableRegionsA et selectedRegionA sont gérés dynamiquement par le fetch, on laisse en useState normal
   const [availableRegionsA, setAvailableRegionsA] = useState<RegionOption[]>([]);
   const [selectedRegionA, setSelectedRegionA] = useLocalStorageState('ass_selectedRegionA', '');
 
@@ -181,7 +188,6 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
   const [availableRegionsB, setAvailableRegionsB] = useState<RegionOption[]>([]);
   const [selectedRegionB, setSelectedRegionB] = useLocalStorageState('ass_selectedRegionB', '');
 
-  // Les résultats de recherche n'ont pas besoin d'être sauvegardés dans le localStorage
   const [resultsA, setResultsA] = useState<Prime[]>([]);
   const [resultsB, setResultsB] = useState<Prime[]>([]);
   const [loading, setLoading] = useState(false);
@@ -195,14 +201,6 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
     else if (!isChild && !FRACT_ERW.includes(franchise)) setFranchise(300); 
   }, [selectedAge, franchise, isChild]);
 
-  // Fonction pour obtenir le nom de la région dans la bonne langue
-  const getRegionLabel = (canton: string, reg: string) => {
-    const isDe = i18n.language.startsWith('de');
-    const dict = isDe ? REGION_NAMES_DE : REGION_NAMES;
-    const defaultWord = isDe ? 'Region ' : 'Région ';
-    return dict[canton]?.[reg] || reg.replace('PR-REG CH', defaultWord);
-  };
-
   const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<React.SetStateAction<RegionOption[]>>, setSelectedRegion: React.Dispatch<React.SetStateAction<string>>) => {
     const { data, error } = await supabase.from('primes_lamal').select('Region').eq('Kanton', canton).eq('Geschäftsjahr', 2026);
     if (error || !data) { setAvailableRegions([]); return; }
@@ -210,31 +208,27 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
     
     const options: RegionOption[] = uniqueRegions.map(reg => ({ 
       value: reg, 
-      label: getRegionLabel(canton, reg)
+      label: getRegionLabel(canton, reg, i18n.language) // Langue ajoutée ici
     })).sort((a, b) => a.value.localeCompare(b.value));
     
     setAvailableRegions(options);
     if (options.length > 0) setSelectedRegion(options[0].value);
   };
 
-  // Charger les régions quand le canton A change
   useEffect(() => {
     fetchRegions(cantonA, setAvailableRegionsA, setSelectedRegionA);
   }, [cantonA]);
 
-  // Charger les régions quand le canton B change
   useEffect(() => {
     fetchRegions(cantonB, setAvailableRegionsB, setSelectedRegionB);
   }, [cantonB]);
 
-  // Met à jour les textes des régions A quand la langue change
   useEffect(() => {
-    setAvailableRegionsA(prev => prev.map(opt => ({ ...opt, label: getRegionLabel(cantonA, opt.value) })));
+    setAvailableRegionsA(prev => prev.map(opt => ({ ...opt, label: getRegionLabel(cantonA, opt.value, i18n.language) })));
   }, [i18n.language, cantonA]);
 
-  // Met à jour les textes des régions B quand la langue change
   useEffect(() => {
-    setAvailableRegionsB(prev => prev.map(opt => ({ ...opt, label: getRegionLabel(cantonB, opt.value) })));
+    setAvailableRegionsB(prev => prev.map(opt => ({ ...opt, label: getRegionLabel(cantonB, opt.value, i18n.language) })));
   }, [i18n.language, cantonB]);
 
   const getFilteredPrimes = async (targetCanton: string, targetRegion: string) => {
@@ -266,7 +260,14 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
         const avgB = calculateAvgPrime(primesB);
         const calculatedDiff = avgA.annuel - avgB.annuel;
         
-        if (onResultChange) onResultChange(calculatedDiff, { avgA: avgA.annuel, avgB: avgB.annuel });
+        if (onResultChange) onResultChange(calculatedDiff, { 
+          avgA: avgA.annuel, 
+          avgB: avgB.annuel,
+          depCanton: cantonA,
+          depRegion: selectedRegionA,
+          arrCanton: cantonB,
+          arrRegion: selectedRegionB
+        });
       } else {
         setResultsB([]);
         if (onResultChange) onResultChange(null);
@@ -297,11 +298,10 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
 
   return (
     <div className="assurance-container">
-
-  <Helmet>
-  <title>Comparatif Assurances Maladie Suisse | Primes LAMal 2026</title>
-  <meta name="description" content="Comparez les primes de l'assurance maladie de base (LAMal) 2026 par canton et par âge. Trouvez la caisse la moins chère en Suisse avec notre simulateur gratuit." />
-</Helmet>
+      <Helmet>
+        <title>Comparatif Assurances Maladie Suisse | Primes LAMal 2026</title>
+        <meta name="description" content="Comparez les primes de l'assurance maladie de base (LAMal) 2026 par canton et par âge. Trouvez la caisse la moins chère en Suisse avec notre simulateur gratuit." />
+      </Helmet>
 
       <div className="assurance-header">
         <h1 className="assurance-title">{t('assurance.title')}</h1>
