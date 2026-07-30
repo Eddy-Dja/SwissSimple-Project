@@ -45,7 +45,12 @@ const RetraiteHub: React.FC = () => {
   const capitalCash = capitalLPPBase * (pourcentageCapital / 100);
 
   const totalRetraite = renteAVSBase + renteLPPFinale;
-  const tauxRemplacement = dernierSalaire > 0 ? Math.round((totalRetraite / dernierSalaire) * 100) : 0;
+  
+  // --- CORRECTION MATHÉMATIQUE ICI ---
+  // On calcule le salaire mensuel pour comparer des pommes avec des pommes
+  const salaireMensuel = dernierSalaire > 0 ? dernierSalaire / 12 : 0;
+  const tauxRemplacement = salaireMensuel > 0 ? Math.round((totalRetraite / salaireMensuel) * 100) : 0;
+  // -----------------------------------
   
   const tauxMarginalEstime = dernierSalaire > 200000 ? 0.30 : (dernierSalaire > 100000 ? 0.25 : 0.20);
   const estimatedTaxSaving = Math.round(7258 * tauxMarginalEstime);
@@ -269,7 +274,7 @@ const RetraiteHub: React.FC = () => {
                     <span className="gauge-text">{tauxRemplacement}%</span>
                   </div>
                   {dernierSalaire > 0 && tauxRemplacement < 70 ? (
-                    <p className="break-even-result perte mt-15" dangerouslySetInnerHTML={{ __html: t('hub.rate_warning', { missing: formatCHFPrecis(dernierSalaire * 0.7 - totalRetraite) }) }} />
+                    <p className="break-even-result perte mt-15" dangerouslySetInnerHTML={{ __html: t('hub.rate_warning', { missing: formatCHFPrecis((salaireMensuel * 0.7) - totalRetraite) }) }} />
                   ) : dernierSalaire > 0 ? (
                     <p className="break-even-result benefice mt-15">
                       {t('hub.rate_success')}
