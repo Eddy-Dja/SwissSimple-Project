@@ -225,3 +225,34 @@
     margin-right: 0 !important;
   }
 }
+
+/* ============================================================
+   CORRECTION MODE SOMBRE : CONSERVER LES COULEURS DES PANNEAUX LPP
+   ============================================================ */
+body.dark-mode .lpp-panel-blue,
+body.dark .lpp-panel-blue {
+  background-color: #eff6ff !important;
+  border: 2px solid #bfdbfe !important;
+  color: #1e293b !important; /* Texte sombre pour rester lisible sur fond clair */
+}
+
+body.dark-mode .lpp-panel-green,
+body.dark .lpp-panel-green {
+  background-color: #f0fdf4 !important;
+  border: 2px solid #bbf7d0 !important;
+  color: #1e293b !important; 
+}
+
+/* Forcer les éléments internes des panneaux à rester lisibles (texte foncé) */
+body.dark-mode .lpp-panel .simple-box-label,
+body.dark-mode .lpp-panel .simple-box-value,
+body.dark-mode .lpp-panel .lpp-panel-header,
+body.dark-mode .lpp-panel .lpp-info-box,
+body.dark-mode .lpp-panel .lpp-info-box {
+  color: #1e293b !important; 
+}
+
+/* Les boîtes internes (light) doivent rester blanches */
+body.dark-mode .lpp-panel .simple-box.light {
+  background-color: #ffffff !important;
+}

@@ -106,6 +106,7 @@ body.dark-mode .hero-badge {
 }
 
 /* --- CARTES, FORMULAIRES, CONTENEURS & PANNEAUX INTERNES --- */
+/* ATTENTION : On a retiré .avs-panel, .lpp-panel, .comparison-diff d'ici pour ne pas écraser leurs couleurs */
 body.dark-mode .tool-card,
 body.dark-mode .premium-card, /* Sera surchargé plus bas pour devenir blanc */
 body.dark-mode .radar-form,
@@ -118,22 +119,15 @@ body.dark-mode .avertissement-legal,
 body.dark-mode .modal-container,
 body.dark-mode .avs-full-width,
 body.dark-mode .avs-panels-wrapper,
-body.dark-mode .avs-panel,
-body.dark-mode .avs-panel-blue,
-body.dark-mode .avs-panel-red,
 body.dark-mode .avs-phase-box,
 body.dark-mode .avs-box-borderless,
 body.dark-mode .lpp-result-container,
 body.dark-mode .lpp-panels-wrapper,
-body.dark-mode .lpp-panel,
-body.dark-mode .lpp-panel-blue,
-body.dark-mode .lpp-panel-green,
 body.dark-mode .lpp-recap-box,
 body.dark-mode .assurance-results,
 body.dark-mode .location-column,
 body.dark-mode .comparison-summary,
-body.dark-mode .comparison-avg-col,
-body.dark-mode .comparison-diff {
+body.dark-mode .comparison-avg-col {
   background: #1E293B !important;
   border-color: #334155 !important;
   color: #F8FAFC !important;
@@ -258,4 +252,70 @@ body.dark-mode .btn-hero-secondary:hover {
   background: #F8FAFC !important;
   border-color: #F8FAFC !important;
   box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1) !important;
+}
+
+
+/* ============================================================
+   EXCEPTIONS : CONSERVER LES COULEURS CLAIRES DES PANNEAUX
+   ============================================================ */
+
+/* 1. Panneaux AVS (Bleu et Rouge) */
+body.dark-mode .avs-panel-blue {
+  background-color: #eff6ff !important;
+  border: 2px solid #bfdbfe !important;
+  color: #1e293b !important;
+}
+body.dark-mode .avs-panel-red {
+  background-color: #fef2f2 !important;
+  border: 2px solid #fecaca !important;
+  color: #1e293b !important;
+}
+
+/* 2. Panneaux LPP (Bleu et Vert) */
+body.dark-mode .lpp-panel-blue {
+  background-color: #eff6ff !important;
+  border: 2px solid #bfdbfe !important;
+  color: #1e293b !important;
+}
+body.dark-mode .lpp-panel-green {
+  background-color: #f0fdf4 !important;
+  border: 2px solid #bbf7d0 !important;
+  color: #1e293b !important;
+}
+
+/* 3. Forcer le texte à l'intérieur de ces panneaux à rester foncé (pour la lisibilité) */
+body.dark-mode .avs-panel .simple-box.light,
+body.dark-mode .lpp-panel .simple-box.light,
+body.dark-mode .avs-phase-box {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode .avs-panel .simple-box-label,
+body.dark-mode .lpp-panel .simple-box-label,
+body.dark-mode .avs-panel .simple-box-value,
+body.dark-mode .lpp-panel .simple-box-value,
+body.dark-mode .avs-panel-header,
+body.dark-mode .lpp-panel-header,
+body.dark-mode .avs-phase-text-blue,
+body.dark-mode .avs-phase-text-red,
+body.dark-mode .avs-info-blue,
+body.dark-mode .lpp-info-box {
+  color: #1e293b !important;
+}
+
+/* 4. BLOC SURCOÛT / ÉCONOMIE (ASSURANCE MALADIE) */
+body.dark-mode .comparison-diff.perte {
+  background: rgba(239, 68, 68, 0.15) !important; 
+  color: #EF4444 !important; 
+  border: 1px solid rgba(239, 68, 68, 0.3) !important; 
+}
+body.dark-mode .comparison-diff.benefice {
+  background: rgba(16, 185, 129, 0.15) !important; 
+  color: #10B981 !important; 
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+body.dark-mode .comparison-diff.neutre {
+  background: rgba(148, 163, 184, 0.1) !important; 
+  color: #CBD5E1 !important; 
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
 }

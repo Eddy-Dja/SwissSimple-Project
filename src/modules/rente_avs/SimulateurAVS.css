@@ -279,3 +279,39 @@
     margin-right: 0 !important;
   }
 }
+
+/* ============================================================
+   CORRECTION MODE SOMBRE : CONSERVER LES COULEURS DES PANNEAUX AVS
+   ============================================================ */
+body.dark-mode .avs-panel-blue,
+body.dark .avs-panel-blue {
+  background-color: #eff6ff !important;
+  border: 2px solid #bfdbfe !important;
+  color: #1e293b !important; /* Texte sombre pour rester lisible sur fond clair */
+}
+
+body.dark-mode .avs-panel-red,
+body.dark .avs-panel-red {
+  background-color: #fef2f2 !important;
+  border: 2px solid #fecaca !important;
+  color: #1e293b !important; 
+}
+
+/* Forcer les éléments internes des panneaux à rester lisibles (texte foncé) */
+body.dark-mode .avs-panel .simple-box-label,
+body.dark-mode .avs-panel .simple-box-value,
+body.dark-mode .avs-panel .avs-header-blue,
+body.dark-mode .avs-panel .avs-header-red,
+body.dark-mode .avs-panel .avs-phase-text-blue,
+body.dark-mode .avs-panel .avs-phase-text-red,
+body.dark-mode .avs-panel .avs-info-blue,
+body.dark-mode .avs-panel .avs-warning-text-yellow,
+body.dark-mode .avs-panel .avs-warning-text-green {
+  color: #1e293b !important; 
+}
+
+/* Les boîtes internes (light) doivent rester blanches */
+body.dark-mode .avs-panel .simple-box.light,
+body.dark-mode .avs-panel .avs-phase-box {
+  background-color: #ffffff !important;
+}
