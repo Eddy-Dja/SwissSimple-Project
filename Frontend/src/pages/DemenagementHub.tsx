@@ -1,0 +1,389 @@
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import RadarFiscal from '../modules/fiscal/RadarFiscal';
+import Assurance, { getRegionLabel } from '../modules/assurance_maladie/Assurance'; // <-- Import ajouté ici
+import EmailGate from '../components/EmailGate';
+import AuthModal from '../components/AuthModal';
+import { useAuth } from '../context/AuthContext';
+import { generateDemenagementPDF } from '../utils/pdfGenerator';
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
+import './DemenagementHub.css';
+import { Helmet } from 'react-helmet-async';
+
+const DemenagementHub: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const [activeTab, setActiveTab] = useLocalStorageState<'impots' | 'assurance' | 'synthese'>('dem_activeTab', 'impots');
+  
+  const [taxDiff, setTaxDiff] = useState<number | null>(null);
+  const [insuranceDiff, setInsuranceDiff] = useState<number | null>(null);
+
+  // Variables pour les codes bruts des régions d'assurance
+  const [insuranceDepCanton, setInsuranceDepCanton] = useState<string>('');
+  const [insuranceDepRegion, setInsuranceDepRegion] = useState<string>('');
+  const [insuranceArrCanton, setInsuranceArrCanton] = useState<string>('');
+  const [insuranceArrRegion, setInsuranceArrRegion] = useState<string>('');
+
+  const [fraisUniquesInput, setFraisUniquesInput] = useLocalStorageState('dem_fraisUniques', '');
+  const [ancienLoyerInput, setAncienLoyerInput] = useLocalStorageState('dem_ancienLoyer', '');
+  const [nouveauLoyerInput, setNouveauLoyerInput] = useLocalStorageState('dem_nouveauLoyer', '');
+  const [ancienTransportInput, setAncienTransportInput] = useLocalStorageState('dem_ancienTransport', '');
+  const [nouveauTransportInput, setNouveauTransportInput] = useLocalStorageState('dem_nouveauTransport', '');
+  
+  const [pointMortMois, setPointMortMois] = useState<number | null>(null);
+  const [analyseDetails, setAnalyseDetails] = useState<{loyer: number, transport: number, economiesReelles: number} | null>(null);
+
+  const [taxDetails, setTaxDetails] = useState<any>(null);
+  const [insuranceAvgA, setInsuranceAvgA] = useState<number>(0);
+  const [insuranceAvgB, setInsuranceAvgB] = useState<number>(0);
+
+  const { user } = useAuth();
+  const isUnlocked = !!user;
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const totalDiff = (taxDiff || 0) + (insuranceDiff || 0);
+  const isDataReady = taxDiff !== null && insuranceDiff !== null;
+
+  const formatCHF = (amount: number) => Math.round(amount).toLocaleString('de-CH');
+  const formatCHFPrecis = (amount: number) => amount.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  
+  const calculateBreakEven = () => {
+    let fraisUniques = parseFloat(fraisUniquesInput) || 0;
+    let ancienLoyer = parseFloat(ancienLoyerInput) || 0;
+    let nouveauLoyer = parseFloat(nouveauLoyerInput) || 0;
+    let ancienT = parseFloat(ancienTransportInput) || 0;
+    let nouveauT = parseFloat(nouveauTransportInput) || 0;
+    
+    if (fraisUniques < 0) fraisUniques = 0;
+    if (ancienLoyer < 0) ancienLoyer = 0;
+    if (nouveauLoyer < 0) nouveauLoyer = 0;
+    if (ancienT < 0) ancienT = 0;
+    if (nouveauT < 0) nouveauT = 0;
+
+    const diffLoyerAnnuel = (ancienLoyer - nouveauLoyer) * 12;
+    const diffTransportAnnuel = ancienT - nouveauT;
+    const economiesReelles = totalDiff + diffLoyerAnnuel + diffTransportAnnuel;
+
+    setAnalyseDetails({ loyer: diffLoyerAnnuel, transport: diffTransportAnnuel, economiesReelles });
+
+    if (economiesReelles <= 0) {
+      setPointMortMois(-1);
+      return;
+    }
+    if (fraisUniques > 0) {
+      const mois = Math.ceil(fraisUniques / (economiesReelles / 12));
+      setPointMortMois(mois);
+    } else {
+      setPointMortMois(null);
+    }
+  };
+
+  // --- FONCTION DE PARTAGE MULTILINGUE ---
+  const handleShare = async () => {
+    const communeDep = taxDetails?.depName || t('share.default_city');
+    const communeArr = taxDetails?.arrName || t('share.default_city');
+    
+    const impactText = totalDiff >= 0 
+      ? t('share.dem_saving', { amount: formatCHF(Math.abs(totalDiff)) })
+      : t('share.dem_cost', { amount: formatCHF(Math.abs(totalDiff)) });
+      
+    const shareText = t('share.dem_text', { from: communeDep, to: communeArr, impact: impactText });
+    const shareUrl = 'https://swisssimple.ch/demenagement';
+    const fullMessage = `${shareText} ${t('share.test_here')} : ${shareUrl}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'SwissSimple - Déménagement',
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.log('Partage annulé');
+      }
+    } else {
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
+  return (
+    <div className="hub-container">
+      <Helmet>
+        <title>Simulateur Déménagement Suisse | Impôts & Assurances comparés</title>
+        <meta name="description" content="Calculez le vrai coût d'un déménagement en Suisse. Comparez impôts, primes d'assurance maladie et loyers pour choisir la meilleure commune pour votre budget." />
+      </Helmet>
+
+      <div className="hub-header">
+        <h1 className="radar-title">{t('hub.demenagement_title')}</h1>
+        <p>{t('hub.demenagement_subtitle')}</p>
+        
+        <div className="hub-tabs">
+          <button className={activeTab === 'impots' ? 'active' : ''} onClick={() => setActiveTab('impots')}>
+            {t('hub.tab1_impots')}
+          </button>
+          <button className={activeTab === 'assurance' ? 'active' : ''} onClick={() => setActiveTab('assurance')}>
+            {t('hub.tab2_assurance')}
+          </button>
+          <button className={activeTab === 'synthese' ? 'active' : ''} onClick={() => setActiveTab('synthese')}>
+            {t('hub.tab3_synthese')}
+          </button>
+        </div>
+      </div>
+
+      <div className="hub-content">
+        {/* --- ÉTAPE 1 : IMPÔTS --- */}
+        <div className={`hub-step ${activeTab === 'impots' ? 'visible' : 'hidden'}`}>
+          <RadarFiscal 
+            hideWarning
+            initialMode="comparaison" 
+            onNextStep={() => setActiveTab('assurance')}
+            onResultChange={(diff, details) => { setTaxDiff(diff); setTaxDetails(details); }}
+          />
+        </div>
+
+        {/* --- ÉTAPE 2 : ASSURANCE --- */}
+        <div className={`hub-step ${activeTab === 'assurance' ? 'visible' : 'hidden'}`}>
+          <Assurance 
+            hideWarning
+            initialMode="comparaison" 
+            onPrevStep={() => setActiveTab('impots')} 
+            onNextStep={() => setActiveTab('synthese')}
+            onResultChange={(diff, details) => { 
+              setInsuranceDiff(diff); 
+              if(details) { 
+                setInsuranceAvgA(details.avgA); 
+                setInsuranceAvgB(details.avgB);
+                setInsuranceDepCanton(details.depCanton);
+                setInsuranceDepRegion(details.depRegion);
+                setInsuranceArrCanton(details.arrCanton);
+                setInsuranceArrRegion(details.arrRegion);
+              }
+            }}
+          />
+        </div>
+
+        {/* --- ÉTAPE 3 : SYNTHÈSE FINALE --- */}
+        <div className={`hub-step ${activeTab === 'synthese' ? 'visible' : 'hidden'}`}>
+          <div className="synthese-container">
+            <h2>{t('hub.synthese_title_move')}</h2>
+            <p>{t('hub.synthese_intro_move')}</p>
+            
+            {!isDataReady && (
+              <p className="hub-warning-message">
+                {t('hub.waiting_message')}
+              </p>
+            )}
+            
+            <div className="synthese-recap">
+              {/* 1. MODULE IMPÔTS */}
+              <div className="recap-item">
+                <div className="recap-line">
+                  <span className="recap-title">{t('hub.recap_impots')}</span>
+                  <p className={`recap-value ${taxDiff !== null && taxDiff >= 0 ? 'benefice' : 'perte'}`}>
+                    {taxDiff !== null ? `${taxDiff >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(taxDiff))} CHF / an` : t('hub.waiting_calc')}
+                  </p>
+                </div>
+                {taxDetails && (taxDetails.depName || taxDetails.arrName) && (
+                  <div className="recap-module-detail">
+                    {t('hub.recap_move_details', { from: taxDetails.depName, to: taxDetails.arrName })}
+                  </div>
+                )}
+              </div>
+              
+              {/* 2. MODULE ASSURANCE */}
+              <div className="recap-item">
+                <div className="recap-line">
+                  <span className="recap-title">{t('hub.recap_assurance')}</span>
+                  <p className={`recap-value ${insuranceDiff !== null && insuranceDiff >= 0 ? 'benefice' : 'perte'}`}>
+                    {insuranceDiff !== null ? `${insuranceDiff >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(insuranceDiff))} CHF / an` : t('hub.waiting_calc')}
+                  </p>
+                </div>
+                {/* Traduction dynamique des régions via getRegionLabel importé */}
+                {(insuranceDepCanton || insuranceArrCanton) && (
+                  <div className="recap-module-detail">
+                    {t('hub.recap_move_details', { 
+                      from: `${insuranceDepCanton} - ${getRegionLabel(insuranceDepCanton, insuranceDepRegion, i18n.language)}`, 
+                      to: `${insuranceArrCanton} - ${getRegionLabel(insuranceArrCanton, insuranceArrRegion, i18n.language)}` 
+                    })}
+                  </div>
+                )}
+              </div>
+              
+              {/* 3. TOTAL DÉMÉNAGEMENT */}
+              <div className="recap-total">
+                <span>{t('hub.recap_total_move')}</span>
+                <h3 className={totalDiff >= 0 ? 'benefice' : 'perte'}>
+                  {isDataReady ? `${totalDiff >= 0 ? '+' : '-'}${formatCHF(Math.abs(totalDiff))} CHF / an` : t('hub.waiting_calc')}
+                </h3>
+              </div>
+            </div>
+
+            {/* --- BOUTON DE PARTAGE --- */}
+            {isDataReady && (
+              <div className="share-btn-container">
+                <button className="btn-hub-blue" onClick={handleShare}>
+                  {t('hub.share_result_btn')}
+                </button>
+              </div>
+            )}
+
+            {!isUnlocked ? (
+              <EmailGate 
+                title={t('hub.gate_title')}
+                description={t('hub.gate_desc_move')}
+                onUnlock={() => setIsAuthModalOpen(true)}
+              />
+            ) : (
+              <div className="unlocked-results">
+                <h3>{t('hub.unlocked')}</h3>
+                <p>{t('hub.unlocked_desc_move')}</p>
+
+                <div className="analysis-card">
+                  <h4>{t('hub.roi_title')}</h4>
+                  <p className="analysis-desc">{t('hub.roi_desc')}</p>
+                  
+                  <div className="roi-section">
+                    <h5>{t('hub.roi_unique')}</h5>
+                    <div className="break-even-grid">
+                      <div className="break-even-item">
+                        <label>{t('hub.roi_unique_label')}</label>
+                        <div className="input-wrapper">
+                          <span className="input-currency">CHF</span>
+                          <input type="number" min="0" step="0.01" placeholder="Ex: 3000.00" value={fraisUniquesInput} onChange={(e) => setFraisUniquesInput(e.target.value)} className="break-even-input" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="roi-section">
+                    <h5>{t('hub.roi_monthly')}</h5>
+                    <div className="break-even-grid">
+                      <div className="break-even-item">
+                        <label>{t('hub.roi_old_rent')}</label>
+                        <div className="input-wrapper">
+                          <span className="input-currency">CHF</span>
+                          <input type="number" min="0" step="0.01" placeholder="Ex: 1800.00" value={ancienLoyerInput} onChange={(e) => setAncienLoyerInput(e.target.value)} className="break-even-input" />
+                        </div>
+                      </div>
+                      <div className="break-even-item">
+                        <label>{t('hub.roi_new_rent')}</label>
+                        <div className="input-wrapper">
+                          <span className="input-currency">CHF</span>
+                          <input type="number" min="0" step="0.01" placeholder="Ex: 1600.00" value={nouveauLoyerInput} onChange={(e) => setNouveauLoyerInput(e.target.value)} className="break-even-input" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="roi-section">
+                    <h5>{t('hub.roi_transport')}</h5>
+                    <div className="break-even-grid">
+                      <div className="break-even-item">
+                        <label>{t('hub.roi_old_transport')}</label>
+                        <div className="input-wrapper">
+                          <span className="input-currency">CHF</span>
+                          <input type="number" min="0" step="0.01" placeholder="Ex: 800.00" value={ancienTransportInput} onChange={(e) => setAncienTransportInput(e.target.value)} className="break-even-input" />
+                        </div>
+                      </div>
+                      <div className="break-even-item">
+                        <label>{t('hub.roi_new_transport')}</label>
+                        <div className="input-wrapper">
+                          <span className="input-currency">CHF</span>
+                          <input type="number" min="0" step="0.01" placeholder="Ex: 1500.00" value={nouveauTransportInput} onChange={(e) => setNouveauTransportInput(e.target.value)} className="break-even-input" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="roi-calc-container">
+                    <button className="btn-calc-blue w-100" onClick={calculateBreakEven}>{t('hub.roi_calc_btn')}</button>
+                  </div>
+                  
+                  {pointMortMois !== null && analyseDetails && (
+                    <div className={`break-even-result ${pointMortMois === -1 ? 'perte' : 'benefice'}`}>
+                      {pointMortMois === -1 ? (
+                        <p dangerouslySetInnerHTML={{ __html: t('hub.roi_not_profitable', {
+                          totalDiff: formatCHFPrecis(totalDiff),
+                          loyer: analyseDetails.loyer >= 0 ? `+ ${formatCHFPrecis(analyseDetails.loyer)}` : `- ${formatCHFPrecis(Math.abs(analyseDetails.loyer))}`,
+                          transport: analyseDetails.transport >= 0 ? `+ ${formatCHFPrecis(analyseDetails.transport)}` : `- ${formatCHFPrecis(Math.abs(analyseDetails.transport))}`,
+                          loss: formatCHFPrecis(Math.abs(analyseDetails.economiesReelles))
+                        }) }} />
+                      ) : pointMortMois === 0 ? (
+                        <p>{t('hub.roi_profitable_0')}</p>
+                      ) : (
+                        <p dangerouslySetInnerHTML={{ __html: t('hub.roi_profitable', {
+                          realEco: formatCHFPrecis(analyseDetails.economiesReelles),
+                          tax: formatCHFPrecis(totalDiff),
+                          rent: `${analyseDetails.loyer >= 0 ? '+' : '-'}${formatCHFPrecis(Math.abs(analyseDetails.loyer))}`,
+                          transport: `${analyseDetails.transport >= 0 ? '+' : '-'}${formatCHFPrecis(Math.abs(analyseDetails.transport))}`,
+                          fees: formatCHFPrecis(parseFloat(fraisUniquesInput) || 0),
+                          months: pointMortMois,
+                          year: Math.floor(pointMortMois / 12) + 1
+                        }) }} />
+                      )}
+                    </div>
+                  )}
+                </div>
+                
+                <div className="analysis-card">
+                  <h4>{t('hub.pdf_title')}</h4>
+                  <p className="analysis-desc">{t('hub.pdf_desc_move')}</p>
+                  <div className="hub-navigation pdf-btn-container">
+                    <button 
+                      className="btn-hub-blue" 
+                      onClick={() => generateDemenagementPDF({
+                        taxDiff, 
+                        taxDep: taxDetails?.dep,
+                        taxArr: taxDetails?.arr,
+                        depName: taxDetails?.depName,
+                        arrName: taxDetails?.arrName,
+                        insuranceDiff,
+                        insuranceAvgA,
+                        insuranceAvgB,
+                        insuranceDepName: `${insuranceDepCanton} - ${getRegionLabel(insuranceDepCanton, insuranceDepRegion, i18n.language)}`,
+                        insuranceArrName: `${insuranceArrCanton} - ${getRegionLabel(insuranceArrCanton, insuranceArrRegion, i18n.language)}`,
+                        totalDiff,
+                        fraisUniques: parseFloat(fraisUniquesInput) || 0,
+                        ancienLoyer: parseFloat(ancienLoyerInput) || 0,
+                        nouveauLoyer: parseFloat(nouveauLoyerInput) || 0,
+                        ancienTransport: parseFloat(ancienTransportInput) || 0,
+                        nouveauTransport: parseFloat(nouveauTransportInput) || 0,
+                        realEco: analyseDetails?.economiesReelles || 0,
+                        pointMortMois
+                      }, t)}
+                    >
+                      {t('hub.pdf_btn_move')}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="hub-navigation">
+              <button className="btn-hub-next" onClick={() => setActiveTab('impots')}>
+                {t('hub.back_impots', '← Détails Impôts')}
+              </button>
+              <button className="btn-hub-next" onClick={() => setActiveTab('assurance')}> 
+                {t('hub.back_assurance', '← Détails Assurance')}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div className="avertissement-legal">
+        <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>
+        <span className="texte-avertissement">{t('hub.warning_move')}</span>
+      </div>
+
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+    </div>
+  );
+};
+
+export default DemenagementHub;

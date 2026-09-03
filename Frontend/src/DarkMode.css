@@ -1,0 +1,321 @@
+/* ============================================================
+   MODE SOMBRE GLOBAL (OPTIMISÉ, COMPACT ET CONTRASTÉ)
+   ============================================================ */
+
+/* --- FONDS GLOBAUX & TEXTES --- */
+body.dark-mode,
+body.dark-mode .swiss-app,
+body.dark-mode .radar-container,
+body.dark-mode .lpp-container,
+body.dark-mode .assurance-container,
+body.dark-mode .hub-container,
+body.dark-mode .hero-section,
+body.dark-mode .premium-section {
+  background-color: #0B0F19 !important;
+  color: #F8FAFC !important;
+}
+
+body.dark-mode .free-tools-section { background-color: #111827 !important; }
+
+/* Textes blancs (Titres, en-têtes de panneaux et valeurs importantes) */
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5,
+body.dark-mode .simple-box-value, body.dark-mode .simple-box-value-dark,
+body.dark-mode .reco-item strong,
+body.dark-mode .modal-header h2, body.dark-mode .modal-header p, body.dark-mode .modal-footer span,
+body.dark-mode .email-gate-title,
+body.dark-mode .avs-panel-header, body.dark-mode .lpp-panel-header,
+body.dark-mode .avs-phase-text-blue, body.dark-mode .avs-phase-text-red,
+body.dark-mode .comparison-avg-col h4, body.dark-mode .results-title {
+  color: #FFFFFF !important;
+}
+
+/* Textes gris clair (Descriptions, labels et paragraphes) */
+body.dark-mode p,
+body.dark-mode .hero-subtitle,
+body.dark-mode .tool-card p,
+body.dark-mode .analysis-desc,
+body.dark-mode .texte-avertissement,
+body.dark-mode .email-gate-desc,
+body.dark-mode .simple-box-label,
+body.dark-mode .simple-box-label-dark,
+body.dark-mode .reco-item span,
+body.dark-mode .avs-info-blue,
+body.dark-mode .lpp-info-box,
+body.dark-mode .lpp-recap-box p,
+body.dark-mode .comparison-subtitle,
+body.dark-mode .prime-tarif-name {
+  color: #CBD5E1 !important;
+}
+
+/* Textes gris plus foncé (Indications et hints) */
+body.dark-mode .filter-hint,
+body.dark-mode .hero-trust,
+body.dark-mode .hub-tabs button,
+body.dark-mode .modal-divider {
+  color: #64748B !important;
+}
+
+/* --- COULEURS DES RÉSULTATS FINANCIERS (VERT & ROUGE) --- */
+body.dark-mode .benefice-text,
+body.dark-mode .benefice,
+body.dark-mode .avs-warning-text-green,
+body.dark-mode .reco-item strong.benefice,
+body.dark-mode .recap-total h3.benefice {
+  color: #10B981 !important; /* Vert vif */
+}
+
+body.dark-mode .perte-text,
+body.dark-mode .perte,
+body.dark-mode .reco-item strong.perte,
+body.dark-mode .recap-total h3.perte {
+  color: #EF4444 !important; /* Rouge vif */
+}
+
+/* Fonds des boîtes de résultats (Point mort, etc.) */
+body.dark-mode .break-even-result.benefice {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+body.dark-mode .break-even-result.perte {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Avertissements AVS (Jaune et Vert) */
+body.dark-mode .avs-warning-yellow {
+  background-color: rgba(251, 191, 36, 0.1) !important;
+  border-color: rgba(251, 191, 36, 0.3) !important;
+}
+body.dark-mode .avs-warning-text-yellow { color: #FBBF24 !important; }
+body.dark-mode .avs-warning-green {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+/* --- NAVBAR & HEADER --- */
+body.dark-mode .navbar, body.dark-mode .navbar-scrolled {
+  background: rgba(11, 15, 25, 0.9) !important;
+  border-bottom: 1px solid #334155 !important;
+}
+body.dark-mode .nav-link-btn { color: #94a3B8 !important; }
+body.dark-mode .nav-link-btn:hover { color: #fff !important; }
+body.dark-mode .hero-badge {
+  background: rgba(59, 130, 246, 0.1) !important; /* Fond bleu très sombre et transparent */
+  border: 1px solid rgba(59, 130, 246, 0.3) !important; /* Bordure bleue subtile */
+  color: #60A5FA !important; /* Texte en bleu clair (lisible et doux sur fond noir) */
+}
+
+/* --- CARTES, FORMULAIRES, CONTENEURS & PANNEAUX INTERNES --- */
+/* ATTENTION : On a retiré .avs-panel, .lpp-panel, .comparison-diff d'ici pour ne pas écraser leurs couleurs */
+body.dark-mode .tool-card,
+body.dark-mode .premium-card, /* Sera surchargé plus bas pour devenir blanc */
+body.dark-mode .radar-form,
+body.dark-mode .lpp-form,
+body.dark-mode .assurance-form,
+body.dark-mode .simple-box.light,
+body.dark-mode .analysis-card,
+body.dark-mode .prime-card,
+body.dark-mode .avertissement-legal,
+body.dark-mode .modal-container,
+body.dark-mode .avs-full-width,
+body.dark-mode .avs-panels-wrapper,
+body.dark-mode .avs-phase-box,
+body.dark-mode .avs-box-borderless,
+body.dark-mode .lpp-result-container,
+body.dark-mode .lpp-panels-wrapper,
+body.dark-mode .lpp-recap-box,
+body.dark-mode .assurance-results,
+body.dark-mode .location-column,
+body.dark-mode .comparison-summary,
+body.dark-mode .comparison-avg-col {
+  background: #1E293B !important;
+  border-color: #334155 !important;
+  color: #F8FAFC !important;
+}
+
+/* Conteneurs un peu plus foncés pour contraster avec les panneaux ci-dessus */
+body.dark-mode .result-container,
+body.dark-mode .synthese-container,
+body.dark-mode .reco-3a,
+body.dark-mode .prime-card-header,
+body.dark-mode .email-gate-container,
+body.dark-mode .lpp-info-box {
+  background: #111827 !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .prime-card-header { border-bottom: 1px solid #334155 !important; }
+body.dark-mode .premium-card::before {
+  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent 60%) !important;
+}
+
+/* --- FORMULAIRES & INPUTS --- */
+body.dark-mode .form-input, body.dark-mode select.form-input {
+  background-color: #0f172a !important;
+  color: #F8FAFC !important;
+  border-color: #334155 !important;
+}
+body.dark-mode .form-input::placeholder { color: #64748B !important; }
+body.dark-mode .filter-group label { color: #E2E8F0 !important; }
+
+/* Menus déroulants (Communes) */
+body.dark-mode .dropdown-container {
+  background: #1E293B !important;
+  border: 1px solid #334155 !important;
+}
+body.dark-mode .dropdown-item { color: #F8FAFC !important; }
+body.dark-mode .dropdown-item:hover { background: #334155 !important; }
+
+/* --- ONGLETS, MODAL & DIVERS --- */
+body.dark-mode .hub-tabs { border-bottom: 2px solid #334155 !important; }
+body.dark-mode .hub-tabs button.active {
+  color: #3B82F6 !important;
+  border-bottom: 3px solid #3B82F6 !important;
+}
+body.dark-mode .titre-avertissement { color: #fbbf24 !important; }
+body.dark-mode .btn-premium { background: #3B82F6 !important; color: #fff !important; }
+body.dark-mode .modal-divider::before,
+body.dark-mode .modal-divider::after { border-bottom: 1px solid #334155 !important; }
+
+/* ============================================================
+   EFFET DE SURVOL DES CARTES (INVERSION MODE SOMBRE)
+   ============================================================ */
+
+/* En mode sombre, la carte devient blanche au survol */
+body.dark-mode .tool-card:hover {
+  background: #FFFFFF !important;
+  border-color: transparent !important;
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Les textes redeviennent foncés sur la carte blanche */
+body.dark-mode .tool-card:hover h3 {
+  color: #1A202C !important;
+}
+body.dark-mode .tool-card:hover p {
+  color: #64748B !important;
+}
+
+/* ⚠️ CORRECTION ICI : La flèche devient ROUGE au survol au lieu du bleu */
+body.dark-mode .tool-card:hover .tool-cta {
+  color: #C8102E !important;
+}
+
+/* ============================================================
+   INVERSION DES CARTES PREMIUM EN MODE SOMBRE
+   ============================================================ */
+
+body.dark-mode .premium-card {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #1A202C !important;
+}
+
+body.dark-mode .premium-card h3 {
+  color: #1A202C !important;
+}
+
+body.dark-mode .premium-card p {
+  color: #64748B !important;
+}
+
+body.dark-mode .premium-badge {
+  background: linear-gradient(90deg, #F59E0B, #D97706) !important;
+  color: #fff !important;
+}
+
+body.dark-mode .premium-card .btn-premium {
+  background: #1A202C !important;
+  color: #FFFFFF !important;
+}
+
+body.dark-mode .premium-card:hover .btn-premium {
+  background: #3B82F6 !important;
+  color: #fff !important;
+}
+
+body.dark-mode .premium-card:hover {
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ============================================================
+   BOUTON "DÉCOUVRIR NOS OUTILS AVANCÉS" EN MODE SOMBRE
+   ============================================================ */
+
+body.dark-mode .btn-hero-secondary {
+  background: #FFFFFF !important;
+  color: #1A202C !important;
+  border: 1px solid #FFFFFF !important;
+}
+
+body.dark-mode .btn-hero-secondary:hover {
+  background: #F8FAFC !important;
+  border-color: #F8FAFC !important;
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1) !important;
+}
+
+
+/* ============================================================
+   EXCEPTIONS : CONSERVER LES COULEURS CLAIRES DES PANNEAUX
+   ============================================================ */
+
+/* 1. Panneaux AVS (Bleu et Rouge) */
+body.dark-mode .avs-panel-blue {
+  background-color: #eff6ff !important;
+  border: 2px solid #bfdbfe !important;
+  color: #1e293b !important;
+}
+body.dark-mode .avs-panel-red {
+  background-color: #fef2f2 !important;
+  border: 2px solid #fecaca !important;
+  color: #1e293b !important;
+}
+
+/* 2. Panneaux LPP (Bleu et Vert) */
+body.dark-mode .lpp-panel-blue {
+  background-color: #eff6ff !important;
+  border: 2px solid #bfdbfe !important;
+  color: #1e293b !important;
+}
+body.dark-mode .lpp-panel-green {
+  background-color: #f0fdf4 !important;
+  border: 2px solid #bbf7d0 !important;
+  color: #1e293b !important;
+}
+
+/* 3. Forcer le texte à l'intérieur de ces panneaux à rester foncé (pour la lisibilité) */
+body.dark-mode .avs-panel .simple-box.light,
+body.dark-mode .lpp-panel .simple-box.light,
+body.dark-mode .avs-phase-box {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode .avs-panel .simple-box-label,
+body.dark-mode .lpp-panel .simple-box-label,
+body.dark-mode .avs-panel .simple-box-value,
+body.dark-mode .lpp-panel .simple-box-value,
+body.dark-mode .avs-panel-header,
+body.dark-mode .lpp-panel-header,
+body.dark-mode .avs-phase-text-blue,
+body.dark-mode .avs-phase-text-red,
+body.dark-mode .avs-info-blue,
+body.dark-mode .lpp-info-box {
+  color: #1e293b !important;
+}
+
+/* 4. BLOC SURCOÛT / ÉCONOMIE (ASSURANCE MALADIE) */
+body.dark-mode .comparison-diff.perte {
+  background: rgba(239, 68, 68, 0.15) !important; 
+  color: #EF4444 !important; 
+  border: 1px solid rgba(239, 68, 68, 0.3) !important; 
+}
+body.dark-mode .comparison-diff.benefice {
+  background: rgba(16, 185, 129, 0.15) !important; 
+  color: #10B981 !important; 
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+body.dark-mode .comparison-diff.neutre {
+  background: rgba(148, 163, 184, 0.1) !important; 
+  color: #CBD5E1 !important; 
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+}

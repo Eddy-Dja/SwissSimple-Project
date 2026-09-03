@@ -1,0 +1,438 @@
+.swiss-app { overflow-x: hidden; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero-section {
+  min-height: auto;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  text-align: center; 
+  position: relative; 
+  overflow: hidden; 
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background: #ffffff;
+}
+
+.hero-glow {
+  position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0,0,0,0) 70%);
+  z-index: 0;
+}
+
+.hero-container-simple { position: relative; z-index: 1; max-width: 850px; padding: 0 20px; }
+
+.hero-badge {
+  display: inline-block; 
+  background: #FFF1F2; /* Fond rouge extrêmement pâle */
+  border: 1px solid #FECDD3; /* Bordure rouge pâle */
+  padding: 8px 16px; 
+  border-radius: 50px; 
+  font-size: 14px; 
+  font-weight: 600;
+  color: #C8102E; /* Texte en Rouge Suisse */
+  margin-bottom: 24px; 
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.05); /* Ombre rosée */
+}
+
+.hero-section h1 { font-size: 56px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 24px; }
+.text-gradient { 
+  background: linear-gradient(90deg, #C8102E, #8B5CF6); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+  background-clip: text;
+}
+.hero-subtitle { font-size: 18px; color: var(--text-muted); margin-bottom: 40px; line-height: 1.5; }
+
+.hero-cta-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+  background: var(--primary-blue);
+  color: #fff;
+  border: none;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-hero-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  background: #2563eb;
+}
+
+.btn-hero-secondary {
+  background: #1A202C;
+  color: #ffffff;
+  border: 1px solid #1A202C;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-hero-secondary:hover {
+  transform: translateY(-3px);
+  background: #0F172A;
+  border-color: #0F172A;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.hero-trust {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ============================================================
+   FREE TOOLS SECTION
+   ============================================================ */
+.free-tools-section {
+  padding: 80px 0;
+  background-color: var(--swiss-gray);
+}
+
+.free-tools-section .section-title {
+  font-size: 36px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.free-tools-section .section-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 18px;
+  margin-bottom: 60px;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.tool-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 32px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 4px;
+  background: #C8102E; /* ICI : On met le rouge suisse au lieu du bleu */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.tool-card:hover::before {
+  transform: scaleX(1);
+}
+
+.tool-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border-color: transparent;
+  background: #1A202C !important;
+}
+
+/* On force les textes à devenir clairs quand la carte est noire */
+.tool-card:hover h3 {
+  color: #FFFFFF !important;
+}
+.tool-card:hover p {
+  color: #94A3B8 !important;
+}
+
+.tool-icon-wrap {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+.tool-card:hover .tool-icon-wrap {
+  transform: scale(1.1);
+}
+
+.blue-icon { background: #EFF6FF; }
+.green-icon { background: #ECFDF5; }
+.orange-icon { background: #FFF7ED; }
+.purple-icon { background: #F5F3FF; }
+
+.tool-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.tool-card p {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.tool-cta {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1A202C; /* NOIR en mode clair par défaut */
+  transition: color 0.3s ease;
+}
+
+/* ============================================================
+   PREMIUM SECTION
+   ============================================================ */
+.premium-section {
+  padding: 100px 20px 120px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.premium-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.premium-header h2 {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+.premium-header p {
+  font-size: 18px;
+  color: var(--text-muted);
+}
+
+.premium-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.premium-card {
+  background: var(--swiss-dark);
+  border-radius: 20px;
+  padding: 40px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+
+.premium-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.2), transparent 60%);
+  pointer-events: none;
+}
+
+.premium-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(11, 15, 25, 0.4);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.premium-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(90deg, #F59E0B, #D97706);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.premium-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.premium-card h3 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.premium-card p {
+  color: #94A3B8;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.btn-premium {
+  background: #fff;
+  color: var(--swiss-dark);
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.premium-card:hover .btn-premium {
+  background: var(--primary-blue);
+  color: #fff;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .hero-section h1 { font-size: 36px; }
+  .tools-grid { grid-template-columns: 1fr 1fr; }
+  .premium-grid { grid-template-columns: 1fr; }
+  
+  .nav-link-btn { 
+    display: block !important; 
+    font-size: 12px;
+    padding: 4px 0;
+  }
+  
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo { font-size: 20px; }
+  .nav-links { gap: 12px; }
+
+  .hero-cta-group { flex-direction: column; width: 100%; }
+  .btn-hero-primary, .btn-hero-secondary { width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .tools-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   GESTION DES FLÈCHES & MODE SOMBRE (OVERRIDES)
+   ============================================================ */
+
+/* 1. MODE CLAIR : Flèche noire par défaut, rouge au survol */
+.tool-card:hover .tool-cta {
+  color: #C8102E !important; /* Rouge suisse au survol */
+}
+
+/* 2. MODE SOMBRE : Flèche blanche par défaut, rouge au survol */
+/* On cible toutes les façons de déclarer le mode sombre pour être sûr à 100% que ça passe */
+
+/* Couleur blanche par défaut en mode sombre */
+body.dark-mode .tool-cta,
+.dark-mode .tool-cta,
+[data-theme="dark"] .tool-cta {
+  color: #FFFFFF !important; 
+}
+
+/* Couleur rouge au survol en mode sombre */
+body.dark-mode .tool-card:hover .tool-cta,
+.dark-mode .tool-card:hover .tool-cta,
+[data-theme="dark"] .tool-card:hover .tool-cta {
+  color: #C8102E !important; /* Rouge suisse au survol */
+}
+
+/* Ajustement des cartes en mode sombre pour que ce soit propre */
+body.dark-mode .tool-card,
+.dark-mode .tool-card,
+[data-theme="dark"] .tool-card {
+  background: var(--swiss-dark); 
+  border-color: rgba(255,255,255,0.1);
+}
+
+body.dark-mode .tool-card:hover,
+.dark-mode .tool-card:hover,
+[data-theme="dark"] .tool-card:hover {
+  background: #0F172A !important; 
+  border-color: rgba(255,255,255,0.2);
+}
+
+body.dark-mode .tool-card h3,
+.dark-mode .tool-card h3,
+[data-theme="dark"] .tool-card h3 {
+  color: #FFFFFF;
+}
+
+body.dark-mode .tool-card p,
+.dark-mode .tool-card p,
+[data-theme="dark"] .tool-card p {
+  color: #94A3B8;
+}
+
+/* Bouton Atlas (Dégradé Rouge/Violet) */
+.btn-hero-atlas {
+  background: linear-gradient(90deg, #C8102E, #8B5CF6);
+  color: #ffffff;
+  border: none;
+  padding: 16px 48px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-hero-atlas:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+  filter: brightness(1.1);
+}
+
+body.dark-mode .btn-hero-atlas,
+[data-theme="dark"] .btn-hero-atlas {
+  background: linear-gradient(90deg, rgba(200, 16, 46, 0.6), rgba(139, 92, 246, 0.6));
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}

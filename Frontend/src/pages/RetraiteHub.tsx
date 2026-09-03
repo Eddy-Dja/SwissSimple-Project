@@ -1,0 +1,465 @@
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import SimulateurAVS from '../modules/rente_avs/SimulateurAVS';
+import SimulateurLPP from '../modules/rente_lpp/SimulateurLPP';
+import EmailGate from '../components/EmailGate';
+import AuthModal from '../components/AuthModal';
+import { useAuth } from '../context/AuthContext';
+import { generateRetraitePDF } from '../utils/pdfGenerator';
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
+import './RetraiteHub.css';
+import { Helmet } from 'react-helmet-async';
+
+const RetraiteHub: React.FC = () => {
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useLocalStorageState<'avs' | 'lpp' | 'synthese'>('ret_activeTab', 'avs');
+  
+  const { user } = useAuth();
+  const isUnlocked = !!user;
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // On inclut 'params' (de type any pour faire simple) dans les types
+  const [avsData, setAvsData] = useState<{ rente: number, params: any } | null>(null);
+  const [lppData, setLppData] = useState<{ rente: number, capital: number, salaire: number, moisRestants: number, params: any } | null>(null);
+
+  const [retraitLPPInput, setRetraitLPPInput] = useLocalStorageState('ret_retraitLPP', '0');
+  const [pourcentageCapital, setPourcentageCapital] = useLocalStorageState<number>('ret_pourcentageCapital', 0);
+  const [revenuSouhaiteInput, setRevenuSouhaiteInput] = useLocalStorageState('ret_revenuSouhaite', '');
+
+  const formatCHF = (amount: number) => Math.round(amount).toLocaleString('de-CH');
+  const formatCHFPrecis = (amount: number) => amount.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const isDataReady = avsData !== null && lppData !== null;
+
+  const renteAVSBase = avsData?.rente || 0;
+  const renteLPPBase = lppData?.rente || 0;
+  const capitalLPPBase = lppData?.capital || 0;
+  const dernierSalaire = lppData?.salaire || 0;
+  const moisRestants = lppData?.moisRestants || 0;
+
+  const retraitLPP = parseFloat(retraitLPPInput) || 0;
+  const perteRenteLPPRetrait = (retraitLPP * 0.068) / 12; 
+  const renteLPPApresRetrait = Math.max(0, renteLPPBase - perteRenteLPPRetrait);
+
+  const renteLPPFinale = renteLPPApresRetrait * (1 - pourcentageCapital / 100);
+  const capitalCash = capitalLPPBase * (pourcentageCapital / 100);
+
+  const totalRetraite = renteAVSBase + renteLPPFinale;
+  
+  // --- CORRECTION MATHÉMATIQUE ICI ---
+  // On calcule le salaire mensuel pour comparer des pommes avec des pommes
+  const salaireMensuel = dernierSalaire > 0 ? dernierSalaire / 12 : 0;
+  const tauxRemplacement = salaireMensuel > 0 ? Math.round((totalRetraite / salaireMensuel) * 100) : 0;
+  // -----------------------------------
+  
+  const tauxMarginalEstime = dernierSalaire > 200000 ? 0.30 : (dernierSalaire > 100000 ? 0.25 : 0.20);
+  const estimatedTaxSaving = Math.round(7258 * tauxMarginalEstime);
+
+  const revenuSouhaite = parseFloat(revenuSouhaiteInput) || 0;
+  const trouMensuel = revenuSouhaite - totalRetraite;
+  const capitalNecessaire = trouMensuel > 0 ? trouMensuel * 12 * 14.7 : 0; 
+  const versementMensuel3a = capitalNecessaire > 0 && moisRestants > 0 ? capitalNecessaire / moisRestants : 0;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
+  // --- FONCTION DE PARTAGE MULTILINGUE POUR LA RETRAITE ---
+  const handleShare = async () => {    
+    const avsP = avsData?.params;
+    const lppP = lppData?.params;
+    
+    // On inclut tous les paramètres dans le message de partage
+    const avsText = t('share.ret_avs', { 
+      state: t(`avs.${avsP?.etatCivil || 'celibataire'}`),
+      gender: t(`avs.${avsP?.sexe || 'homme'}`),
+      birthYear: avsP?.anneeNaissance || 0,
+      salary: avsP?.salaire || 0,
+      years: avsP?.anneesCotisation || 0,
+      boughtYears: avsP?.anneesRachetees || 0,
+      children: avsP?.nombreEnfants || 0,
+      age: avsP?.ageRetraite || 65
+    });
+    
+    const lppText = t('share.ret_lpp', { 
+      birthYear: lppP?.anneeNaissance || 0,
+      salary: lppP?.salaire || 0,
+      capital: lppP?.capitalActuel || 0,
+      buyback: lppP?.rachatAnnuel || 0,
+      age: lppP?.ageRetraite || 65,
+      rate: lppP?.tauxInteret || 0
+    });
+    
+    const resultText = t('share.ret_result', { total: formatCHFPrecis(totalRetraite) });
+    const callToAction = t('share.ret_call');
+    
+    const shareText = `${resultText}\n${avsText}\n${lppText}\n${callToAction}`;
+    const shareUrl = 'https://swisssimple.ch/retraite';
+    const fullMessage = `${shareText} ${t('share.test_here')} : ${shareUrl}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'SwissSimple - Retraite',
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.log('Partage annulé');
+      }
+    } else {
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+  };
+
+  return (
+    <div className="hub-container">
+
+<Helmet>
+  <title>Simulateur Retraite Suisse | AVS, LPP & Impôts réunis</title>
+  <meta name="description" content="Planifiez votre retraite en Suisse. Simulez vos rentes AVS et LPP, calculez l'impact fiscal et estimez votre taux de remplacement pour partir l'esprit tranquille." />
+</Helmet>
+
+      <div className="hub-header">
+        <h1 className="radar-title">{t('hub.retraite_title')}</h1>
+        <p>{t('hub.retraite_subtitle')}</p>
+        
+        <div className="hub-tabs">
+          <button className={activeTab === 'avs' ? 'active' : ''} onClick={() => setActiveTab('avs')}>
+            {t('hub.tab1_avs')}
+          </button>
+          <button className={activeTab === 'lpp' ? 'active' : ''} onClick={() => setActiveTab('lpp')}>
+            {t('hub.tab2_lpp')}
+          </button>
+          <button className={activeTab === 'synthese' ? 'active' : ''} onClick={() => setActiveTab('synthese')}>
+            {t('hub.tab3_synthese')}
+          </button>
+        </div>
+      </div>
+
+      <div className="hub-content">
+        {/* --- ÉTAPE 1 : AVS --- */}
+        <div className={`hub-step ${activeTab === 'avs' ? 'visible' : 'hidden'}`}>
+          <SimulateurAVS 
+            hideWarning
+            onResultChange={(data) => setAvsData(data)}
+          />
+          <div className="hub-navigation">
+            <button className="btn-hub-next" onClick={() => setActiveTab('lpp')}>
+              {t('hub.tab2_lpp')} →
+            </button>
+          </div>
+        </div>
+
+        {/* --- ÉTAPE 2 : LPP --- */}
+        <div className={`hub-step ${activeTab === 'lpp' ? 'visible' : 'hidden'}`}>
+          <SimulateurLPP 
+            hideWarning
+            onResultChange={(data) => setLppData(data)}
+          />
+          <div className="hub-navigation">
+            <button className="btn-hub-prev" onClick={() => setActiveTab('avs')}>
+              ← {t('hub.back_avs', 'Retour à la rente AVS')}
+            </button>
+            <button className="btn-hub-next" onClick={() => setActiveTab('synthese')}>
+              {t('hub.next_step_synthese', 'Passer à la synthèse financière')} → 📊
+            </button>
+          </div>
+        </div>
+
+        {/* --- ÉTAPE 3 : SYNTHÈSE FINALE --- */}
+        <div className={`hub-step ${activeTab === 'synthese' ? 'visible' : 'hidden'}`}>
+          <div className="synthese-container">
+            <h2>{t('hub.synthese_title_ret')}</h2>
+            <p>{t('hub.synthese_intro_ret')}</p>
+            
+            {!isDataReady && (
+              <p className="hub-warning-message">
+                {t('hub.waiting_message')}
+              </p>
+            )}
+            
+                        <div className="synthese-recap">
+              {/* 1. MODULE AVS */}
+              <div className="recap-item">
+                <div className="recap-line">
+                  <span className="recap-title">{t('hub.recap_avs')}</span>
+                  <p className="recap-value benefice">
+                    {avsData !== null ? `${formatCHFPrecis(renteAVSBase)} CHF / mois` : t('hub.waiting_calc')}
+                  </p>
+                </div>
+                {/* Détails AVS complets multilingues */}
+                {avsData?.params && (
+                  <div className="recap-module-detail">
+                    {t('hub.recap_avs_details', {
+                      state: t(`avs.${avsData.params.etatCivil}`),
+                      gender: t(`avs.${avsData.params.sexe}`),
+                      birthYear: avsData.params.anneeNaissance,
+                      salary: formatCHF(avsData.params.salaire),
+                      years: avsData.params.anneesCotisation,
+                      boughtYears: avsData.params.anneesRachetees,
+                      children: avsData.params.nombreEnfants,
+                      age: avsData.params.ageRetraite
+                    })}
+                  </div>
+                )}
+              </div>
+              
+              {/* 2. MODULE LPP */}
+              <div className="recap-item">
+                <div className="recap-line">
+                  <span className="recap-title">{t('hub.recap_lpp')}</span>
+                  <p className="recap-value benefice">
+                    {lppData !== null ? (
+                      <>
+                        {formatCHFPrecis(renteLPPFinale)} CHF / mois
+                        {(retraitLPP > 0 || pourcentageCapital > 0) && <small className="hub-adjusted-small">{t('hub.adjusted')}</small>}
+                      </>
+                    ) : t('hub.waiting_calc')}
+                  </p>
+                </div>
+                {/* Détails LPP complets multilingues */}
+                {lppData?.params && (
+                  <div className="recap-module-detail">
+                    {t('hub.recap_lpp_details', {
+                      birthYear: lppData.params.anneeNaissance,
+                      salary: formatCHF(lppData.params.salaire),
+                      capital: formatCHF(lppData.params.capitalActuel),
+                      buyback: formatCHF(lppData.params.rachatAnnuel),
+                      age: lppData.params.ageRetraite,
+                      rate: lppData.params.tauxInteret
+                    })}
+                  </div>
+                )}
+              </div>
+              
+              {/* 3. TOTAL RETRAITE */}
+              <div className="recap-total">
+                <span>{t('hub.recap_total_ret')}</span>
+                <h3 className="benefice">
+                  {isDataReady ? `${formatCHFPrecis(totalRetraite)} CHF / mois` : t('hub.waiting_calc')}
+                </h3>
+              </div>
+            </div>
+
+            {/* --- BOUTON DE PARTAGE --- */}
+            {isDataReady && (
+              <div className="share-btn-container">
+                <button className="btn-hub-blue" onClick={handleShare}>
+                  {t('hub.share_result_btn')}
+                </button>
+              </div>
+            )}
+            {/* ------------------------- */}
+
+            {!isUnlocked ? (
+              <EmailGate 
+                title={t('hub.gate_title')}
+                description={t('hub.gate_desc_ret')}
+                onUnlock={() => setIsAuthModalOpen(true)}
+              />
+            ) : (
+              <div className="unlocked-results">
+                <h3>{t('hub.unlocked')}</h3>
+                <p>{t('hub.unlocked_desc_ret')}</p>
+
+                <div className="analysis-card">
+                  <h4>{t('hub.rate_title')}</h4>
+                  <p className="analysis-desc">
+                    {t('hub.rate_desc', { salary: formatCHFPrecis(dernierSalaire) })}
+                  </p>
+                  <div className="replacement-gauge">
+                    <div className="gauge-bar" style={{ width: `${Math.min(tauxRemplacement, 100)}%` }}></div>
+                    <span className="gauge-text">{tauxRemplacement}%</span>
+                  </div>
+                  {dernierSalaire > 0 && tauxRemplacement < 70 ? (
+                    <p className="break-even-result perte mt-15" dangerouslySetInnerHTML={{ __html: t('hub.rate_warning', { missing: formatCHFPrecis((salaireMensuel * 0.7) - totalRetraite) }) }} />
+                  ) : dernierSalaire > 0 ? (
+                    <p className="break-even-result benefice mt-15">
+                      {t('hub.rate_success')}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="analysis-card">
+                  <h4>{t('hub.goal_title')}</h4>
+                  <p className="analysis-desc">{t('hub.goal_desc')}</p>
+                  
+                  <div className="break-even-grid">
+                    <div className="break-even-item">
+                      <label>{t('hub.goal_label')}</label>
+                      <div className="input-wrapper">
+                        <span className="input-currency">CHF</span>
+                        <input 
+                          type="number" min="0" step="0.01"
+                          placeholder="Ex: 6000.00" 
+                          className="break-even-input"
+                          value={revenuSouhaiteInput}
+                          onChange={(e) => setRevenuSouhaiteInput(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {revenuSouhaite > 0 && (
+                    <div className={`break-even-result ${trouMensuel > 0 ? 'perte' : 'benefice'}`}>
+                      {trouMensuel > 0 ? (
+                        <p dangerouslySetInnerHTML={{ __html: t('hub.goal_warning', {
+                          target: formatCHFPrecis(revenuSouhaite),
+                          missing: formatCHFPrecis(trouMensuel),
+                          capital: formatCHFPrecis(capitalNecessaire),
+                          monthly: formatCHFPrecis(versementMensuel3a)
+                        }) }} />
+                      ) : (
+                        <p dangerouslySetInnerHTML={{ __html: t('hub.goal_success', {
+                          target: formatCHFPrecis(revenuSouhaite),
+                          surplus: formatCHFPrecis(Math.abs(trouMensuel))
+                        }) }} />
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div className="analysis-card">
+                  <h4>{t('hub.lpp_impact_title')}</h4>
+                  <p className="analysis-desc">{t('hub.lpp_impact_desc')}</p>
+                  
+                  <div className="break-even-grid">
+                    <div className="break-even-item">
+                      <label>{t('hub.lpp_impact_label')}</label>
+                      <div className="input-wrapper">
+                        <span className="input-currency">CHF</span>
+                        <input 
+                          type="number" min="0" step="0.01"
+                          placeholder="Ex: 50000.00" 
+                          className="break-even-input"
+                          value={retraitLPPInput}
+                          onChange={(e) => setRetraitLPPInput(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {retraitLPP > 0 && (
+                    <div className="break-even-result perte">
+                      <p dangerouslySetInnerHTML={{ __html: t('hub.lpp_impact_warning', {
+                        amount: formatCHFPrecis(retraitLPP),
+                        loss: formatCHFPrecis(perteRenteLPPRetrait),
+                        totalLoss: formatCHFPrecis(perteRenteLPPRetrait * 12 * 20)
+                      }) }} />
+                    </div>
+                  )}
+                </div>
+
+                <div className="analysis-card">
+                  <h4>{t('hub.capital_title')}</h4>
+                  <p className="analysis-desc">{t('hub.capital_desc')}</p>
+                  
+                  <div className="slider-container">
+                    <div className="slider-row">
+                      <span>{t('hub.capital_0')}</span>
+                      <strong className="text-blue">{pourcentageCapital}%</strong>
+                    </div>
+                    <input 
+                      type="range" min="0" max="100" step="5"
+                      value={pourcentageCapital}
+                      onChange={(e) => setPourcentageCapital(parseInt(e.target.value))}
+                      className="range-slider"
+                    />
+                  </div>
+
+                  {pourcentageCapital > 0 && (
+                    <div className="reco-3a mt-20">
+                      <div className="reco-item">
+                        <span>{t('hub.capital_cash')}</span>
+                        <strong className="benefice">+ {formatCHFPrecis(capitalCash)} CHF</strong>
+                      </div>
+                      <div className="reco-item">
+                        <span>{t('hub.capital_rent')}</span>
+                        <strong className="perte">{formatCHFPrecis(renteLPPFinale)} CHF / mois</strong>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="analysis-card">
+                  <h4>{t('hub.reco_title')}</h4>
+                  <p className="analysis-desc">
+                    {t('hub.reco_desc')}
+                  </p>
+
+                  <div className="reco-3a">
+                    <div className="reco-item">
+                      <span>{t('hub.reco_max')}</span>
+                      <strong>7'258 CHF / an</strong>
+                    </div>
+                    <div className="reco-item">
+                      <span>{t('hub.reco_tax')}</span>
+                      <strong className="benefice">~ {formatCHF(estimatedTaxSaving)} CHF / an</strong>
+                    </div>
+                  </div>
+
+                  <div className="hub-navigation pdf-btn-container">
+                    <button className="btn-hub-blue btn-disabled" disabled>
+                      {t('hub.reco_btn')} {t('hub.coming_soon')}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="analysis-card">
+                  <h4>{t('hub.pdf_title')}</h4>
+                  <p className="analysis-desc">{t('hub.pdf_desc_ret')}</p>
+                   <div className="hub-navigation pdf-btn-container">
+                    <button 
+                      className="btn-hub-blue" 
+                      onClick={() => generateRetraitePDF({
+                        renteAVS: renteAVSBase,
+                        renteLPP: renteLPPFinale,
+                        totalRetraite,
+                        dernierSalaire,
+                        tauxRemplacement,
+                        estimatedTaxSaving,
+                        retraitLPP,
+                        perteRenteLPPRetrait,
+                        pourcentageCapital,
+                        capitalCash,
+                        revenuSouhaite,
+                        trouMensuel,
+                        capitalNecessaire,
+                        versementMensuel3a,
+                        avsParams: avsData?.params, 
+                        lppParams: lppData?.params  
+                      }, t)}
+                    >
+                      {t('hub.pdf_btn_ret')}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="hub-navigation">
+              <button className="btn-hub-next" onClick={() => setActiveTab('avs')}>
+                {t('hub.back_avs', '← Retour à la rente AVS')}
+              </button>
+              <button className="btn-hub-next" onClick={() => setActiveTab('lpp')}>
+                {t('hub.back_lpp', '← Retour à la rente LPP')}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div className="avertissement-legal">
+        <span className="titre-avertissement">⚖️ {t('hub.warning_title')}</span>
+        <span className="texte-avertissement">{t('hub.warning_ret')}</span>
+      </div>
+
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+    </div>
+  );
+};
+
+export default RetraiteHub;

@@ -1,0 +1,205 @@
+/* ============================================================
+   SWISSSIMPLE TAX COPILOT — Styles clair + sombre
+   Conforme au README : CSS pur, fichier dédié.
+   Mode sombre : convention du site (body.dark-mode).
+   ============================================================ */
+
+/* --- Conteneur principal --- */
+.copilot-container {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.copilot-title {
+  margin: 0 0 15px 0;
+  font-size: 1.3rem;
+}
+
+/* --- Grille des 5 sélecteurs --- */
+.copilot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.copilot-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.copilot-select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  color: #1A202C;
+}
+
+/* --- Question + bouton --- */
+.copilot-question-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.copilot-button {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #3B82F6;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.copilot-button:hover:not(:disabled) {
+  background-color: #2563EB;
+}
+
+.copilot-button:disabled {
+  background-color: #94A3B8;
+  cursor: not-allowed;
+}
+
+/* --- Boîte de réponse IA --- */
+.copilot-answer {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  line-height: 1.6;
+  overflow-x: auto;        /* tableaux larges : défilement, pas de débordement */
+}
+
+.copilot-provider {
+  display: block;
+  margin-top: 10px;
+  color: #888;
+  font-size: 12px;
+}
+
+/* ============================================================
+   CONTENU MARKDOWN (scopé sous .copilot-answer — ne fuit
+   jamais sur le reste du site, malgré les éléments bruts
+   générés par ReactMarkdown)
+   ============================================================ */
+
+.copilot-answer h3 {
+  font-size: 1.05rem;
+  margin: 16px 0 8px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1A202C;
+}
+
+.copilot-answer p { margin: 8px 0; }
+
+.copilot-answer ul, .copilot-answer ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.copilot-answer li { margin: 4px 0; }
+
+.copilot-answer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.92rem;
+}
+
+.copilot-answer th {
+  background-color: #f1f5f9;
+  color: #1A202C;
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+  font-weight: 600;
+}
+
+.copilot-answer td {
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+  color: #334155;
+}
+
+.copilot-answer tr:nth-child(even) td {
+  background-color: #f8fafc;    /* zébrage léger */
+}
+
+.copilot-answer code {
+  background-color: #f1f5f9;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.copilot-answer hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 12px 0;
+}
+
+/* --- Responsive : un seul sélecteur par ligne sur mobile --- */
+@media (max-width: 600px) {
+  .copilot-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   MODE SOMBRE — le Copilot reste CLAIR (comme .premium-card) :
+   fond gris conservé + TOUT le texte reste foncé.
+   ============================================================ */
+
+/* Fond et bordures : identiques au mode clair */
+body.dark-mode .copilot-container {
+  background-color: #f9f9f9 !important;
+  border-color: #ccc !important;
+}
+body.dark-mode .copilot-answer {
+  background-color: #ffffff !important;
+  border-color: #ddd !important;
+}
+body.dark-mode .copilot-select,
+body.dark-mode .copilot-question-input {
+  background-color: #ffffff !important;
+  border-color: #ccc !important;
+}
+
+/* ★ RÈGLE ATTRAPE-TOUT : tout texte du Copilot reste foncé,
+   quelle que soit la balise (h3, p, table, td, strong, option…).
+   Elle neutralise la feuille dark globale (body.dark-mode h3/p
+   → blanc) en une seule déclaration. */
+body.dark-mode .copilot-container,
+body.dark-mode .copilot-container * {
+  color: #1A202C !important;
+}
+
+/* Exceptions (APRÈS l'attrape-tout) : texte clair sur fonds colorés */
+body.dark-mode .copilot-button { color: #ffffff !important; }
+body.dark-mode .copilot-button:disabled { color: #ffffff !important; background-color: #94A3B8 !important; }
+body.dark-mode .copilot-provider { color: #888 !important; }
+body.dark-mode .copilot-question-input::placeholder { color: #999 !important; }
+
+/* Fonds des éléments Markdown (l'attrape-tout ne touche que la couleur) */
+body.dark-mode .copilot-answer th { background-color: #f1f5f9 !important; }
+body.dark-mode .copilot-answer tr:nth-child(even) td { background-color: #f8fafc !important; }
+body.dark-mode .copilot-answer th,
+body.dark-mode .copilot-answer td { border-color: #e2e8f0 !important; }
+body.dark-mode .copilot-answer h3 { border-bottom-color: #e2e8f0 !important; }
+body.dark-mode .copilot-answer code { background-color: #f1f5f9 !important; }
+body.dark-mode .copilot-answer hr { border-top-color: #e2e8f0 !important; }
