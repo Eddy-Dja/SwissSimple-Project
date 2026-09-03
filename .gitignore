@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 .env
 # Données d'import Excel
-data-import/
+data-impot/
