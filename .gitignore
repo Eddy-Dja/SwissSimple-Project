@@ -23,5 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 .env
-# Données d'import Excel
-data-impot/
+
+# ==== Backend (Tax Copilot) ====
+Backend/.env
+Backend/venv/
+Backend/__pycache__/
+Backend/PDFs/
+data_impot/
+data_assurance/
