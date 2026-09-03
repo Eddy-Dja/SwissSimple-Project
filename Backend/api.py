@@ -67,10 +67,9 @@ SECTION_HEADERS = {
 
 # ============================================================
 # GARDE-FOU ANTI-HORS-SUJET
-# Si la similarité du meilleur extrait est trop faible, la question
-# n'est pas fiscale -> réponse de présentation, SANS appeler le LLM
-# (zéro token consommé). Ne s'active que si la RPC renvoie
-# un champ 'similarity' — sinon reste inactif sans planter.
+# Similarité du meilleur extrait trop faible -> question non
+# fiscale -> réponse de présentation, SANS appeler le LLM
+# (zéro token consommé).
 # ============================================================
 SEUIL_SIMILARITE = 0.4
 
@@ -81,13 +80,25 @@ HORS_CHAMP = {
     "en": "I am the **SwissSimple Tax Copilot**, your tax assistant for the 26 Swiss cantons. My specialty: answering your tax questions with citations from official cantonal law. Try asking: « What are the deductions for children? »",
 }
 
-# Cache mémoire : même question -> réponse instantanée, zéro token consommé
+# Cache RAM (rapide, volatile) — voir les helpers 2 niveaux ci-dessous
 ANSWER_CACHE = {}
 
 # ============================================================
+# MODÈLE DE QUESTION — défini AVANT les helpers qui l'utilisent
+# (une seule fois : le doublon de l'ancienne version est supprimé)
+# ============================================================
+class Question(BaseModel):
+    user_question: str
+    canton: str
+    statut: str = "Non précisé"
+    enfants: str = "0"
+    profession: str = "Non précisé"
+    langue: str = "fr"
+
+# ============================================================
 # CACHE 2 NIVEAUX : RAM (instantané, volatile) + Supabase
-# (persistant, PARTAGÉ entre utilisateurs et entre redémarrages).
-# Ordre : RAM d'abord, puis base ; l'écriture va aux deux.
+# (persistant, partagé entre redémarrages et utilisateurs).
+# Prérequis : table answer_cache créée dans Supabase.
 # ============================================================
 def _cache_key_str(qd: Question) -> str:
     """Clé sérialisable, identique pour deux requêtes identiques."""
@@ -122,14 +133,6 @@ def _save_cached_answer(key: str, answer: str, fournisseur: str):
         }).execute()
     except Exception as e:
         print(f"[CACHE-DB] Écriture impossible ({e}) — cache RAM seul.")
-
-class Question(BaseModel):
-    user_question: str
-    canton: str
-    statut: str = "Non précisé"
-    enfants: str = "0"
-    profession: str = "Non précisé"
-    langue: str = "fr"
 
 def _similarity_de(doc: dict):
     """Extrait la similarité d'un document RPC, sans jamais planter."""
@@ -177,14 +180,12 @@ def tax_copilot(question_data: Question):
         langue_nom = LANGUE_NOMS.get(langue.lower(), langue)
         h1, h2, h3, cols = SECTION_HEADERS.get(langue.lower(), SECTION_HEADERS["fr"])
 
-        # 0. Cache : question déjà posée -> réponse immédiate, gratuite
-        cache_key = (user_question.strip().lower(), canton, statut, enfants, profession, langue)
-        if cache_key in ANSWER_CACHE:
-            print("[CACHE] Réponse servie depuis le cache.")
-            cached = ANSWER_CACHE[cache_key]
-            if isinstance(cached, tuple):
-                return {"answer": cached[0], "fournisseur": cached[1], "cache": True}
-            return {"answer": cached}
+        # 0. Cache 2 niveaux : RAM puis Supabase -> réponse immédiate, gratuite
+        cache_key = _cache_key_str(question_data)
+        cached = _get_cached_answer(cache_key)
+        if cached is not None:
+            print("[CACHE] Réponse servie depuis le cache (RAM ou Supabase).")
+            return {"answer": cached[0], "fournisseur": f"{cached[1]} (cache)", "cache": True}
 
         # 1. Vectoriser la question
         q_embedding = embed_model.encode(user_question).tolist()
@@ -205,7 +206,7 @@ def tax_copilot(question_data: Question):
         if top_similarity is not None and top_similarity < SEUIL_SIMILARITE:
             print(f"[RAG] Question hors-champ détectée (similarité {top_similarity:.2f} < {SEUIL_SIMILARITE}).")
             reponse = HORS_CHAMP.get(langue.lower(), HORS_CHAMP["fr"])
-            ANSWER_CACHE[cache_key] = (reponse, "garde-fou anti-hors-sujet")
+            _save_cached_answer(cache_key, reponse, "garde-fou anti-hors-sujet")
             return {"answer": reponse, "fournisseur": "garde-fou anti-hors-sujet (0 token)"}
 
         context = "\n\n---\n\n".join([doc['content'] for doc in response.data])
@@ -266,11 +267,10 @@ Tu dois structurer ta réponse exactement de cette manière, en Markdown :
 
         # 4. Cascade : Gemini 3.5 -> 3.8 -> 3.6 -> Groq
         #    Des modèles DIFFÉRENTS = des quotas séparés chez Google.
-        #    (gemini-2.5-flash est mort : 404 "no longer available to new users")
         gemini_params = {"temperature": 0.0, "max_tokens": 6000}
         providers = []
         if gemini_client:
-            for model_id in ("gemini-3.5-flash", "gemini-3.8-flash", "gemini-3.6-flash"):
+            for model_id in (GEMINI_MODEL, "gemini-3.8-flash", "gemini-3.6-flash"):
                 providers.append(("Gemini", gemini_client, model_id, gemini_params))
         providers.append(("Groq", groq_client, MODEL,
                           {"temperature": 0.0, "max_completion_tokens": 6000,
@@ -310,7 +310,7 @@ Tu dois structurer ta réponse exactement de cette manière, en Markdown :
         # Nettoyage déterministe du mot-valise "ab-déduction"
         answer = re.sub(r"ab.?d[ée]duction", "déduction", answer)
 
-        ANSWER_CACHE[cache_key] = (answer, f"{name} ({model_id})")
+        _save_cached_answer(cache_key, answer, f"{name} ({model_id})")
         return {"answer": answer, "fournisseur": f"{name} ({model_id}) — {elapsed:.1f}s", "config": i}
 
     except Exception as e:
@@ -330,7 +330,7 @@ Tu dois structurer ta réponse exactement de cette manière, en Markdown :
 # ============================================================
 
 def _build_rag_messages(question_data: Question):
-    """Construit messages + cache_key + similarité top — pour l'endpoint streaming."""
+    """Construit messages + similarité top + nombre de docs (pour le streaming)."""
     langue = question_data.langue
     langue_nom = LANGUE_NOMS.get(langue.lower(), langue)
     h1, h2, h3, cols = SECTION_HEADERS.get(langue.lower(), SECTION_HEADERS["fr"])
@@ -392,9 +392,7 @@ FORMAT DE SORTIE OBLIGATOIRE :
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    cache_key = (question_data.user_question.strip().lower(), question_data.canton,
-                 question_data.statut, question_data.enfants, question_data.profession, langue)
-    return messages, cache_key, top_sim, len(docs)
+    return messages, top_sim, len(docs)
 
 
 @app.post("/api/tax-copilot-stream")
@@ -405,13 +403,13 @@ def tax_copilot_stream(question_data: Question):
     def generate():
         try:
             print("[STREAM] Début du générateur.")
-            # 0. Cache : rejoué en flux (instantané, 0 token)
-            cache_key = (question_data.user_question.strip().lower(), question_data.canton,
-                         question_data.statut, question_data.enfants, question_data.profession, question_data.langue)
-            if cache_key in ANSWER_CACHE:
-                print("[STREAM] Cache trouvé.")
-                cached = ANSWER_CACHE[cache_key]
-                answer, fourn = cached if isinstance(cached, tuple) else (cached, "cache")
+
+            # 0. Cache 2 niveaux : RAM puis Supabase, rejoué en flux
+            cache_key = _cache_key_str(question_data)
+            cached = _get_cached_answer(cache_key)
+            if cached is not None:
+                print("[STREAM] Cache trouvé (RAM ou Supabase).")
+                answer, fourn = cached
                 yield event({"type": "meta", "fournisseur": f"{fourn} (cache)", "cache": True})
                 for i in range(0, len(answer), 200):
                     yield event({"type": "chunk", "text": answer[i:i + 200]})
@@ -419,7 +417,7 @@ def tax_copilot_stream(question_data: Question):
                 return
 
             print("[STREAM] Pas de cache, construction des messages...")
-            messages, cache_key, top_sim, n_docs = _build_rag_messages(question_data)
+            messages, top_sim, n_docs = _build_rag_messages(question_data)
             print(f"[STREAM] Messages prêts ({n_docs} docs, similarité {top_sim}).")
 
             if n_docs == 0:
@@ -431,7 +429,7 @@ def tax_copilot_stream(question_data: Question):
             if top_sim is not None and top_sim < SEUIL_SIMILARITE:
                 print(f"[STREAM] Hors-champ (similarité {top_sim:.2f}).")
                 reponse = HORS_CHAMP.get(question_data.langue.lower(), HORS_CHAMP["fr"])
-                ANSWER_CACHE[cache_key] = (reponse, "garde-fou anti-hors-sujet")
+                _save_cached_answer(cache_key, reponse, "garde-fou anti-hors-sujet")
                 yield event({"type": "meta", "fournisseur": "garde-fou anti-hors-sujet (0 token)"})
                 yield event({"type": "chunk", "text": reponse})
                 yield event({"type": "done"})
@@ -486,6 +484,9 @@ def tax_copilot_stream(question_data: Question):
                     break
                 except Exception as e:
                     if emitted:
+                        # Panne APRÈS le début du flux : du texte est déjà affiché
+                        # chez l'utilisateur. Retenter le dupliquerait -> arrêt
+                        # propre, et réponse partielle NON mise en cache.
                         print(f"[STREAM] Panne en cours de flux ({e}) — arrêt.")
                         panne_en_cours_de_flux = True
                         break
@@ -493,20 +494,12 @@ def tax_copilot_stream(question_data: Question):
 
             if answer_parts:
                 if not panne_en_cours_de_flux:
-                    ANSWER_CACHE[cache_key] = ("".join(answer_parts), used)
+                    _save_cached_answer(cache_key, "".join(answer_parts), used or "fournisseur inconnu")
                 yield event({"type": "done"})
             else:
                 yield event({"type": "meta", "fournisseur": "erreur"})
                 yield event({"type": "chunk", "text": "⚠️ Tous les fournisseurs IA ont échoué. Réessaie dans un instant."})
                 yield event({"type": "done"})
-
-        except Exception as e:
-            print("\n=== ERREUR STREAM (traceback complet) ===")
-            traceback.print_exc()
-            print("==========================================\n")
-            yield event({"type": "meta", "fournisseur": "erreur backend"})
-            yield event({"type": "chunk", "text": f"⚠️ Erreur backend : {type(e).__name__}"})
-            yield event({"type": "done"})
 
         except Exception as e:
             print("\n=== ERREUR STREAM (traceback complet) ===")
