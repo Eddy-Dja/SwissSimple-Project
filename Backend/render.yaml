@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: swisssimple-backend
+    runtime: docker
+    rootDir: Backend
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SUPABASE_URL
+        sync: false        # valeur fournie dans le dashboard (secrète)
+      - key: SUPABASE_KEY
+        sync: false
+      - key: GROQ_KEY
+        sync: false
+      - key: GEMINI_KEY
+        sync: false
