@@ -7,6 +7,10 @@ import './TaxCopilot.css';
 // Cantons : noms propres officiels. Les VALUES correspondent EXACTEMENT
 // aux noms stockés dans Supabase (tax_documents.canton) — ne JAMAIS
 // traduire les values, uniquement les libellés.
+
+// (a) En haut du composant, avec les autres constantes :
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8001';
+
 const CANTONS: [string, string][] = [
   ["Zürich", "Zürich"], ["Bern", "Bern"], ["Luzern", "Luzern"], ["Uri", "Uri"],
   ["Schwyz", "Schwyz"], ["Obwalden", "Obwalden"], ["Nidwalden", "Nidwalden"],
@@ -70,7 +74,7 @@ const TaxCopilot = () => {
       | { type: 'done' };
 
     try {
-      const res = await fetch('http://localhost:8001/api/tax-copilot-stream', {
+      const res = await fetch(`${API_URL}/api/tax-copilot-stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
