@@ -278,22 +278,3 @@ body.dark-mode .copilot-answer hr { border-top-color: #e2e8f0 !important; }
     font-size: 0.85rem;
   }
 }
-
-/* Cartes empilées en mode sombre */
-body.dark-mode .copilot-answer tr {
-  background-color: #1E293B;             /* fond sombre au lieu du gris clair */
-  border-color: #334155;
-}
-body.dark-mode .copilot-answer td::before {
-  color: #94A3B8;
-  border-bottom-color: #334155;
-}
-body.dark-mode .copilot-answer td:first-child {
-  color: #F8FAFC;
-}
-body.dark-mode .copilot-answer td:nth-child(2) {
-  color: #CBD5E1;
-}
-body.dark-mode .copilot-answer td:nth-child(3) {
-  color: #94A3B8;
-}
