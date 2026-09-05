@@ -7,6 +7,7 @@ import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import { Helmet } from 'react-helmet-async';
 import TaxCopilot from './TaxCopilot';
 
+
 // ============================================================
 // 1. LOGIQUE FISCALE (HORS DU COMPOSANT REACT)
 // ============================================================

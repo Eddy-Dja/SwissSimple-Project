@@ -203,3 +203,51 @@ body.dark-mode .copilot-answer td { border-color: #e2e8f0 !important; }
 body.dark-mode .copilot-answer h3 { border-bottom-color: #e2e8f0 !important; }
 body.dark-mode .copilot-answer code { background-color: #f1f5f9 !important; }
 body.dark-mode .copilot-answer hr { border-top-color: #e2e8f0 !important; }
+
+/* ============================================================
+   MOBILE : tableaux du Copilot en cartes empilées
+   Chaque ligne devient une carte autonome, chaque cellule
+   est précédée de son étiquette (le pattern responsive
+   standard). Plus aucun défilement horizontal.
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+  .copilot-answer table {
+    border: none;
+    margin: 12px 0;
+  }
+
+  .copilot-answer thead {
+    display: none;              /* les en-têtes deviennent inutiles */
+  }
+
+  .copilot-answer tr {
+    display: block;             /* la ligne devient un bloc-carte */
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 4px;
+  }
+
+  .copilot-answer td {
+    display: block;             /* la cellule devient une section de carte */
+    border: none;
+    padding: 6px 10px;
+    text-align: left;
+    word-wrap: break-word;       /* coupe les mots très longs (URLs, références) */
+  }
+
+  /* L'étiquette devant chaque valeur — tire son texte du HTML généré */
+  .copilot-answer td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
+  }
+}

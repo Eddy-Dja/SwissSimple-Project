@@ -206,7 +206,18 @@ const TaxCopilot = () => {
 
       {answer && (
         <div className="copilot-answer">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{answer}</ReactMarkdown>
+<ReactMarkdown
+  remarkPlugins={[remarkGfm]}
+  components={{
+    td: ({ children }) => (
+      <td data-label={String(children).split('|')[0].trim() || ''}>
+        {children}
+      </td>
+    ),
+  }}
+>
+  {answer}
+</ReactMarkdown>
           {provider && <small className="copilot-provider">{provider}</small>}
         </div>
       )}
