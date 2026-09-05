@@ -206,9 +206,9 @@ body.dark-mode .copilot-answer hr { border-top-color: #e2e8f0 !important; }
 
 /* ============================================================
    MOBILE : tableaux du Copilot en cartes empilées
-   Chaque ligne devient une carte autonome, chaque cellule
-   est précédée de son étiquette (le pattern responsive
-   standard). Plus aucun défilement horizontal.
+   Lignes -> cartes, cellules -> sections étiquetées,
+   hiérarchie visuelle restaurée (étiquettes + valeurs clés
+   en gras, comme les tableaux desktop).
    ============================================================ */
 
 @media (max-width: 600px) {
@@ -219,11 +219,11 @@ body.dark-mode .copilot-answer hr { border-top-color: #e2e8f0 !important; }
   }
 
   .copilot-answer thead {
-    display: none;              /* les en-têtes deviennent inutiles */
+    display: none;
   }
 
   .copilot-answer tr {
-    display: block;             /* la ligne devient un bloc-carte */
+    display: block;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
@@ -232,22 +232,68 @@ body.dark-mode .copilot-answer hr { border-top-color: #e2e8f0 !important; }
   }
 
   .copilot-answer td {
-    display: block;             /* la cellule devient une section de carte */
+    display: block;
     border: none;
     padding: 6px 10px;
     text-align: left;
-    word-wrap: break-word;       /* coupe les mots très longs (URLs, références) */
+    word-wrap: break-word;
   }
 
-  /* L'étiquette devant chaque valeur — tire son texte du HTML généré */
+  /* ---- HIÉRARCHIE RESTAURÉE ---- */
+
+  /* 1. Les étiquettes de sections — plus présentes, en gras prononcé */
   .copilot-answer td::before {
     content: attr(data-label);
     display: block;
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: #64748b;
+    font-weight: 700;                    /* <-- gras marqué */
+    font-size: 0.72rem;
+    color: #475569;                      /* gris plus foncé = plus lisible */
     text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-bottom: 2px;
+    letter-spacing: 0.4px;
+    margin-bottom: 3px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #e2e8f0;    /* un filet souligne l'étiquette */
   }
+
+  /* 2. La valeur de la première colonne (le nom de la déduction) :
+         c'est le "titre" de la carte — le plus important */
+  .copilot-answer td:first-child {
+    font-weight: 700;                    /* <-- gras : titre de la carte */
+    font-size: 0.95rem;
+    color: #1A202C;
+    padding-top: 8px;
+  }
+
+  /* 3. La valeur de la deuxième colonne (montants/conditions) :
+         les chiffres ressortent */
+  .copilot-answer td:nth-child(2) {
+    font-weight: 600;                    /* <-- semi-gras : les montants */
+    color: #334155;
+  }
+
+  /* 4. La référence légale : plus discrète mais distincte */
+  .copilot-answer td:nth-child(3) {
+    color: #64748B;
+    font-style: normal;
+    font-size: 0.85rem;
+  }
+}
+
+/* Cartes empilées en mode sombre */
+body.dark-mode .copilot-answer tr {
+  background-color: #1E293B;             /* fond sombre au lieu du gris clair */
+  border-color: #334155;
+}
+body.dark-mode .copilot-answer td::before {
+  color: #94A3B8;
+  border-bottom-color: #334155;
+}
+body.dark-mode .copilot-answer td:first-child {
+  color: #F8FAFC;
+}
+body.dark-mode .copilot-answer td:nth-child(2) {
+  color: #CBD5E1;
+}
+body.dark-mode .copilot-answer td:nth-child(3) {
+  color: #94A3B8;
 }
