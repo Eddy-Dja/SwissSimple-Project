@@ -70,7 +70,7 @@ const TaxCopilot = () => {
       | { type: 'done' };
 
     try {
-      const res = await fetch('http://localhost:8000/api/tax-copilot-stream', {
+      const res = await fetch('http://localhost:8001/api/tax-copilot-stream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
