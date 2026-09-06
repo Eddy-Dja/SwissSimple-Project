@@ -16,9 +16,11 @@
     "cta1": "Jetzt Steuern berechnen ⚡",
     "cta2": "Erweiterte Tools entdecken 🚀",
     "atlas_btn": "📊 Atlas & Statistiken",
+    "cta_copilot": "Eine steuerliche Frage an die KI stellen",
     "trust1": "✓ Offizielle ESTV-Daten 2026",
     "trust2": "✓ 100% Anonym",
-    "trust3": "✓ Keine aufdringliche Werbung"
+    "trust3": "✓ Keine aufdringliche Werbung",
+    "trust4": "✓ Quellenbasierte Antworten zu den Gesetzen der 26 Kantone"
   },
 
   "free": {
@@ -523,7 +525,7 @@
   },
 
   "cantons": {
-    "ZH": "Zürich", "BE": "Bern", "LU": "Luzern", "UR": "Uri", 
+    "ZH": "Zürich", "BE": "Bern", "LU": "Luzern", "UR": "Uri",
     "SZ": "Schwyz", "OW": "Obwalden", "NW": "Nidwalden", "GL": "Glarus",
     "ZG": "Zug", "FR": "Freiburg", "SO": "Solothurn", "BS": "Basel-Stadt",
     "BL": "Basel-Landschaft", "SH": "Schaffhausen", "AR": "Appenzell Ausserrhoden",
@@ -562,31 +564,31 @@
     "ret_lpp": "🏦 Pensionskasse: Geb. {{birthYear}}. Gehalt {{salary}} CHF, Kapital {{capital}} CHF, Rückkauf/Jahr {{buyback}} CHF. Rentenalter {{age}} Jahre, Zins {{rate}}%.",
     "ret_call": "Und du, bist du bereit?"
   },
-  
+
   "Chatbot": {
-  "tax_copilot_title": "SwissSimple Tax Copilot (KI)",
-  "select_canton": "Kanton :",
-  "select_status": "Zivilstand :",
-  "select_children": "Anzahl Kinder :",
-  "select_profession": "Berufsstatus :",
-  "select_lang": "Antwortsprache :",
-  "question_label": "Ihre Frage :",
-  "question_placeholder": "z. B. Kann ich die Kinderbetreuungskosten abziehen?",
-  "ask_ai_button": "KI befragen",
-  "loading": "Die KI analysiert das Gesetz...",
-  "generated_by": "Erstellt von :",
-  "error_backend": "❌ Keine Verbindung zum Backend-Server.",
-  "status_celibataire": "Ledig",
-  "status_marie": "Verheiratet",
-  "status_divorce": "Geschieden",
-  "status_veuf": "Verwitwet",
-  "prof_salaries": "Angestellt(e)",
-  "prof_independant": "Selbstständig",
-  "prof_retraite": "Rentner/in",
-  "children_0": "0",
-  "children_1": "1",
-  "children_2": "2",
-  "children_3plus": "3 oder mehr",
-  "loading_hint": "Analyse der kantonalen Gesetze läuft, dies kann 10–20 Sekunden dauern…"
-}
+    "tax_copilot_title": "SwissSimple Tax Copilot (KI)",
+    "select_canton": "Kanton :",
+    "select_status": "Zivilstand :",
+    "select_children": "Anzahl Kinder :",
+    "select_profession": "Berufsstatus :",
+    "select_lang": "Antwortsprache :",
+    "question_label": "Ihre Frage :",
+    "question_placeholder": "z. B. Kann ich die Kinderbetreuungskosten abziehen?",
+    "ask_ai_button": "KI befragen",
+    "loading": "Die KI analysiert das Gesetz...",
+    "generated_by": "Erstellt von :",
+    "error_backend": "❌ Keine Verbindung zum Backend-Server.",
+    "status_celibataire": "Ledig",
+    "status_marie": "Verheiratet",
+    "status_divorce": "Geschieden",
+    "status_veuf": "Verwitwet",
+    "prof_salaries": "Angestellt(e)",
+    "prof_independant": "Selbstständig",
+    "prof_retraite": "Rentner/in",
+    "children_0": "0",
+    "children_1": "1",
+    "children_2": "2",
+    "children_3plus": "3 oder mehr",
+    "loading_hint": "Analyse der kantonalen Gesetze läuft, dies kann 10–20 Sekunden dauern…"
+  }
 }

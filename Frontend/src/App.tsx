@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './context/AuthContext';
 import { useState, useEffect } from 'react';
@@ -25,6 +25,25 @@ import SimulateurLPP from './modules/rente_lpp/SimulateurLPP';
 
 import './DarkMode.css';
 
+// ============================================================
+// SAUT VERS LES ANCRES (#xxx) APRÈS NAVIGATION INTERNE
+// Ex: /radar-fiscal#copilot -> atterrit directement sur le widget
+// Monté DANS le BrowserRouter (il a besoin de useLocation).
+// ============================================================
+function ScrollToHash() {
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      // 100 ms : laisser la page se monter avant de chercher l'élément
+      const timer = setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [hash]);
+  return null;
+}
+
 function AppRoutes() {
   const { user } = useAuth();
 
@@ -33,7 +52,7 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/demenagement" element={<DemenagementHub />} />
       <Route path="/retraite" element={<RetraiteHub />} />
-      <Route path="/legal" element={<Legal />} /> 
+      <Route path="/legal" element={<Legal />} />
       <Route path="/radar-fiscal" element={<RadarFiscal />} />
       <Route path="/assurance" element={<Assurance />} />
       <Route path="/simulateur-avs" element={<SimulateurAVS />} />
@@ -52,8 +71,8 @@ function App() {
 
   // --- SUPPRESSION DU LOADER UNE FOIS L'APP MONTÉE ---
   useEffect(() => {
-  const win = window as unknown as { swissLoadingInterval?: ReturnType<typeof setInterval> };
-  if (win.swissLoadingInterval) clearInterval(win.swissLoadingInterval);
+    const win = window as unknown as { swissLoadingInterval?: ReturnType<typeof setInterval> };
+    if (win.swissLoadingInterval) clearInterval(win.swissLoadingInterval);
 
     const progressBar = document.getElementById('progress-fill');
     if (progressBar) progressBar.style.width = '100%';
@@ -80,8 +99,9 @@ function App() {
     <BrowserRouter>
       <GlobalToolbar />
       <GlobalNavbar />
-      <ScrollToTop />
-      
+      <ScrollToHash />      {/* ← NOUVEAU : saute aux ancres (#copilot) */}
+      <ScrollToTop />       {/* remonte en haut — voir la modification ci-dessous */}
+
       <div style={{ minHeight: '80vh', paddingTop: '110px' }}>
         <AppRoutes />
       </div>
@@ -102,12 +122,12 @@ function App() {
         </div>
       </footer>
 
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        forceUpdateMode={recoveryMode} 
-        onClose={() => { 
-          setIsAuthModalOpen(false); 
-          
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        forceUpdateMode={recoveryMode}
+        onClose={() => {
+          setIsAuthModalOpen(false);
+
           if (recoveryMode) {
             signOut();
             setRecoveryMode(false);
@@ -116,7 +136,7 @@ function App() {
           if (window.location.href.includes('type=recovery')) {
             window.history.replaceState({}, document.title, window.location.pathname);
           }
-        }} 
+        }}
       />
 
     </BrowserRouter>

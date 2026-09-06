@@ -130,7 +130,7 @@ const TaxCopilot = () => {
   };
 
   return (
-    <div className="copilot-container">
+       <div id="copilot" className="copilot-container">    {/* ← id ajouté */}
       <h3 className="copilot-title">{t('Chatbot.tax_copilot_title')}</h3>
 
       <div className="copilot-grid">

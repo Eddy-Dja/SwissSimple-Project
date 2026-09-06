@@ -16,11 +16,13 @@
     "cta1": "Calculer mes impôts maintenant ⚡",
     "cta2": "Découvrir nos outils avancés 🚀",
     "atlas_btn": "📊 Atlas & Statistiques",
+    "cta_copilot": "Poser une question fiscale à l'IA",
     "trust1": "✓ Données officielles AFC 2026",
     "trust2": "✓ 100% Anonyme",
-    "trust3": "✓ Sans publicité intrusive"
+    "trust3": "✓ Sans publicité intrusive",
+    "trust4": "✓ Réponses sourcées sur les lois des 26 cantons"
   },
-
+  
   "free": {
     "title": "Nos outils gratuits et individuels",
     "subtitle": "Testez nos simulateurs basés sur les données officielles de l'AFC, de l'OFSP et de l'AVS."
@@ -31,7 +33,7 @@
     "subtitle": "Couplez nos simulateurs pour prendre les bonnes décisions financières.",
     "badge": "✨ Module Avancé",
     "demenagement_title": "Simulateur de Déménagement",
-    "demenagement_desc": "Évaluez l'impact financier total d'un déménagement en combinant l'évolution de vos impôts et de vos primes d'assurance maladie.",
+    "demenagement_desc": "Évaluez l'impact financier total d'un déménagement en combinant l'évolution de vos impôts et vos primes d'assurance maladie.",
     "retraite_title": "Simulateur de Retraite",
     "retraite_desc": "Projetez vos revenus une fois à la retraite en combinant votre rente AVS (1er pilier) et votre caisse de pension LPP (2ème pilier).",
     "cta": "Accéder à l'analyse complète"
@@ -523,7 +525,7 @@
   },
 
   "cantons": {
-    "ZH": "Zurich", "BE": "Berne", "LU": "Lucerne", "UR": "Uri", 
+    "ZH": "Zurich", "BE": "Berne", "LU": "Lucerne", "UR": "Uri",
     "SZ": "Schwytz", "OW": "Obwald", "NW": "Nidwald", "GL": "Glaris",
     "ZG": "Zoug", "FR": "Fribourg", "SO": "Soleure", "BS": "Bâle-Ville",
     "BL": "Bâle-Campagne", "SH": "Schaffhouse", "AR": "Appenzell Rhodes-Extérieures",
@@ -563,30 +565,30 @@
     "ret_call": "Et toi, es-tu prêt ?"
   },
 
- "Chatbot": {
-  "tax_copilot_title": "SwissSimple Tax Copilot (IA)",
-  "select_canton": "Canton :",
-  "select_status": "Statut civil :",
-  "select_children": "Nombre d'enfants :",
-  "select_profession": "Statut professionnel :",
-  "select_lang": "Langue de réponse :",
-  "question_label": "Votre question :",
-  "question_placeholder": "Ex: Puis-je déduire les frais de garde ?",
-  "ask_ai_button": "Demander à l'IA",
-  "loading": "L'IA analyse la loi...",
-  "generated_by": "Généré par :",
-  "error_backend": "❌ Erreur de connexion au serveur backend.",
-  "status_celibataire": "Célibataire",
-  "status_marie": "Marié(e)",
-  "status_divorce": "Divorcé(e)",
-  "status_veuf": "Veuf(ve)",
-  "prof_salaries": "Salarié",
-  "prof_independant": "Indépendant",
-  "prof_retraite": "Retraité",
-  "children_0": "0",
-  "children_1": "1",
-  "children_2": "2",
-  "children_3plus": "3 ou plus",
-  "loading_hint": "Analyse des lois cantonales en cours, cela peut prendre 10 à 20 secondes…"
-}
+  "Chatbot": {
+    "tax_copilot_title": "SwissSimple Tax Copilot (IA)",
+    "select_canton": "Canton :",
+    "select_status": "Statut civil :",
+    "select_children": "Nombre d'enfants :",
+    "select_profession": "Statut professionnel :",
+    "select_lang": "Langue de réponse :",
+    "question_label": "Votre question :",
+    "question_placeholder": "Ex: Puis-je déduire les frais de garde ?",
+    "ask_ai_button": "Demander à l'IA",
+    "loading": "L'IA analyse la loi...",
+    "generated_by": "Généré par :",
+    "error_backend": "❌ Erreur de connexion au serveur backend.",
+    "status_celibataire": "Célibataire",
+    "status_marie": "Marié(e)",
+    "status_divorce": "Divorcé(e)",
+    "status_veuf": "Veuf(ve)",
+    "prof_salaries": "Salarié",
+    "prof_independant": "Indépendant",
+    "prof_retraite": "Retraité",
+    "children_0": "0",
+    "children_1": "1",
+    "children_2": "2",
+    "children_3plus": "3 ou plus",
+    "loading_hint": "Analyse des lois cantonales en cours, cela peut prendre 10 à 20 secondes…"
+  }
 }

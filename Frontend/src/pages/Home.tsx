@@ -17,11 +17,11 @@ export default function Home() {
 
   return (
     <div className="swiss-app">
-      
-<Helmet>
-  <title>SwissSimple | Simulateur Financier Suisse (Impôts, Retraite (AVS et LPP), Assurances)</title>
-  <meta name="description" content="SwissSimple: Le simulateur financier suisse 100% gratuit. Calculez vos impôts, comparez votre assurance maladie et estimez votre retraite (AVS/LPP) dans tous les cantons." />
-</Helmet>
+
+      <Helmet>
+        <title>SwissSimple | Simulateur Financier Suisse (Impôts, Retraite (AVS et LPP), Assurances)</title>
+        <meta name="description" content="SwissSimple: Le simulateur financier suisse 100% gratuit + assistant fiscal IA sur les lois des 26 cantons. Calculez vos impôts, comparez votre assurance maladie et estimez votre retraite (AVS/LPP) dans tous les cantons." />
+      </Helmet>
 
       <header className="hero-section">
         <div className="hero-glow"></div>
@@ -33,25 +33,31 @@ export default function Home() {
           <p className="hero-subtitle">
             {t('hero.subtitle')}
           </p>
-          
+
           <div className="hero-cta-group">
             <button className="btn-hero-primary" onClick={() => navigate('/radar-fiscal')}>
               {t('hero.cta1')}
             </button>
+
+            {/* BOUTON COPILOT — la 2e porte d'entrée (demander plutôt que calculer) */}
+<button className="btn-hero-copilot" onClick={() => navigate('/radar-fiscal#copilot')}>
+  🤖 {t('hero.cta_copilot')}
+</button>
+
             <button className="btn-hero-secondary" onClick={scrollToPremium}>
               {t('hero.cta2')}
             </button>
-                        {/* NOUVEAU BOUTON POUR L'ATLAS */}
-            {/* NOUVEAU BOUTON POUR L'ATLAS */}
+
             <button className="btn-hero-atlas" onClick={() => navigate('/classements')}>
               {t('hero.atlas_btn')}
             </button>
-            </div>
-          
+          </div>
+
           <div className="hero-trust">
             <span>{t('hero.trust1')}</span>
             <span>{t('hero.trust2')}</span>
             <span>{t('hero.trust3')}</span>
+            <span>🤖 {t('hero.trust4')}</span>
           </div>
         </div>
       </header>
@@ -60,8 +66,9 @@ export default function Home() {
         <div className="container">
           <h2 className="section-title">{t('free.title')}</h2>
           <p className="section-subtitle">{t('free.subtitle')}</p>
-          
+
           <div className="tools-grid">
+
             <div className="tool-card" onClick={() => navigate('/radar-fiscal')}>
               <div className="tool-icon-wrap blue-icon">💰</div>
               <h3>{t('nav.impots')}</h3>
@@ -98,7 +105,7 @@ export default function Home() {
           <h2>{t('premium.title')}</h2>
           <p>{t('premium.subtitle')}</p>
         </div>
-        
+
         <div className="premium-grid">
           <div className="premium-card" onClick={() => handlePremiumClick('/demenagement')}>
             <div className="premium-badge"> {t('premium.badge')}</div>
