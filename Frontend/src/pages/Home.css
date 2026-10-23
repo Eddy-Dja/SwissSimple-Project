@@ -109,7 +109,7 @@ body.dark-mode .text-gradient,
 
 /* BOUTON COPILOT (l'IA — la 2e porte d'entrée, mène à l'ancre #copilot) */
 .btn-hero-copilot {
-  background: linear-gradient(90deg, #C8102E, #8B5CF6);
+  background: linear-gradient(90deg, #00b7ff, #1aaf1a);
   color: #ffffff;
   border: none;
   padding: 16px 32px;
