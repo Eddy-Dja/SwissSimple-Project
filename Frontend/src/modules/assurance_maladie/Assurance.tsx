@@ -22,24 +22,38 @@ interface Prime {
 
 interface RegionOption { value: string; label: string; }
 
-const AGE_CONFIG: Record<string, { klasse: string; untergruppe: string; label: string }> = {
-  'KIN-K1': { klasse: 'AKL-KIN', untergruppe: 'K1', label: 'Enfant (0-11 ans)' },
-  'KIN-K2': { klasse: 'AKL-KIN', untergruppe: 'K2', label: 'Adolescent (12-18 ans)' },
+// ✏️ 2027 : ce que chaque canton propose réellement (interrogé à la volée)
+interface CantonOptions {
+  franchisesAdultes: number[];        // échelle adulte (ERW + JUG)
+  franchisesEnfants: number[];        // échelle enfant standard (K1)
+  franchisesEnfantsRabais: number[];  // ✏️ 2027b : paliers où K3/K4/K5 existe (rabais famille)
+  modeles: string[];                  // tariftyps présents dans le canton
+  rabaisFamille: boolean;             // K3/K4/K5 présents ? (dérivé : au moins un palier)
+}
+
+// ✏️ 2027 : plus de sous-groupe K2 dans les données BAG — les enfants sont K1
+// (sans réduction) ou K3/K4/K5 (rabais famille). L'option KIN-K2 (clé conservée
+// pour ne pas casser le localStorage) devient « Enfant – rabais famille ».
+const AGE_CONFIG: Record<string, { klasse: string; untergruppe: string; untergruppen?: string[]; label: string }> = {
+  'KIN-K1': { klasse: 'AKL-KIN', untergruppe: 'K1', label: 'Enfant (0-18 ans)' },
+  'KIN-K2': { klasse: 'AKL-KIN', untergruppe: '', untergruppen: ['K3', 'K4', 'K5'], label: 'Enfant – rabais famille' },
   'JUG': { klasse: 'AKL-JUG', untergruppe: '', label: 'Jeune (19-25 ans)' },
   'ERW': { klasse: 'AKL-ERW', untergruppe: '', label: 'Adulte (26+ ans)' }
 };
 const AGE_KEYS = Object.keys(AGE_CONFIG);
+const KIN_UNTERGRUPPEN = ['K1', 'K2', 'K3', 'K4', 'K5'];
 
 const FRACT_ERW = [300, 500, 1000, 1500, 2000, 2500];
 const FRACT_KIN = [0, 100, 200, 300, 400, 500, 600];
 
-const CANTONS = ['AG','AI','AR','BE','BL','BS','FR','GE','GL','GR','JU','LU','NE','NW','OW','SG','SH','SO','SZ','TG','TI','UR','VD','VS','ZG','ZH'];
+const CANTONS = ['AG','AI','AR','BE','BL','BS','FR','GE','GL','GR','JU','LU','NE','NW','OW','SG','SH','SO','SZ','TG','TI','UR','VD','VS','ZG','ZH', 'ZE', 'ZR'];
 
+// ✏️ 2027 : TAR-HMO retiré (aucun tarif BAG ne porte ce code — tous les HMO
+// sont codés TAR-HAM) ; le libellé TAR-HAM mentionne désormais les réseaux HMO.
 const TARIFTYP_LABELS: Record<string, string> = {
   '': '📋 Tous les modèles',
   'TAR-BASE': '🏥 Assurance de Base',
-  'TAR-HAM': '👨‍⚕️ Médecin de famille',
-  'TAR-HMO': '🏢 Réseau / HMO',
+  'TAR-HAM': '👨‍⚕️ Médecin de famille / Réseau HMO',
   'TAR-DIV': '📞 Télémédecine'
 };
 
@@ -152,6 +166,73 @@ const REGION_NAMES_DE: Record<string, Record<string, string>> = {
   'ZH': { 'PR-REG CH1': 'Region 1 (Stadt Zürich / Winterthur)', 'PR-REG CH2': 'Region 2 (Agglomeration)', 'PR-REG CH3': 'Region 3 (Rest des Kantons)' }
 };
 
+// ✏️ 2027 : « le canton propose-t-il au moins une ligne pour ce filtre ? »
+// Comptage seul (head: true) — aucune donnée transférée, très rapide.
+const existeLignes = async (
+  canton: string,
+  klassen: string[] | null,
+  filtres: Record<string, string | number | string[]>
+): Promise<boolean> => {
+  let q = supabase
+    .from('primes_lamal')
+    .select('id', { count: 'exact', head: true })
+    .eq('Kanton', canton)
+    .eq('Geschäftsjahr', 2027);
+  if (klassen) q = q.in('Altersklasse', klassen);
+  for (const [col, val] of Object.entries(filtres)) {
+    q = Array.isArray(val) ? q.in(col, val) : q.eq(col, val);
+  }
+  const { count } = await q;
+  return (count ?? 0) > 0;
+};
+
+// ✏️ 2027 : options réellement disponibles dans un canton.
+// Ex. ZR = franchise unique (300 adulte / 0 enfant), Base uniquement, pas de
+// rabais famille ; ZE = Base uniquement, rabais famille à la franchise 0 (SWICA).
+// ✏️ 2027b : 22 sondages parallèles — les 7 sondages rabais par palier
+// remplacent l'ancien sondage unique « rabais existe » : la liste doit être
+// exacte PAR PALIER, sinon « rabais famille + 300 » affiche des combos vides.
+const ADULTES = ['AKL-ERW', 'AKL-JUG'];
+const fetchCantonOptions = async (canton: string): Promise<CantonOptions> => {
+  const RABAIS = ['K3', 'K4', 'K5'];
+  const [a300, a500, a1000, a1500, a2000, a2500,
+         k0, k100, k200, k300, k400, k500, k600,
+         r0, r100, r200, r300, r400, r500, r600,
+         ham, div] = await Promise.all([
+    existeLignes(canton, ADULTES, { Franchise: 300 }),
+    existeLignes(canton, ADULTES, { Franchise: 500 }),
+    existeLignes(canton, ADULTES, { Franchise: 1000 }),
+    existeLignes(canton, ADULTES, { Franchise: 1500 }),
+    existeLignes(canton, ADULTES, { Franchise: 2000 }),
+    existeLignes(canton, ADULTES, { Franchise: 2500 }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 0 }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 100 }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 200 }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 300 }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 400 }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 500 }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 600 }),
+    // ✏️ 2027b : rabais famille — le palier n'est proposé que si K3/K4/K5 y existe
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 0, Altersuntergruppe: RABAIS }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 100, Altersuntergruppe: RABAIS }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 200, Altersuntergruppe: RABAIS }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 300, Altersuntergruppe: RABAIS }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 400, Altersuntergruppe: RABAIS }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 500, Altersuntergruppe: RABAIS }),
+    existeLignes(canton, ['AKL-KIN'], { Franchise: 600, Altersuntergruppe: RABAIS }),
+    existeLignes(canton, null, { Tariftyp: 'TAR-HAM' }),
+    existeLignes(canton, null, { Tariftyp: 'TAR-DIV' }),
+  ]);
+  const franchisesEnfantsRabais = FRACT_KIN.filter((_, i) => [r0, r100, r200, r300, r400, r500, r600][i]);
+  return {
+    franchisesAdultes: FRACT_ERW.filter((_, i) => [a300, a500, a1000, a1500, a2000, a2500][i]),
+    franchisesEnfants: FRACT_KIN.filter((_, i) => [k0, k100, k200, k300, k400, k500, k600][i]),
+    franchisesEnfantsRabais,
+    modeles: ['TAR-BASE', ...(ham ? ['TAR-HAM'] : []), ...(div ? ['TAR-DIV'] : [])],
+    rabaisFamille: franchisesEnfantsRabais.length > 0,
+  };
+};
+
 interface AssuranceProps {
   initialMode?: 'simple' | 'comparaison';
   onPrevStep?: () => void;
@@ -194,15 +275,91 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
   const [searched, setSearched] = useState(false);
 
   const isChild = selectedAge === 'KIN-K1' || selectedAge === 'KIN-K2';
-  const currentFractOptions = isChild ? FRACT_KIN : FRACT_ERW;
+
+  // ✏️ 2027 : options réelles de chaque canton (null pendant le chargement ->
+  // on retombe sur les listes complètes, comme avant)
+  const [optionsCantonA, setOptionsCantonA] = useState<CantonOptions | null>(null);
+  const [optionsCantonB, setOptionsCantonB] = useState<CantonOptions | null>(null);
+
+  // ✏️ 2027b : 3 listes enfant possibles — standard (K1) ou rabais famille (K3/K4/K5)
+  const echelleReference = isChild ? FRACT_KIN : FRACT_ERW;
+  const avecRabais = selectedAge === 'KIN-K2';
+  const listeA = optionsCantonA
+    ? (isChild
+        ? (avecRabais ? optionsCantonA.franchisesEnfantsRabais : optionsCantonA.franchisesEnfants)
+        : optionsCantonA.franchisesAdultes)
+    : echelleReference;
+  const listeB = (mode === 'comparaison' && optionsCantonB)
+    ? (isChild
+        ? (avecRabais ? optionsCantonB.franchisesEnfantsRabais : optionsCantonB.franchisesEnfants)
+        : optionsCantonB.franchisesAdultes)
+    : null;
+
+  // ✏️ 2027 : en mode comparaison, seules les options communes aux DEUX cantons
+  const franchiseOptions = listeB
+    ? listeA.filter(f => listeB.includes(f))
+    : listeA;
+
+  const modelesA = optionsCantonA?.modeles ?? ['TAR-BASE', 'TAR-HAM', 'TAR-DIV'];
+  const modelesB = (mode === 'comparaison' && optionsCantonB) ? optionsCantonB.modeles : null;
+  const modeleOptions = modelesB ? modelesA.filter(m => modelesB.includes(m)) : modelesA;
+
+  const rabaisDispo = (optionsCantonA?.rabaisFamille ?? true)
+    && (mode !== 'comparaison' || (optionsCantonB?.rabaisFamille ?? true));
+
+  // ✏️ 2027b : franchise choisie indisponible -> VALEUR LA PLUS PROCHE
+  // (ex. 1500 en arrivant sur ZR -> 300 ; 2500 en passant adulte->enfant -> 600).
+  // Un seul effet unifié : remplace l'ancien « 1re dispo » ET l'ancien reset
+  // d'échelle adulte/enfant — plus de saut brutal au palier le plus bas.
+  useEffect(() => {
+    if (franchiseOptions.length === 0 || franchiseOptions.includes(franchise)) return;
+    let plusProche = franchiseOptions[0];
+    let dMin = Math.abs(plusProche - franchise);
+    for (const f of franchiseOptions) {
+      const d = Math.abs(f - franchise);
+      if (d < dMin) { plusProche = f; dMin = d; }
+    }
+    setFranchise(plusProche);
+  }, [franchiseOptions.join(','), franchise]);
+
+  // ✏️ 2027 : purge des valeurs obsolètes du localStorage (ex. TAR-HMO sauvegardé
+  // avant sa suppression du dropdown — sinon recherches vides sans cause visible)
+  useEffect(() => {
+    if (tariftyp && !Object.keys(TARIFTYP_LABELS).includes(tariftyp)) setTariftyp('');
+  }, [tariftyp]);
+
+  // ✏️ 2027 : modèle choisi indisponible dans le(s) canton(s) -> « Tous »
+  useEffect(() => {
+    if (tariftyp && !modeleOptions.includes(tariftyp)) setTariftyp('');
+  }, [modeleOptions.join(','), tariftyp]);
+
+  // ✏️ 2027 : rabais famille indisponible -> option enfant standard
+  useEffect(() => {
+    if (!rabaisDispo && selectedAge === 'KIN-K2') setSelectedAge('KIN-K1');
+  }, [rabaisDispo, selectedAge]);
+
+  // ✏️ 2027b : chargement des options réelles — ANTI-CLIGNOTEMENT :
+  // on garde les options du canton précédent pendant le chargement (pas de
+  // retour visuel à la liste complète) ; null uniquement en cas d'échec
+  // -> listes complètes (dégradation gracieuse, comme avant).
+  useEffect(() => {
+    let actif = true;
+    fetchCantonOptions(cantonA)
+      .then(o => { if (actif) setOptionsCantonA(o); })
+      .catch(() => { if (actif) setOptionsCantonA(null); });
+    return () => { actif = false; };
+  }, [cantonA]);
 
   useEffect(() => {
-    if (isChild && !FRACT_KIN.includes(franchise)) setFranchise(0); 
-    else if (!isChild && !FRACT_ERW.includes(franchise)) setFranchise(300); 
-  }, [selectedAge, franchise, isChild]);
+    let actif = true;
+    fetchCantonOptions(cantonB)
+      .then(o => { if (actif) setOptionsCantonB(o); })
+      .catch(() => { if (actif) setOptionsCantonB(null); });
+    return () => { actif = false; };
+  }, [cantonB]);
 
   const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<React.SetStateAction<RegionOption[]>>, setSelectedRegion: React.Dispatch<React.SetStateAction<string>>) => {
-    const { data, error } = await supabase.from('primes_lamal').select('Region').eq('Kanton', canton).eq('Geschäftsjahr', 2026);
+    const { data, error } = await supabase.from('primes_lamal').select('Region').eq('Kanton', canton).eq('Geschäftsjahr', 2027);
     if (error || !data) { setAvailableRegions([]); return; }
     const uniqueRegions = [...new Set(data.map((p: { Region: string }) => p.Region))];
     
@@ -233,13 +390,19 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
 
   const getFilteredPrimes = async (targetCanton: string, targetRegion: string) => {
     const targetConfig = AGE_CONFIG[selectedAge];
-    let query = supabase.from('primes_lamal').select('*').eq('Kanton', targetCanton).eq('Region', targetRegion).eq('Altersklasse', targetConfig.klasse).eq('Franchise', franchise).eq('Unfalleinschluss', accident).eq('Geschäftsjahr', 2026);
+    let query = supabase.from('primes_lamal').select('*').eq('Kanton', targetCanton).eq('Altersklasse', targetConfig.klasse).eq('Franchise', franchise).eq('Unfalleinschluss', accident).eq('Geschäftsjahr', 2027);
+    // ✏️ 2027 : région filtrée uniquement si connue (un échec du chargement des
+    // régions ne vide plus les résultats — CH0/ZE/ZR fonctionnent sans région)
+    if (targetRegion) query = query.eq('Region', targetRegion);
     if (tariftyp) query = query.eq('Tariftyp', tariftyp);
     const { data, error } = await query.order('Prämie', { ascending: true });
     if (error) throw error;
+    // ✏️ 2027 : 3 cas — rabais famille (K3/K4/K5), enfant standard (K1),
+    // et JUG/ERW (aucun sous-groupe enfant ne doit passer)
     const preFiltered = (data as Prime[]).filter(p => {
+      if (targetConfig.untergruppen) return targetConfig.untergruppen.includes(p.Altersuntergruppe);
       if (targetConfig.untergruppe) return p.Altersuntergruppe === targetConfig.untergruppe;
-      return p.Altersuntergruppe !== 'K1' && p.Altersuntergruppe !== 'K2';
+      return !KIN_UNTERGRUPPEN.includes(p.Altersuntergruppe);
     });
     return preFiltered.filter((p, index, self) => index === self.findIndex((t) => (t.Versicherer === p.Versicherer && t.Tarifbezeichnung === p.Tarifbezeichnung)));
   };
@@ -296,11 +459,16 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
 
   const displayedResults = mode === 'simple' ? resultsA : (activeTab === 'A' ? resultsA : resultsB);
 
+  // ✏️ 2027 : libellés explicites pour ZE/ZR (codes BAG hors des 26 cantons,
+  // probablement assurés LAMal résidant à l'étranger — non documenté officiellement)
+  const getCantonLabel = (c: string) =>
+    (c === 'ZE' || c === 'ZR') ? t(`assurance.canton_${c.toLowerCase()}`, `${c} – hors cantons (BAG)`) : c;
+
   return (
     <div className="assurance-container">
       <Helmet>
-        <title>Comparatif Assurances Maladie Suisse | Primes LAMal 2026</title>
-        <meta name="description" content="Comparez les primes de l'assurance maladie de base (LAMal) 2026 par canton et par âge. Trouvez la caisse la moins chère en Suisse avec notre simulateur gratuit." />
+        <title>Comparatif Assurances Maladie Suisse | Primes LAMal 2027</title>
+        <meta name="description" content="Comparez les primes de l'assurance maladie de base (LAMal) 2027 par canton et par âge. Trouvez la caisse la moins chère en Suisse avec notre simulateur gratuit." />
       </Helmet>
 
       <div className="assurance-header">
@@ -317,7 +485,7 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
               <div className="filter-group">
                 <label>{mode === 'comparaison' ? t('assurance.canton_depart') : t('assurance.canton')}</label>
                 <select value={cantonA} onChange={(e) => setCantonA(e.target.value)} className="form-input">
-                  {CANTONS.map(c => <option key={c} value={c}>{c}</option>)}
+                  {CANTONS.map(c => <option key={c} value={c}>{getCantonLabel(c)}</option>)}
                 </select>
               </div>
               {availableRegionsA.length > 1 && (
@@ -335,7 +503,7 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
                 <div className="filter-group">
                   <label>{t('assurance.canton_arrivee')}</label>
                   <select value={cantonB} onChange={(e) => setCantonB(e.target.value)} className="form-input">
-                    {CANTONS.map(c => <option key={c} value={c}>{c}</option>)}
+                    {CANTONS.map(c => <option key={c} value={c}>{getCantonLabel(c)}</option>)}
                   </select>
                 </div>
                 {availableRegionsB.length > 1 && (
@@ -354,25 +522,25 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
             <div className="filter-group">
               <label>{t('assurance.age')}</label>
               <select value={selectedAge} onChange={(e) => setSelectedAge(e.target.value)} className="form-input">
-                {AGE_KEYS.map(key => {
+                {AGE_KEYS.filter(key => key !== 'KIN-K2' || rabaisDispo).map(key => {
                   const langKey = key === 'KIN-K1' ? 'age_k1' : key === 'KIN-K2' ? 'age_k2' : key === 'JUG' ? 'age_jug' : 'age_erw';
-                  return <option key={key} value={key}>{t(`assurance.${langKey}`)}</option>
+                  return <option key={key} value={key}>{t(`assurance.${langKey}`, AGE_CONFIG[key].label)}</option>
                 })}
               </select>
             </div>
             <div className="filter-group">
               <label>{t('assurance.modele')}</label>
               <select value={tariftyp} onChange={(e) => setTariftyp(e.target.value)} className="form-input">
-                {Object.entries(TARIFTYP_LABELS).map(([key]) => {
+                {(['', ...modeleOptions]).map(key => {
                   const langKey = key === '' ? 'model_all' : `model_${key.split('-')[1].toLowerCase()}`;
-                  return <option key={key} value={key}>{t(`assurance.${langKey}`)}</option>
+                  return <option key={key} value={key}>{t(`assurance.${langKey}`, TARIFTYP_LABELS[key])}</option>
                 })}
               </select>
             </div>
             <div className="filter-group">
               <label>{t('assurance.franchise')}</label>
               <select value={franchise} onChange={(e) => setFranchise(parseInt(e.target.value))} className="form-input">
-                {currentFractOptions.map(f => <option key={f} value={f}>{f} CHF</option>)}
+                {franchiseOptions.map(f => <option key={f} value={f}>{f} CHF</option>)}
               </select>
             </div>
             <div className="filter-group">

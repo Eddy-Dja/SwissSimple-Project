@@ -268,6 +268,8 @@
   },
 
   "assurance": {
+    "canton_ze": "ZE – Hors cantons (BAG)",
+    "canton_zr": "ZR – Hors cantons (BAG)",
     "back": "← Retour à l'accueil",
     "title": "Comparateur LAMal 🏥",
     "subtitle_compare": "Comparez les primes moyennes entre votre région actuelle et votre future région.",
@@ -300,16 +302,15 @@
     "offres_arrivee": "🚀 Offres Région d'arrivée ({{count}})",
     "prime_mensuelle": "Prime mensuelle",
     "results_title": "{{count}} offres trouvées",
-    "age_k1": "Enfant (0-11 ans)",
-    "age_k2": "Adolescent (12-18 ans)",
+    "age_k1": "Enfant (0-18 ans)",
+    "age_k2": "Enfant – Rabais famille",
     "age_jug": "Jeune (19-25 ans)",
     "age_erw": "Adulte (26+ ans)",
     "model_all": "📋 Tous les modèles",
     "model_base": "🏥 Assurance de Base",
-    "model_ham": "👨‍⚕️ Médecin de famille",
-    "model_hmo": "🏢 Réseau / HMO",
+    "model_ham": "👨‍⚕️ Médecin de famille / Réseau HMO",
     "model_div": "📞 Télémédecine",
-    "warning": "Ce comparateur est basé sur les données officielles de l'OFSP (Office Fédéral de la Santé Publique) pour 2025/2026 et représente une moyenne des assureurs. Les primes réelles peuvent varier en fonction de l'âge exact, du modèle d'assurance choisi et de la région spécifique. Ce résultat est indicatif et ne remplace pas un conseil professionnel."
+    "warning": "Ce comparateur est basé sur les données officielles de l'OFSP (Office Fédéral de la Santé Publique) pour 2027 et représente une moyenne des assureurs. Les primes réelles peuvent varier en fonction de l'âge exact, du modèle d'assurance choisi et de la région spécifique. Ce résultat est indicatif et ne remplace pas un conseil professionnel."
   },
 
   "avs": {

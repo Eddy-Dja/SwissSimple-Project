@@ -22,7 +22,7 @@
     "trust3": "✓ Keine aufdringliche Werbung",
     "trust4": "✓ Quellenbasierte Antworten zu den Gesetzen der 26 Kantone"
   },
-
+  
   "free": {
     "title": "Unsere kostenlosen und individuellen Tools",
     "subtitle": "Testen Sie unsere Simulatoren basierend auf den offiziellen Daten von ESTV, BAG und AHV."
@@ -268,6 +268,8 @@
   },
 
   "assurance": {
+    "canton_ze": "ZE – Ausserhalb der Kantone (BAG)",
+    "canton_zr": "ZR – Ausserhalb der Kantone (BAG)",
     "back": "← Zurück zur Startseite",
     "title": "KVG-Vergleich 🏥",
     "subtitle_compare": "Vergleichen Sie die durchschnittlichen Prämien zwischen Ihrer aktuellen und Ihrer zukünftigen Region.",
@@ -300,16 +302,15 @@
     "offres_arrivee": "🚀 Angebote Zielregion ({{count}})",
     "prime_mensuelle": "Monatsprämie",
     "results_title": "{{count}} Angebote gefunden",
-    "age_k1": "Kind (0-11 Jahre)",
-    "age_k2": "Jugendlicher (12-18 Jahre)",
+    "age_k1": "Kind (0-18 Jahre)",
+    "age_k2": "Kind – Familienrabatt",
     "age_jug": "Junger Erwachsener (19-25 Jahre)",
     "age_erw": "Erwachsener (26+ Jahre)",
     "model_all": "📋 Alle Modelle",
     "model_base": "🏥 Grundversicherung",
-    "model_ham": "👨‍⚕️ Hausarzt",
-    "model_hmo": "🏢 Netzwerk / HMO",
+    "model_ham": "👨‍⚕️ Hausarzt / HMO-Netzwerk",
     "model_div": "📞 Telemedizin",
-    "warning": "Dieser Vergleich basiert auf den offiziellen Daten des BAG (Bundesamt für Gesundheit) für 2025/2026 und stellt einen Durchschnitt der Versicherer dar. Die tatsächlichen Prämien können je nach genauen Alter, gewähltem Versicherungsmodell und spezifischer Region variieren. Dieses Ergebnis ist indikativ und ersetzt keine professionelle Beratung."
+    "warning": "Dieser Vergleich basiert auf den offiziellen Daten des BAG (Bundesamt für Gesundheit) für 2027 und stellt einen Durchschnitt der Versicherer dar. Die tatsächlichen Prämien können je nach genauen Alter, gewähltem Versicherungsmodell und spezifischer Region variieren. Dieses Ergebnis ist indikativ und ersetzt keine professionelle Beratung."
   },
 
   "avs": {
@@ -380,7 +381,7 @@
     "capital": "Heute angespartes BVG-Kapital (CHF)",
     "capital_hint": "Auf Ihrem Vorsorgeausweis verfügbar.",
     "rachat": "Freiwillige jährliche Einkäufe (CHF)",
-    "rachat_hint": "Wenn Sie jedes Jahre Jahre einkaufen.",
+    "rachat_hint": "Wenn Sie jedes Jahr Jahre einkaufen.",
     "age_retraite": "Gewünschtes Rentenalter",
     "age_ordinaire": "(Ordentliches Alter)",
     "age_anticip": "(Vorzeitig)",
