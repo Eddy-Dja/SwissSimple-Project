@@ -122,13 +122,19 @@ export default function Classements() {
   };
 
   const calculerAssurance = async () => {
+    // ✏️ 2027 : la table ne contient plus que le millésime 2027 (l'ancien
+    // filtre 2026 renvoyait 0 ligne -> onglet Assurance vide). ZE/ZR exclus :
+    // ce sont des assurés hors cantons (BAG), pas des cantons — l'ancien code
+    // les regroupait dans Zurich et faussait ses statistiques (ex. l'outlier
+    // ZE Atupri 678.90 gonflait la moyenne du canton ZH).
     const result = await supabase
       .from('primes_lamal')
       .select('Kanton, Prämie')
-      .eq('Geschäftsjahr', 2026)
+      .eq('Geschäftsjahr', 2027)
       .eq('Altersklasse', 'AKL-ERW')
       .eq('Franchise', 300)
-      .eq('Unfalleinschluss', 'MIT-UNF');
+      .eq('Unfalleinschluss', 'MIT-UNF')
+      .not('Kanton', 'in', '("ZE","ZR")');
 
     const data = result.data as any[] | null;
     if (!data) return;
@@ -136,9 +142,8 @@ export default function Classements() {
     const grouped: { [key: string]: number[] } = {};
     
     data.forEach((p: any) => {
-      const cantonKey = (p.Kanton === 'ZR' || p.Kanton === 'ZE') ? 'ZH' : p.Kanton;
-      if (!grouped[cantonKey]) grouped[cantonKey] = [];
-      grouped[cantonKey].push(p.Prämie);
+      if (!grouped[p.Kanton]) grouped[p.Kanton] = [];
+      grouped[p.Kanton].push(p.Prämie);
     });
 
     const assuranceResult = Object.keys(grouped).map(kanton => {
@@ -156,7 +161,7 @@ export default function Classements() {
 
   return (
     <div className="classements-container">
-      <h1>{t('classements.title', 'Atlas Suisse 2026 📊')}</h1>
+      <h1>{t('classements.title', 'Atlas Suisse 2026/2027 📊')}</h1>
       <p>{activeTab === 'impots' ? t('classements.subtitle_impots') : t('classements.subtitle_assurance')}</p>      
       {activeTab === 'impots' && (
         <p className="classements-disclaimer">

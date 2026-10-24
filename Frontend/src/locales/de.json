@@ -159,7 +159,7 @@
     "reco_btn": "Die besten 3a Angebote entdecken 🚀",
     "warning_title": "Warnung",
     "warning_ret": "Dieser Simulator basiert auf dem gesetzlichen Mindestumwandlungssatz (BVV) von 6.8% bei 65 Jahren und den gesetzlichen Beitragsstaffeln (Art. 16). Arbeitgeber und Arbeitnehmer teilen sich die Beiträge, aber die Gesamtsumme (z.B. 10% mit 40) wird auf dem Konto gutgeschrieben. Der Zinseszins wird linear nach dem eingegebenen Zins berechnet. Dieses Ergebnis ist indikativ und ersetzt nicht Ihren offiziellen Vorsorgeausweis.",
-    "warning_move": "Dieser Umzugssimulator kombiniert die steuerlichen Auswirkungen und die Krankenversicherung. Die Steuerberechnungen basieren auf Open Data der ESTV (Eidgenössische Steuerverwaltung) und bieten eine treue Schätzung, die jedoch aufgrund fehlender Daten (spezifische Abzüge, reale Pensionskassen) leicht vom Original abweichen kann. Die Krankenversicherungsprämien basieren auf den offiziellen Daten des BAG (Bundesamt für Gesundheit) für 2025/2026 und stellen einen Durchschnitt der Versicherer dar. Diese Ergebnisse sind indikativ und ersetzen weder offizielle Erklärungen noch die Beratung durch einen Fachmann.",
+    "warning_move": "Dieser Umzugssimulator kombiniert die steuerlichen Auswirkungen und die Krankenversicherung. Die Steuerberechnungen basieren auf Open Data der ESTV (Eidgenössische Steuerverwaltung) und bieten eine treue Schätzung, die jedoch aufgrund fehlender Daten (spezifische Abzüge, reale Pensionskassen) leicht vom Original abweichen kann. Die Krankenversicherungsprämien basieren auf den offiziellen Daten des BAG (Bundesamt für Gesundheit) für 2027 und stellen einen Durchschnitt der Versicherer dar. Diese Ergebnisse sind indikativ und ersetzen weder offizielle Erklärungen noch die Beratung durch einen Fachmann.",
     "coming_soon": "(Bald verfügbar)",
     "recap_avs_details": "({{state}}, {{gender}}, geb. {{birthYear}} - Gehalt: {{salary}} CHF - Beitragsjahre: {{years}} - Rückkäufe: {{boughtYears}} - Kinder: {{children}} - Rentenalter {{age}})",
     "recap_lpp_details": "(Geb. {{birthYear}} - Bruttogehalt: {{salary}} CHF - Kapital: {{capital}} CHF - Rückkauf/Jahr: {{buyback}} CHF - Rentenalter {{age}} - Zins: {{rate}}%)",
@@ -367,7 +367,7 @@
     "rente_mensuelle": "Monatsrente",
     "rente_annuelle": "Jahresrente (13 Monate)",
     "rappel": "Erinnerung: Die AHV-Rente wird 13-mal im Jahr ausbezahlt (ab 2026).",
-    "warning": "Dieser Simulator basiert auf den gesetzlichen Konstanten der AHV (Stand 2026, Mindestrente 1'260 CHF, Maximalrente 2'520 CHF) und integriert den 13. Monat. Wenn Sie vor Ihrem Partner in Rente gehen, wird Ihnen bis zu dessen Ruhestand eine provisorische Einzelrente ausgerichtet. Das Splitting und die Paarlimite gelten zu diesem Zeitpunkt. Die tatsächliche Rente wird von der zuständigen AHV-Ausgleichskasse berechnet."
+    "warning": "Dieser Simulator basiert auf den gesetzlichen Konstanten der AHV (seit 2026, Mindestrente 1'260 CHF, Maximalrente 2'520 CHF) und integriert den 13. Monat. Wenn Sie vor Ihrem Partner in Rente gehen, wird Ihnen bis zu dessen Ruhestand eine provisorische Einzelrente ausgerichtet. Das Splitting und die Paarlimite gelten zu diesem Zeitpunkt. Die tatsächliche Rente wird von der zuständigen AHV-Ausgleichskasse berechnet."
   },
 
   "lpp": {
@@ -536,7 +536,7 @@
   },
 
   "classements": {
-    "title": "Schweizer Atlas 2026 📊",
+    "title": "Schweizer Atlas 2026/2027 📊",
     "subtitle": "Vergleich der 26 Kantone für ein Referenzeinkommen von 100'000 CHF.",
     "loading": "Indikatoren werden berechnet...",
     "tab_impots": "Steuern (Ledig vs Verheiratet +2 Kinder)",
@@ -547,11 +547,11 @@
     "legend_moy": "Durchschnittliche Prämie",
     "bl_disclaimer": "* Der Kanton Basel-Landschaft (BL) ist aufgrund seines spezifischen Berechnungssystems von der Steuerklassifizierung ausgeschlossen.",
     "subtitle_impots": "Vergleich der 26 Kantone für ein Referenzeinkommen von 100'000 CHF.",
-    "subtitle_assurance": "Vergleich der KVG-Prämien 2026 (Erwachsener, Franchise 300) in den 26 Kantonen.",
-    "assurance_disclaimer": "KVG-Prämien 2026 für einen Erwachsenen, Franchise 300 CHF, inklusive Unfallversicherung.",
+    "subtitle_assurance": "Vergleich der KVG-Prämien 2027 (Erwachsener, Franchise 300) in den 26 Kantonen.",
+    "assurance_disclaimer": "KVG-Prämien 2027 für einen Erwachsenen, Franchise 300 CHF, inklusive Unfallversicherung.",
     "impots_disclaimer": "Berechnungsannahmen: Profil 1 (Ledig, Einkommen 100k, 0 Kinder) vs Profil 2 (Verheiratet, Haushaltseinkommen 100k, 2 minderjährige Kinder). Sozialabgaben (AHV/BVG) für die Altersklasse 35-44 Jahre berechnet.",
     "impots_warning": "Die Berechnungen basieren auf den Open Data der ESTV. Sie liefern eine treue Schätzung, können jedoch aufgrund fehlender Daten in den offiziellen Dateien (z.B. bestimmte Wohnungsabzüge, gesetzliche Multiplikatoren oder reale Pensionskassen) leicht vom Web-Simulator der ESTV abweichen. Dieses Ergebnis ist indikativ und ersetzt nicht Ihre offizielle Steuererklärung.",
-    "assurance_warning": "Dieser Vergleich basiert auf den offiziellen Daten des BAG (Bundesamt für Gesundheit) für 2026 und stellt einen Durchschnitt der Versicherer dar. Die tatsächlichen Prämien können je nach genauer Alter, gewähltem Versicherungsmodell und spezifischer Region variieren. Dieses Ergebnis ist indikativ und ersetzt keine professionelle Beratung."
+    "assurance_warning": "Dieser Vergleich basiert auf den offiziellen Daten des BAG (Bundesamt für Gesundheit) für 2027 und stellt einen Durchschnitt der Versicherer dar. Die tatsächlichen Prämien können je nach genauer Alter, gewähltem Versicherungsmodell und spezifischer Region variieren. Dieses Ergebnis ist indikativ und ersetzt keine professionelle Beratung."
   },
 
   "share": {
