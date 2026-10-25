@@ -22,10 +22,14 @@
     "trust3": "✓ Keine aufdringliche Werbung",
     "trust4": "✓ Quellenbasierte Antworten zu den Gesetzen der 26 Kantone"
   },
-  
+
   "free": {
     "title": "Unsere kostenlosen und individuellen Tools",
-    "subtitle": "Testen Sie unsere Simulatoren basierend auf den offiziellen Daten von ESTV, BAG und AHV."
+    "subtitle": "Testen Sie unsere Simulatoren basierend auf den offiziellen Daten von ESTV, BAG und AHV.",
+    "desc_impots": "Vergleichen Sie Ihre Steuerlast zwischen Gemeinden: Einkommen, Status, Kinder und Abzüge.",
+    "desc_assurance": "Vergleichen Sie die KVG-Prämien 2027 der Versicherer Ihrer Region, alle Modelle und Franchisen.",
+    "desc_avs": "Schätzen Sie Ihre Altersrente (1. Säule): Beiträge, Splitting und 13. Auszahlung.",
+    "desc_lpp": "Projizieren Sie Ihre 2. Säule: Kapital, Ertrag und Rente."
   },
 
   "premium": {

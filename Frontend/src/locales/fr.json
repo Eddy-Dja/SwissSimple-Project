@@ -22,10 +22,14 @@
     "trust3": "✓ Sans publicité intrusive",
     "trust4": "✓ Réponses sourcées sur les lois des 26 cantons"
   },
-  
+
   "free": {
     "title": "Nos outils gratuits et individuels",
-    "subtitle": "Testez nos simulateurs basés sur les données officielles de l'AFC, de l'OFSP et de l'AVS."
+    "subtitle": "Testez nos simulateurs basés sur les données officielles de l'AFC, de l'OFSP et de l'AVS.",
+    "desc_impots": "Comparez votre charge fiscale entre communes : revenu, statut, enfants et déductions.",
+    "desc_assurance": "Comparez les primes LAMal 2027 des assureurs de votre région, tous modèles et franchises.",
+    "desc_avs": "Estimez votre rente de vieillesse 1er pilier : cotisations, splitting et 13e versement.",
+    "desc_lpp": "Projetez votre 2e pilier : capital, rendement et rente à la retraite."
   },
 
   "premium": {

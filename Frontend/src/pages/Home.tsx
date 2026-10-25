@@ -72,28 +72,28 @@ export default function Home() {
             <div className="tool-card" onClick={() => navigate('/radar-fiscal')}>
               <div className="tool-icon-wrap blue-icon">💰</div>
               <h3>{t('nav.impots')}</h3>
-              <p>{t('hero.subtitle')}</p>
+              <p>{t('free.desc_impots', 'Comparez votre charge fiscale entre communes : revenu, statut, enfants et déductions.')}</p>
               <span className="tool-cta">→</span>
             </div>
 
             <div className="tool-card" onClick={() => navigate('/assurance')}>
               <div className="tool-icon-wrap green-icon">🏥</div>
               <h3>{t('nav.assurance')}</h3>
-              <p>{t('hero.subtitle')}</p>
+              <p>{t('free.desc_assurance', 'Comparez les primes LAMal 2027 des assureurs de votre région, tous modèles et franchises.')}</p>
               <span className="tool-cta">→</span>
             </div>
 
             <div className="tool-card" onClick={() => navigate('/simulateur-avs')}>
               <div className="tool-icon-wrap orange-icon">🧓</div>
               <h3>{t('nav.avs')}</h3>
-              <p>{t('hero.subtitle')}</p>
+              <p>{t('free.desc_avs', 'Estimez votre rente de vieillesse 1er pilier : cotisations, splitting et 13e versement.')}</p>
               <span className="tool-cta">→</span>
             </div>
 
             <div className="tool-card" onClick={() => navigate('/simulateur-lpp')}>
               <div className="tool-icon-wrap purple-icon">🏦</div>
               <h3>{t('nav.lpp')}</h3>
-              <p>{t('hero.subtitle')}</p>
+              <p>{t('free.desc_lpp', 'Projetez votre 2e pilier : capital, rendement et rente à la retraite.')}</p>
               <span className="tool-cta">→</span>
             </div>
           </div>

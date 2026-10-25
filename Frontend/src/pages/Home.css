@@ -127,13 +127,6 @@ body.dark-mode .text-gradient,
   filter: brightness(1.1);
 }
 
-body.dark-mode .btn-hero-copilot,
-[data-theme="dark"] .btn-hero-copilot {
-  background: linear-gradient(90deg, rgba(200, 16, 46, 0.6), rgba(139, 92, 246, 0.6));
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: none;
-}
 
 .btn-hero-secondary {
   background: #FFFFFF;
