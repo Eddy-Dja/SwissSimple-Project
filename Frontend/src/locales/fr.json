@@ -168,7 +168,9 @@
     "recap_avs_details": "({{state}}, {{gender}}, Né en {{birthYear}} - Salaire: {{salary}} CHF - Cotisations: {{years}} ans - Rachats: {{boughtYears}} - Enfants: {{children}} - Retraite à {{age}} ans)",
     "recap_lpp_details": "(Né en {{birthYear}} - Salaire brut: {{salary}} CHF - Capital: {{capital}} CHF - Rachats/an: {{buyback}} CHF - Retraite à {{age}} ans - Taux: {{rate}}%)",
     "recap_move_details": "({{from}} ➔ {{to}})",
-    "share_result_btn": "📲 Partager mon résultat"
+    "share_result_btn": "📲 Partager mon résultat",
+    "shared_banner": "Vous consultez une simulation partagée par son auteur. Résultats à titre indicatif.",
+    "shared_cta": "Faire ma propre simulation"
   },
 
   "radar": {

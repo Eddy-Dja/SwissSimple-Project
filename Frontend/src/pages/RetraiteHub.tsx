@@ -10,6 +10,62 @@ import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import './RetraiteHub.css';
 import { Helmet } from 'react-helmet-async';
 
+// ============================================================
+// PARTAGE : encodage de la synthèse dans le lien (#s=...)
+// Ne transporte QUE le contenu visible sans compte (paramètres
+// et rentes du récap). Jamais la session, jamais l'analyse
+// détaillée ni le PDF — qui restent derrière le compte.
+// ============================================================
+export interface SharedRetraiteData {
+  v: number;
+  avs?: {
+    rente?: number;
+    p?: {
+      etatCivil?: string; sexe?: string;
+      anneeNaissance?: number; salaire?: number;
+      anneesCotisation?: number; anneesRachetees?: number;
+      nombreEnfants?: number; ageRetraite?: number;
+    };
+  };
+  lpp?: {
+    renteFinale?: number;
+    adjusted?: boolean;
+    p?: {
+      anneeNaissance?: number; salaire?: number;
+      capitalActuel?: number; rachatAnnuel?: number;
+      ageRetraite?: number; tauxInteret?: number;
+    };
+  };
+  total?: number;
+}
+
+const encodeRetraiteShareData = (data: SharedRetraiteData): string => {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let bin = '';
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+
+const decodeRetraiteShareData = (hash: string): SharedRetraiteData | null => {
+  const m = hash.match(/#s=([A-Za-z0-9\-_]+)/);
+  if (!m) return null;
+  try {
+    let b64 = m[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) { b64 += '='; }
+    const bin = atob(b64);
+    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes)) as SharedRetraiteData;
+  } catch {
+    return null;
+  }
+};
+
+const buildRetraiteShareLink = (data: SharedRetraiteData): string => {
+  const base = `${window.location.origin}${window.location.pathname}`;
+  return `${base}?src=share#s=${encodeRetraiteShareData(data)}`;
+};
+
 const RetraiteHub: React.FC = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useLocalStorageState<'avs' | 'lpp' | 'synthese'>('ret_activeTab', 'avs');
@@ -60,6 +116,38 @@ const RetraiteHub: React.FC = () => {
   const capitalNecessaire = trouMensuel > 0 ? trouMensuel * 12 * 14.7 : 0; 
   const versementMensuel3a = capitalNecessaire > 0 && moisRestants > 0 ? capitalNecessaire / moisRestants : 0;
 
+    // --- VUE PARTAGÉE : si le lien ouvert contient #s=..., le destinataire
+  // voit la synthèse partagée (lecture seule) au lieu d'un formulaire vide ---
+  const [sharedView, setSharedView] = useState<SharedRetraiteData | null>(() =>
+    typeof window !== 'undefined' ? decodeRetraiteShareData(window.location.hash) : null
+  );
+
+  // À l'ouverture d'un lien partagé : aller directement sur la synthèse
+  useEffect(() => {
+    if (sharedView) {
+      setActiveTab('synthese');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const startOwnSimulation = () => {
+    setSharedView(null);
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    setActiveTab('avs');
+    window.scrollTo(0, 0);
+  };
+
+  // Valeurs affichées : celles du partage s'il est actif, sinon les siennes
+  const vAvsRente = sharedView ? (sharedView.avs?.rente ?? null) : (avsData !== null ? renteAVSBase : null);
+  const vAvsParams = sharedView ? sharedView.avs?.p : avsData?.params;
+  const vLppRente = sharedView ? (sharedView.lpp?.renteFinale ?? null) : (lppData !== null ? renteLPPFinale : null);
+  const vLppAdjusted = sharedView ? !!sharedView.lpp?.adjusted : (retraitLPP > 0 || pourcentageCapital > 0);
+  const vLppParams = sharedView ? sharedView.lpp?.p : lppData?.params;
+  const vTotal = sharedView
+    ? (sharedView.total ?? ((sharedView.avs?.rente ?? 0) + (sharedView.lpp?.renteFinale ?? 0)))
+    : totalRetraite;
+  const recapReady = sharedView !== null || isDataReady;
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeTab]);
@@ -94,7 +182,38 @@ const RetraiteHub: React.FC = () => {
     const callToAction = t('share.ret_call');
     
     const shareText = `${resultText}\n${avsText}\n${lppText}\n${callToAction}`;
-    const shareUrl = 'https://swisssimple.ch/retraite';
+
+       // NOUVEAU : le lien transporte la synthèse (contenu visible sans compte)
+    const shareUrl = buildRetraiteShareLink({
+      v: 1,
+      avs: {
+        rente: renteAVSBase,
+        p: {
+          etatCivil: avsP?.etatCivil,
+          sexe: avsP?.sexe,
+          anneeNaissance: avsP?.anneeNaissance,
+          salaire: avsP?.salaire,
+          anneesCotisation: avsP?.anneesCotisation,
+          anneesRachetees: avsP?.anneesRachetees,
+          nombreEnfants: avsP?.nombreEnfants,
+          ageRetraite: avsP?.ageRetraite,
+        },
+      },
+      lpp: {
+        renteFinale: renteLPPFinale,
+        adjusted: retraitLPP > 0 || pourcentageCapital > 0,
+        p: {
+          anneeNaissance: lppP?.anneeNaissance,
+          salaire: lppP?.salaire,
+          capitalActuel: lppP?.capitalActuel,
+          rachatAnnuel: lppP?.rachatAnnuel,
+          ageRetraite: lppP?.ageRetraite,
+          tauxInteret: lppP?.tauxInteret,
+        },
+      },
+      total: totalRetraite,
+    });
+
     const fullMessage = `${shareText} ${t('share.test_here')} : ${shareUrl}`;
 
     if (navigator.share) {
@@ -174,71 +293,79 @@ const RetraiteHub: React.FC = () => {
             <h2>{t('hub.synthese_title_ret')}</h2>
             <p>{t('hub.synthese_intro_ret')}</p>
             
-            {!isDataReady && (
+          {/* Bandeau "simulation partagée" — visible si le lien contient des données */}
+            {sharedView && (
+              <div className="hub-warning-message" style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center', textAlign: 'center' }}>
+                <span>🔗 {t('hub.shared_banner')}</span>
+                <button className="btn-hub-blue" onClick={startOwnSimulation}>
+                  {t('hub.shared_cta')}
+                </button>
+              </div>
+            )}
+
+            {!recapReady && (
               <p className="hub-warning-message">
                 {t('hub.waiting_message')}
               </p>
             )}
-            
-                        <div className="synthese-recap">
+
+            <div className="synthese-recap">
               {/* 1. MODULE AVS */}
               <div className="recap-item">
                 <div className="recap-line">
                   <span className="recap-title">{t('hub.recap_avs')}</span>
                   <p className="recap-value benefice">
-                    {avsData !== null ? `${formatCHFPrecis(renteAVSBase)} CHF / mois` : t('hub.waiting_calc')}
+                    {vAvsRente !== null ? `${formatCHFPrecis(vAvsRente)} CHF / mois` : t('hub.waiting_calc')}
                   </p>
                 </div>
-                {/* Détails AVS complets multilingues */}
-                {avsData?.params && (
+                {vAvsParams && (
                   <div className="recap-module-detail">
                     {t('hub.recap_avs_details', {
-                      state: t(`avs.${avsData.params.etatCivil}`),
-                      gender: t(`avs.${avsData.params.sexe}`),
-                      birthYear: avsData.params.anneeNaissance,
-                      salary: formatCHF(avsData.params.salaire),
-                      years: avsData.params.anneesCotisation,
-                      boughtYears: avsData.params.anneesRachetees,
-                      children: avsData.params.nombreEnfants,
-                      age: avsData.params.ageRetraite
+                      state: t(`avs.${vAvsParams.etatCivil}`),
+                      gender: t(`avs.${vAvsParams.sexe}`),
+                      birthYear: vAvsParams.anneeNaissance,
+                      salary: formatCHF(vAvsParams.salaire),
+                      years: vAvsParams.anneesCotisation,
+                      boughtYears: vAvsParams.anneesRachetees,
+                      children: vAvsParams.nombreEnfants,
+                      age: vAvsParams.ageRetraite
                     })}
                   </div>
                 )}
               </div>
-              
+
               {/* 2. MODULE LPP */}
               <div className="recap-item">
                 <div className="recap-line">
                   <span className="recap-title">{t('hub.recap_lpp')}</span>
                   <p className="recap-value benefice">
-                    {lppData !== null ? (
+                    {vLppRente !== null ? (
                       <>
-                        {formatCHFPrecis(renteLPPFinale)} CHF / mois
-                        {(retraitLPP > 0 || pourcentageCapital > 0) && <small className="hub-adjusted-small">{t('hub.adjusted')}</small>}
+                        {formatCHFPrecis(vLppRente)} CHF / mois
+                        {vLppAdjusted && <small className="hub-adjusted-small">{t('hub.adjusted')}</small>}
                       </>
                     ) : t('hub.waiting_calc')}
                   </p>
                 </div>
-                {/* Détails LPP complets multilingues */}
-                {lppData?.params && (
+                {vLppParams && (
                   <div className="recap-module-detail">
                     {t('hub.recap_lpp_details', {
-                      birthYear: lppData.params.anneeNaissance,
-                      salary: formatCHF(lppData.params.salaire),
-                      capital: formatCHF(lppData.params.capitalActuel),
-                      buyback: formatCHF(lppData.params.rachatAnnuel),
-                      age: lppData.params.ageRetraite,
-                      rate: lppData.params.tauxInteret
+                      birthYear: vLppParams.anneeNaissance,
+                      salary: formatCHF(vLppParams.salaire),
+                      capital: formatCHF(vLppParams.capitalActuel),
+                      buyback: formatCHF(vLppParams.rachatAnnuel),
+                      age: vLppParams.ageRetraite,
+                      rate: vLppParams.tauxInteret
                     })}
                   </div>
                 )}
               </div>
-              
+
               {/* 3. TOTAL RETRAITE */}
               <div className="recap-total">
                 <span>{t('hub.recap_total_ret')}</span>
                 <h3 className="benefice">
-                  {isDataReady ? `${formatCHFPrecis(totalRetraite)} CHF / mois` : t('hub.waiting_calc')}
+                  {recapReady ? `${formatCHFPrecis(vTotal)} CHF / mois` : t('hub.waiting_calc')}
                 </h3>
               </div>
             </div>

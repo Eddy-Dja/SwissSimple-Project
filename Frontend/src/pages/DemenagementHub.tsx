@@ -10,6 +10,52 @@ import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import './DemenagementHub.css';
 import { Helmet } from 'react-helmet-async';
 
+// ============================================================
+// PARTAGE : encodage de la synthèse dans le lien (#s=...)
+// Ne transporte QUE le contenu visible sans compte (communes,
+// régions, montants). Jamais la session, jamais l'analyse
+// détaillée ni le PDF — qui restent derrière le compte.
+// ============================================================
+export interface SharedDemenagementData {
+  v: number;
+  dep?: string;
+  arr?: string;
+  tax?: number | null;
+  ins?: {
+    depCanton?: string; depRegion?: string;
+    arrCanton?: string; arrRegion?: string;
+    avgA?: number; avgB?: number; diff?: number | null;
+  };
+  tot?: number;
+}
+
+const encodeShareData = (data: SharedDemenagementData): string => {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let bin = '';
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+
+const decodeShareData = (hash: string): SharedDemenagementData | null => {
+  const m = hash.match(/#s=([A-Za-z0-9\-_]+)/);
+  if (!m) return null;
+  try {
+    let b64 = m[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) { b64 += '='; }
+    const bin = atob(b64);
+    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes)) as SharedDemenagementData;
+  } catch {
+    return null;
+  }
+};
+
+const buildDemenagementShareLink = (data: SharedDemenagementData): string => {
+  const base = `${window.location.origin}${window.location.pathname}`;
+  return `${base}?src=share#s=${encodeShareData(data)}`;
+};
+
 const DemenagementHub: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useLocalStorageState<'impots' | 'assurance' | 'synthese'>('dem_activeTab', 'impots');
@@ -46,6 +92,42 @@ const DemenagementHub: React.FC = () => {
   const formatCHF = (amount: number) => Math.round(amount).toLocaleString('de-CH');
   const formatCHFPrecis = (amount: number) => amount.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   
+    // --- VUE PARTAGÉE : si le lien ouvert contient #s=..., le destinataire
+  // voit la synthèse partagée (lecture seule) au lieu d'un formulaire vide ---
+  const [sharedView, setSharedView] = useState<SharedDemenagementData | null>(() =>
+    typeof window !== 'undefined' ? decodeShareData(window.location.hash) : null
+  );
+
+  // À l'ouverture d'un lien partagé : aller directement sur la synthèse
+  useEffect(() => {
+    if (sharedView) {
+      setActiveTab('synthese');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const startOwnSimulation = () => {
+    setSharedView(null);
+    // retire le #s=... de l'URL sans recharger la page
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    setActiveTab('impots');
+    window.scrollTo(0, 0);
+  };
+
+  // Valeurs affichées : celles du partage s'il est actif, sinon les siennes
+  const vTax = sharedView ? (sharedView.tax ?? null) : taxDiff;
+  const vIns = sharedView ? (sharedView.ins?.diff ?? null) : insuranceDiff;
+  const vTot = sharedView
+    ? (sharedView.tot ?? ((sharedView.tax ?? 0) + (sharedView.ins?.diff ?? 0)))
+    : totalDiff;
+  const recapReady = sharedView !== null || isDataReady;
+  const dispTaxDepName = sharedView ? sharedView.dep : taxDetails?.depName;
+  const dispTaxArrName = sharedView ? sharedView.arr : taxDetails?.arrName;
+  const dispInsDepCanton = sharedView ? (sharedView.ins?.depCanton ?? '') : insuranceDepCanton;
+  const dispInsDepRegion = sharedView ? (sharedView.ins?.depRegion ?? '') : insuranceDepRegion;
+  const dispInsArrCanton = sharedView ? (sharedView.ins?.arrCanton ?? '') : insuranceArrCanton;
+  const dispInsArrRegion = sharedView ? (sharedView.ins?.arrRegion ?? '') : insuranceArrRegion;
+
   const calculateBreakEven = () => {
     let fraisUniques = parseFloat(fraisUniquesInput) || 0;
     let ancienLoyer = parseFloat(ancienLoyerInput) || 0;
@@ -77,17 +159,35 @@ const DemenagementHub: React.FC = () => {
     }
   };
 
-  // --- FONCTION DE PARTAGE MULTILINGUE ---
+  // --- FONCTION DE PARTAGE MULTILINGUE (lien avec la synthèse embarquée) ---
   const handleShare = async () => {
     const communeDep = taxDetails?.depName || t('share.default_city');
     const communeArr = taxDetails?.arrName || t('share.default_city');
-    
-    const impactText = totalDiff >= 0 
+
+    const impactText = totalDiff >= 0
       ? t('share.dem_saving', { amount: formatCHF(Math.abs(totalDiff)) })
       : t('share.dem_cost', { amount: formatCHF(Math.abs(totalDiff)) });
-      
+
     const shareText = t('share.dem_text', { from: communeDep, to: communeArr, impact: impactText });
-    const shareUrl = 'https://swisssimple.ch/demenagement';
+
+    // NOUVEAU : le lien transporte la synthèse (contenu visible sans compte)
+    const shareUrl = buildDemenagementShareLink({
+      v: 1,
+      dep: communeDep,
+      arr: communeArr,
+      tax: taxDiff,
+      ins: {
+        depCanton: insuranceDepCanton,
+        depRegion: insuranceDepRegion,
+        arrCanton: insuranceArrCanton,
+        arrRegion: insuranceArrRegion,
+        avgA: insuranceAvgA,
+        avgB: insuranceAvgB,
+        diff: insuranceDiff,
+      },
+      tot: totalDiff,
+    });
+
     const fullMessage = `${shareText} ${t('share.test_here')} : ${shareUrl}`;
 
     if (navigator.share) {
@@ -172,52 +272,61 @@ const DemenagementHub: React.FC = () => {
             <h2>{t('hub.synthese_title_move')}</h2>
             <p>{t('hub.synthese_intro_move')}</p>
             
-            {!isDataReady && (
+                        {/* Bandeau "simulation partagée" — visible si le lien contient des données */}
+            {sharedView && (
+              <div className="hub-warning-message" style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center', textAlign: 'center' }}>
+                <span>🔗 {t('hub.shared_banner')}</span>
+                <button className="btn-hub-blue" onClick={startOwnSimulation}>
+                  {t('hub.shared_cta')}
+                </button>
+              </div>
+            )}
+
+            {!recapReady && (
               <p className="hub-warning-message">
                 {t('hub.waiting_message')}
               </p>
             )}
-            
+
             <div className="synthese-recap">
               {/* 1. MODULE IMPÔTS */}
               <div className="recap-item">
                 <div className="recap-line">
                   <span className="recap-title">{t('hub.recap_impots')}</span>
-                  <p className={`recap-value ${taxDiff !== null && taxDiff >= 0 ? 'benefice' : 'perte'}`}>
-                    {taxDiff !== null ? `${taxDiff >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(taxDiff))} CHF / an` : t('hub.waiting_calc')}
+                  <p className={`recap-value ${vTax !== null && vTax >= 0 ? 'benefice' : 'perte'}`}>
+                    {vTax !== null ? `${vTax >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(vTax))} CHF / an` : t('hub.waiting_calc')}
                   </p>
                 </div>
-                {taxDetails && (taxDetails.depName || taxDetails.arrName) && (
+                {(dispTaxDepName || dispTaxArrName) && (
                   <div className="recap-module-detail">
-                    {t('hub.recap_move_details', { from: taxDetails.depName, to: taxDetails.arrName })}
+                    {t('hub.recap_move_details', { from: dispTaxDepName, to: dispTaxArrName })}
                   </div>
                 )}
               </div>
-              
+
               {/* 2. MODULE ASSURANCE */}
               <div className="recap-item">
                 <div className="recap-line">
                   <span className="recap-title">{t('hub.recap_assurance')}</span>
-                  <p className={`recap-value ${insuranceDiff !== null && insuranceDiff >= 0 ? 'benefice' : 'perte'}`}>
-                    {insuranceDiff !== null ? `${insuranceDiff >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(insuranceDiff))} CHF / an` : t('hub.waiting_calc')}
+                  <p className={`recap-value ${vIns !== null && vIns >= 0 ? 'benefice' : 'perte'}`}>
+                    {vIns !== null ? `${vIns >= 0 ? t('hub.economy') : t('hub.surcout')}${formatCHF(Math.abs(vIns))} CHF / an` : t('hub.waiting_calc')}
                   </p>
                 </div>
-                {/* Traduction dynamique des régions via getRegionLabel importé */}
-                {(insuranceDepCanton || insuranceArrCanton) && (
+                {(dispInsDepCanton || dispInsArrCanton) && (
                   <div className="recap-module-detail">
-                    {t('hub.recap_move_details', { 
-                      from: `${insuranceDepCanton} - ${getRegionLabel(insuranceDepCanton, insuranceDepRegion, i18n.language)}`, 
-                      to: `${insuranceArrCanton} - ${getRegionLabel(insuranceArrCanton, insuranceArrRegion, i18n.language)}` 
+                    {t('hub.recap_move_details', {
+                      from: `${dispInsDepCanton} - ${getRegionLabel(dispInsDepCanton, dispInsDepRegion, i18n.language)}`,
+                      to: `${dispInsArrCanton} - ${getRegionLabel(dispInsArrCanton, dispInsArrRegion, i18n.language)}`
                     })}
                   </div>
                 )}
               </div>
-              
+
               {/* 3. TOTAL DÉMÉNAGEMENT */}
               <div className="recap-total">
                 <span>{t('hub.recap_total_move')}</span>
-                <h3 className={totalDiff >= 0 ? 'benefice' : 'perte'}>
-                  {isDataReady ? `${totalDiff >= 0 ? '+' : '-'}${formatCHF(Math.abs(totalDiff))} CHF / an` : t('hub.waiting_calc')}
+                <h3 className={vTot >= 0 ? 'benefice' : 'perte'}>
+                  {recapReady ? `${vTot >= 0 ? '+' : '-'}${formatCHF(Math.abs(vTot))} CHF / an` : t('hub.waiting_calc')}
                 </h3>
               </div>
             </div>
