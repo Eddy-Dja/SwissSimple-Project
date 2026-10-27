@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import './SimulateurAVS.css';
@@ -17,10 +17,68 @@ interface ResultatAVS {
   renteMensuelleProvisoire: number; ramUser: number; anneesValidesUser: number; tauxReduction: number;
   renteMensuelleDefinitive: number; renteAnnuelleDefinitive: number; supplementVeuf: number; isPlafondCouple: boolean;
   anneeRetraiteConjoint: number; ramConjoint: number; tauxReductionConjoint: number; renteMensuelleConjoint: number;
-  renteAnnuelleConjoint: number; anneesValidesConjoint: number; hasPhase1Conjoint: boolean; renteMensuelleProvisoireConjoint: number;
+  renteAnnuelleConjoint: number; anneesValidesConjoint: number; hasPhase1Conjoint: number; renteMensuelleProvisoireConjoint: number;
 }
 
 type EtatCivil = 'celibataire' | 'marie' | 'divorce' | 'veuf';
+
+/* ============================================================
+   PARTAGE : payload du lien #s=... + encodage/décodage
+   ============================================================ */
+interface SharedAvsData {
+  v: number;                      // version du format
+  m: 'avs';                       // marqueur du module (reconnaissance du payload)
+  sx: 'homme' | 'femme';          // sexe
+  an: string;                     // année de naissance
+  sal: string;                    // salaire annuel
+  ac: string;                     // années de cotisation
+  ar: number;                     // âge de retraite
+  ec: EtatCivil;                  // état civil
+  enf: string;                    // nombre d'enfants
+  arc: string;                    // années rachetées
+  arcC: string;                   // années rachetées conjoint
+  sxC: 'homme' | 'femme';         // sexe conjoint
+  anC: string;                    // année de naissance conjoint
+  salC: string;                   // salaire conjoint
+  aCC: string;                    // années de cotisation conjoint
+  arC: number;                    // âge de retraite conjoint
+  am: string;                     // année de mariage
+  amp: string;                    // années de mariage passées (divorce/veuf)
+}
+
+const encodeAvsData = (data: SharedAvsData): string => {
+  try {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(data))))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  } catch { return ''; }
+};
+
+const decodeAvsData = (raw: string): SharedAvsData | null => {
+  try {
+    const b64 = raw.replace(/-/g, '+').replace(/_/g, '/');
+    const d = JSON.parse(decodeURIComponent(escape(atob(b64))));
+    if (
+      d && d.v === 1 && d.m === 'avs' &&
+      (d.sx === 'homme' || d.sx === 'femme') &&
+      typeof d.an === 'string' && typeof d.sal === 'string' &&
+      typeof d.ar === 'number' &&
+      ['celibataire', 'marie', 'divorce', 'veuf'].includes(d.ec)
+    ) {
+      return d as SharedAvsData;
+    }
+    return null;
+  } catch { return null; }
+};
+
+const getShareHash = (): string | null => {
+  try {
+    const h = window.location.hash || '';
+    return h.startsWith('#s=') ? h.substring(3) : null;
+  } catch { return null; }
+};
+
+const buildAvsShareLink = (data: SharedAvsData): string =>
+  `${window.location.origin}${window.location.pathname}?src=share#s=${encodeAvsData(data)}`;
 
 interface SimulateurAVSProps {
   onResultChange?: (data: { 
@@ -64,6 +122,38 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
   const [ageRetraiteConjoint, setAgeRetraiteConjoint] = useLocalStorageState<number>('avs_ageRetraiteConjoint', 65);
 
   const [resultat, setResultat] = useState<ResultatAVS | null>(null);
+
+  /* ============================================================
+     PARTAGE : vue destinataire (lien #s=...)
+     ============================================================ */
+  const [sharedView, setSharedView] = useState<SharedAvsData | null>(() => {
+    const raw = getShareHash();
+    return raw ? decodeAvsData(raw) : null;
+  });
+  const prefillApplied = useRef(false);
+  const [autoCalcDone, setAutoCalcDone] = useState(false);
+
+  // Pré-remplissage PENDANT le rendu (pattern React officiel) :
+  // les effets de validation ci-dessous ne voient jamais les anciennes valeurs.
+  if (sharedView && !prefillApplied.current) {
+    prefillApplied.current = true;
+    setSexe(sharedView.sx);
+    setAnneeNaissance(sharedView.an);
+    setSalaireAnnuel(sharedView.sal);
+    setEtatCivil(sharedView.ec);
+    setAgeRetraite(sharedView.ar);
+    if (typeof sharedView.ac === 'string') setAnneesCotisation(sharedView.ac);
+    if (typeof sharedView.enf === 'string') setNombreEnfants(sharedView.enf);
+    if (typeof sharedView.arc === 'string') setAnneesRachetees(sharedView.arc);
+    if (typeof sharedView.arcC === 'string') setAnneesRacheteesConjoint(sharedView.arcC);
+    if (sharedView.sxC === 'homme' || sharedView.sxC === 'femme') setSexeConjoint(sharedView.sxC);
+    if (typeof sharedView.anC === 'string') setAnneeNaissanceConjoint(sharedView.anC);
+    if (typeof sharedView.salC === 'string') setSalaireConjoint(sharedView.salC);
+    if (typeof sharedView.aCC === 'string') setAnneesCotisationConjoint(sharedView.aCC);
+    if (typeof sharedView.arC === 'number') setAgeRetraiteConjoint(sharedView.arC);
+    if (typeof sharedView.am === 'string') setAnneeMariage(sharedView.am);
+    if (typeof sharedView.amp === 'string') setAnneesMariagePassees(sharedView.amp);
+  }
 
   const calcAgeReference = (s: 'homme' | 'femme', annee: number) => {
     if (s === 'femme') {
@@ -255,9 +345,9 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
       };
     };
   }, [salaireAnnuel, salaireConjoint, anneeMariage, anneesMariagePassees, anneesCotisation, anneesCotisationConjoint, ageRetraite, ageRetraiteConjoint, nombreEnfants, anneesRachetees, anneesRacheteesConjoint, etatCivil, sexe, anneeNaissance, sexeConjoint, anneeNaissanceConjoint, ageReference, ageReferenceConjoint, isFemmeTransitoire, isFemmeTransitoireConjoint]);
-      
-  const handleCalcul = (e: React.FormEvent) => {
-    e.preventDefault();
+
+  /* ===== Calcul découpé : runCalcul (sans événement) = appelable par l'auto-calcul du partage ===== */
+  const runCalcul = () => {
     const res = calculerRente();
     setResultat(res);
     if (res && onResultChange) {
@@ -276,7 +366,75 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
       });
     }
   };
+      
+  const handleCalcul = (e: React.FormEvent) => {
+    e.preventDefault();
+    runCalcul();
+  };
+
   const formatCHF = (amount: number | null | undefined) => !amount ? '0' : amount.toLocaleString('fr-CH');
+
+  /* ===== PARTAGE : construction du lien + envoi ===== */
+  const handleShare = async () => {
+    if (!resultat) return;
+    const data: SharedAvsData = {
+      v: 1, m: 'avs',
+      sx: sexe, an: anneeNaissance, sal: salaireAnnuel, ac: anneesCotisation,
+      ar: ageRetraite, ec: etatCivil, enf: nombreEnfants,
+      arc: anneesRachetees, arcC: anneesRacheteesConjoint,
+      sxC: sexeConjoint, anC: anneeNaissanceConjoint, salC: salaireConjoint,
+      aCC: anneesCotisationConjoint, arC: ageRetraiteConjoint,
+      am: anneeMariage, amp: anneesMariagePassees,
+    };
+    const shareUrl = buildAvsShareLink(data);
+    const shareText = t('share.avs_text', { rente: formatCHF(resultat.renteMensuelleDefinitive), age: ageRetraite });
+    const fullMessage = `${shareText}\n${t('share.test_here')} :\n${shareUrl}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ text: fullMessage });
+      } else {
+        window.open(`https://wa.me/?text=${encodeURIComponent(fullMessage)}`, '_blank');
+      }
+    } catch {
+      // Partage annulé par l'utilisateur : rien à faire
+    }
+  };
+
+  /* ===== PARTAGE : le destinataire repart sur une simulation vierge ===== */
+  const startOwnSimulation = () => {
+    setSexe('homme');
+    setAnneeNaissance('1990');
+    setSalaireAnnuel('50000');
+    setAnneesCotisation('44');
+    setAgeRetraite(65);
+    setEtatCivil('celibataire');
+    setNombreEnfants('0');
+    setAnneesRachetees('0');
+    setAnneesRacheteesConjoint('0');
+    setSexeConjoint('femme');
+    setAnneeNaissanceConjoint('1992');
+    setSalaireConjoint('0');
+    setAnneeMariage('2020');
+    setAnneesMariagePassees('0');
+    setAnneesCotisationConjoint('44');
+    setAgeRetraiteConjoint(65);
+    setResultat(null);
+    setSharedView(null);
+    try {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    } catch { /* ignore */ }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Auto-calcul du destinataire (une seule fois, après le pré-remplissage)
+  useEffect(() => {
+    if (sharedView && !autoCalcDone) {
+      setAutoCalcDone(true);
+      runCalcul();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sharedView, autoCalcDone]);
+
   const formClass = `radar-form avs-form-small ${etatCivil === 'marie' ? 'avs-form-wide' : ''}`;
 
   return (
@@ -291,6 +449,15 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
         <h1 className="radar-title">{t('avs.title')}</h1>
         <p className="radar-subtitle">{t('avs.subtitle')}</p>
       </div>
+
+      {sharedView && (
+        <div className="share-banner">
+          <span className="share-banner-text">{t('hub.shared_banner')}</span>
+          <button type="button" className="btn-primary" onClick={startOwnSimulation}>
+            {t('hub.shared_cta')}
+          </button>
+        </div>
+      )}
 
       <form onSubmit={handleCalcul} className={formClass}>
         <div className="filter-group avs-state-group">
@@ -580,6 +747,28 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
             </div>
           </div>
         </div>
+      )}
+
+      {resultat && !hideWarning && !onResultChange && (
+        <>
+          <p className="share-hint">{t('share.privacy_hint')}</p>
+          <button
+            type="button"
+            className="btn-primary share-fab"
+            onClick={handleShare}
+            aria-label={t('hub.share_result_btn')}
+            title={t('hub.share_result_btn')}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            {t('share.fab_label', 'Partager')}
+          </button>
+        </>
       )}
 
       {!hideWarning && (

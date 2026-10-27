@@ -17,7 +17,7 @@
     "cta2": "Découvrir nos outils avancés 🚀",
     "atlas_btn": "📊 Atlas & Statistiques",
     "cta_copilot": "Poser une question fiscale à l'IA",
-    "trust1": "✓ Données officielles AFC 2026",
+    "trust1": "✓ Données officielles AFC 2026 & primes LAMal OFSP 2027",
     "trust2": "✓ 100% Anonyme",
     "trust3": "✓ Sans publicité intrusive",
     "trust4": "✓ Réponses sourcées sur les lois des 26 cantons"
@@ -573,7 +573,10 @@
     "ass_text": "🏥 Primes LAMal 2027 à {{canton}} : la moins chère est à {{price}} CHF/mois (franchise {{franchise}}.-) !",
     "rad_text": "…",
     "rad_privacy": "…",
-    "fab_label": "Partager"
+    "fab_label": "Partager",
+    "avs_text": "Ma simulation AVS : rente estimée à {{rente}} CHF/mois dès {{age}} ans",
+    "lpp_text": "Ma simulation LPP : capital projeté de {{capital}} CHF, rente de {{rente}} CHF/mois à {{age}} ans",
+    "privacy_hint": "🔒 Le lien de partage contient les informations saisies dans ce formulaire. Ne le partagez qu'avec des personnes de confiance."
   },
 
   "Chatbot": {

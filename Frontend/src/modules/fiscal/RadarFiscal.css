@@ -635,9 +635,6 @@ body.dark-mode .unsupported-text, body.dark .unsupported-text { color: #fecaca; 
   bottom: 1rem;
   right: 1rem;
   z-index: 50;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: auto;
   height: 2.25rem;
   padding: 0 1rem;
@@ -645,6 +642,10 @@ body.dark-mode .unsupported-text, body.dark .unsupported-text { color: #fecaca; 
   font-size: 0.875rem;
   border-radius: 9999px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
 }
 
 /* Mobile : laisser la place à la pilule sous le dernier résultat */

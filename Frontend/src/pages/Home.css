@@ -189,14 +189,58 @@ body.dark-mode .btn-hero-atlas,
   box-shadow: none;
 }
 
+/* Ligne de confiance — 2 niveaux : sources officielles puis garanties */
 .hero-trust {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   color: var(--text-muted);
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+/* Niveau 1 : données officielles AFC & OFSP (mis en avant) */
+.hero-trust-main {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+body.dark-mode .hero-trust-main,
+[data-theme="dark"] .hero-trust-main {
+  color: #F8FAFC;
+}
+
+/* Niveau 2 : conteneur pleine largeur (sert de règle pour la mesure JS) */
+.hero-trust-secondary {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* La ligne des garanties : UNE seule ligne dès 600px (police auto-ajustée en JS) */
+.hero-trust-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Les 2 garanties courtes : toujours soudées */
+.hero-trust-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  white-space: nowrap;
+}
+
+@media (min-width: 600px) {
+  .hero-trust-line {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
 }
 
 /* ============================================================
@@ -444,6 +488,8 @@ body.dark-mode .premium-header h2,
    ============================================================ */
 @media (max-width: 900px) {
   .hero-section h1 { font-size: 36px; }
+  .hero-trust-secondary { gap: 10px; }
+  .hero-trust-pair { gap: 10px; }
   .tools-grid { grid-template-columns: 1fr 1fr; }
   .premium-grid { grid-template-columns: 1fr; }
 
@@ -469,6 +515,8 @@ body.dark-mode .premium-header h2,
 
 @media (max-width: 600px) {
   .tools-grid { grid-template-columns: 1fr; }
+  .hero-trust-line { gap: 10px; }
+  .hero-trust-pair { gap: 10px; }
 }
 
 /* ============================================================

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import './SimulateurLPP.css';
@@ -23,6 +23,52 @@ const getCotisationInfo = (age: number): { taux: number; tranche: string } => {
   return { taux: 0.18, tranche: "55 ans et plus" };
 };
 
+/* ============================================================
+   PARTAGE : payload du lien #s=... + encodage/décodage
+   ============================================================ */
+interface SharedLppData {
+  v: number;        // version du format
+  m: 'lpp';         // marqueur du module (reconnaissance du payload)
+  an: string;       // année de naissance
+  sal: string;      // salaire brut
+  cap: string;      // capital actuel
+  rac: string;      // rachat annuel
+  ar: number;       // âge de retraite
+  ti: string;       // taux d'intérêt
+}
+
+const encodeLppData = (data: SharedLppData): string => {
+  try {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(data))))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  } catch { return ''; }
+};
+
+const decodeLppData = (raw: string): SharedLppData | null => {
+  try {
+    const b64 = raw.replace(/-/g, '+').replace(/_/g, '/');
+    const d = JSON.parse(decodeURIComponent(escape(atob(b64))));
+    if (
+      d && d.v === 1 && d.m === 'lpp' &&
+      typeof d.an === 'string' && typeof d.sal === 'string' &&
+      typeof d.ar === 'number'
+    ) {
+      return d as SharedLppData;
+    }
+    return null;
+  } catch { return null; }
+};
+
+const getShareHash = (): string | null => {
+  try {
+    const h = window.location.hash || '';
+    return h.startsWith('#s=') ? h.substring(3) : null;
+  } catch { return null; }
+};
+
+const buildLppShareLink = (data: SharedLppData): string =>
+  `${window.location.origin}${window.location.pathname}?src=share#s=${encodeLppData(data)}`;
+
 interface SimulateurLPPProps {
   onResultChange?: (data: { rente: number, capital: number, salaire: number, moisRestants: number, params: { anneeNaissance: number, salaire: number, capitalActuel: number, rachatAnnuel: number, ageRetraite: number, tauxInteret: number } } | null) => void;
   hideWarning?: boolean;
@@ -39,6 +85,27 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
   const [tauxInteret, setTauxInteret] = useLocalStorageState('lpp_tauxInteret', '1.5');
   
   const [resultat, setResultat] = useState<NonNullable<typeof calculerLPPMemo> | null>(null);
+
+  /* ============================================================
+     PARTAGE : vue destinataire (lien #s=...)
+     ============================================================ */
+  const [sharedView, setSharedView] = useState<SharedLppData | null>(() => {
+    const raw = getShareHash();
+    return raw ? decodeLppData(raw) : null;
+  });
+  const prefillApplied = useRef(false);
+  const [autoCalcDone, setAutoCalcDone] = useState(false);
+
+  // Pré-remplissage PENDANT le rendu (pattern React officiel)
+  if (sharedView && !prefillApplied.current) {
+    prefillApplied.current = true;
+    if (typeof sharedView.an === 'string') setAnneeNaissance(sharedView.an);
+    if (typeof sharedView.sal === 'string') setSalaireBrut(sharedView.sal);
+    if (typeof sharedView.cap === 'string') setCapitalActuel(sharedView.cap);
+    if (typeof sharedView.rac === 'string') setRachatAnnuel(sharedView.rac);
+    if (typeof sharedView.ar === 'number') setAgeRetraite(sharedView.ar);
+    if (typeof sharedView.ti === 'string') setTauxInteret(sharedView.ti);
+  }
 
   const currentYear = new Date().getFullYear();
   const ageUser = currentYear - (parseInt(anneeNaissance) || 1990);
@@ -101,8 +168,8 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
     };
   }, [anneeNaissance, salaireBrut, capitalActuel, rachatAnnuel, ageRetraite, tauxInteret, currentYear]);
 
-  const handleCalcul = (e: React.FormEvent) => {
-    e.preventDefault();
+  /* ===== Calcul découpé : runCalcul (sans événement) = appelable par l'auto-calcul du partage ===== */
+  const runCalcul = () => {
     setResultat(calculerLPPMemo);
     
     if (calculerLPPMemo && onResultChange) {
@@ -125,7 +192,63 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
     }
   };
 
+  const handleCalcul = (e: React.FormEvent) => {
+    e.preventDefault();
+    runCalcul();
+  };
+
   const formatCHF = (amount: number | null | undefined) => !amount ? '0' : amount.toLocaleString('fr-CH');
+
+  /* ===== PARTAGE : construction du lien + envoi ===== */
+  const handleShare = async () => {
+    if (!resultat) return;
+    const data: SharedLppData = {
+      v: 1, m: 'lpp',
+      an: anneeNaissance, sal: salaireBrut, cap: capitalActuel,
+      rac: rachatAnnuel, ar: ageRetraite, ti: tauxInteret,
+    };
+    const shareUrl = buildLppShareLink(data);
+    const shareText = t('share.lpp_text', {
+      capital: formatCHF(resultat.capitalFinal),
+      rente: formatCHF(resultat.renteMensuelle),
+      age: ageRetraite
+    });
+    const fullMessage = `${shareText}\n${t('share.test_here')} :\n${shareUrl}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ text: fullMessage });
+      } else {
+        window.open(`https://wa.me/?text=${encodeURIComponent(fullMessage)}`, '_blank');
+      }
+    } catch {
+      // Partage annulé par l'utilisateur : rien à faire
+    }
+  };
+
+  /* ===== PARTAGE : le destinataire repart sur une simulation vierge ===== */
+  const startOwnSimulation = () => {
+    setAnneeNaissance('1985');
+    setSalaireBrut('90000');
+    setCapitalActuel('80000');
+    setRachatAnnuel('0');
+    setAgeRetraite(65);
+    setTauxInteret('1.5');
+    setResultat(null);
+    setSharedView(null);
+    try {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    } catch { /* ignore */ }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Auto-calcul du destinataire (une seule fois, après le pré-remplissage)
+  useEffect(() => {
+    if (sharedView && !autoCalcDone) {
+      setAutoCalcDone(true);
+      runCalcul();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sharedView, autoCalcDone]);
 
   return (
     <div className="lpp-container">
@@ -139,6 +262,15 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
         <h1 className="lpp-title">{t('lpp.title')}</h1>
         <p className="lpp-subtitle">{t('lpp.subtitle')}</p>
       </div>
+
+      {sharedView && (
+        <div className="share-banner">
+          <span className="share-banner-text">{t('hub.shared_banner')}</span>
+          <button type="button" className="btn-primary" onClick={startOwnSimulation}>
+            {t('hub.shared_cta')}
+          </button>
+        </div>
+      )}
 
       <form onSubmit={handleCalcul} className="lpp-form">
         <div className="lpp-form-row">
@@ -254,6 +386,28 @@ const SimulateurLPP: React.FC<SimulateurLPPProps> = ({ onResultChange, hideWarni
             </p>
           </div>
         </div>
+      )}
+
+      {resultat && !hideWarning && !onResultChange && (
+        <>
+          <p className="share-hint">{t('share.privacy_hint')}</p>
+          <button
+            type="button"
+            className="btn-primary share-fab"
+            onClick={handleShare}
+            aria-label={t('hub.share_result_btn')}
+            title={t('hub.share_result_btn')}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            {t('share.fab_label', 'Partager')}
+          </button>
+        </>
       )}
 
       {!hideWarning && (

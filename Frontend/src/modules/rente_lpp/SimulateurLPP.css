@@ -205,6 +205,58 @@
   text-align-last: center;
 }
 
+/* ============================================================
+   PARTAGE : bandeau destinataire + pastille flottante
+   ============================================================ */
+.share-banner {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.share-banner-text {
+  font-size: 15px;
+  color: #1e3a8a;
+  text-align: center;
+  margin: 0;
+}
+
+.share-banner .btn-primary { max-width: 340px; }
+
+.share-hint {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-align: center;
+  max-width: 600px;
+  margin: 1rem auto 0 auto;
+}
+
+/* Pastille flottante « Partager » (icône + mot) — règle auto-suffisante :
+   .btn-primary n'est PAS défini dans ce fichier (il vient d'un CSS global) */
+.btn-primary.share-fab {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+  width: auto;
+  height: 2.25rem;
+  padding: 0 1rem;
+  margin-top: 0;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .lpp-title { font-size: 2rem; }
@@ -224,6 +276,8 @@
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
+  /* De l'air sous la page pour que la pastille flottante ne recouvre rien */
+  .lpp-container { padding-bottom: 4rem; }
 }
 
 /* ============================================================

@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
@@ -5,7 +6,7 @@ import { Helmet } from 'react-helmet-async';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handlePremiumClick = (path: string) => {
     navigate(path);
@@ -14,6 +15,34 @@ export default function Home() {
   const scrollToPremium = () => {
     document.getElementById('premium-modules')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  /* Ligne 2 du bloc confiance : la faire tenir sur UNE seule ligne dans
+     toutes les langues (l'allemand est plus long que le français).
+     On mesure la largeur réelle du texte et on réduit la police juste
+     ce qu'il faut — texte inchangé, même nombre de lignes qu'en FR. */
+  const trustWrapRef = useRef<HTMLDivElement>(null);
+  const trustLineRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const wrap = trustWrapRef.current;
+    const line = trustLineRef.current;
+    if (!wrap || !line) return;
+
+    const fit = () => {
+      line.style.fontSize = '';                                // reset → taille CSS
+      let size = parseFloat(getComputedStyle(line).fontSize);  // en px
+      const min = size * 0.68;                                 // plancher : 68 %
+      while (line.offsetWidth > wrap.clientWidth && size > min) {
+        size -= 0.5;
+        line.style.fontSize = `${size}px`;
+      }
+    };
+
+    fit();                                        // avant le premier rendu visuel
+    window.addEventListener('resize', fit);       // fenêtre redimensionnée
+    if (document.fonts) document.fonts.ready.then(fit);  // webfonts chargées
+    return () => window.removeEventListener('resize', fit);
+  }, [i18n.language]);
 
   return (
     <div className="swiss-app">
@@ -40,9 +69,9 @@ export default function Home() {
             </button>
 
             {/* BOUTON COPILOT — la 2e porte d'entrée (demander plutôt que calculer) */}
-<button className="btn-hero-copilot" onClick={() => navigate('/radar-fiscal#copilot')}>
-  🤖 {t('hero.cta_copilot')}
-</button>
+            <button className="btn-hero-copilot" onClick={() => navigate('/radar-fiscal#copilot')}>
+              🤖 {t('hero.cta_copilot')}
+            </button>
 
             <button className="btn-hero-secondary" onClick={scrollToPremium}>
               {t('hero.cta2')}
@@ -54,10 +83,19 @@ export default function Home() {
           </div>
 
           <div className="hero-trust">
-            <span>{t('hero.trust1')}</span>
-            <span>{t('hero.trust2')}</span>
-            <span>{t('hero.trust3')}</span>
-            <span>🤖 {t('hero.trust4')}</span>
+            {/* Ligne 1 : sources officielles AFC + OFSP */}
+            <span className="hero-trust-main">{t('hero.trust1')}</span>
+
+            {/* Ligne 2 : une seule ligne dans toutes les langues (taille auto) */}
+            <div className="hero-trust-secondary" ref={trustWrapRef}>
+              <div className="hero-trust-line" ref={trustLineRef}>
+                <span className="hero-trust-pair">
+                  <span>{t('hero.trust2')}</span>
+                  <span>{t('hero.trust3')}</span>
+                </span>
+                <span>🤖 {t('hero.trust4')}</span>
+              </div>
+            </div>
           </div>
         </div>
       </header>

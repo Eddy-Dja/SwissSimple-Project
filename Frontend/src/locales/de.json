@@ -17,7 +17,7 @@
     "cta2": "Erweiterte Tools entdecken 🚀",
     "atlas_btn": "📊 Atlas & Statistiken",
     "cta_copilot": "Eine steuerliche Frage an die KI stellen",
-    "trust1": "✓ Offizielle ESTV-Daten 2026",
+    "trust1": "✓ Offizielle Daten ESTV 2026 & KVG-Prämien BAG 2027",
     "trust2": "✓ 100% Anonym",
     "trust3": "✓ Keine aufdringliche Werbung",
     "trust4": "✓ Quellenbasierte Antworten zu den Gesetzen der 26 Kantone"
@@ -573,7 +573,10 @@
     "ass_text": "🏥 KVG-Prämien 2027 in {{canton}}: die günstigste kostet {{price}} CHF/Monat (Franchise {{franchise}}.-)!",
     "rad_text": "…",
     "rad_privacy": "…",
-    "fab_label": "Teilen"
+    "fab_label": "Teilen",
+    "avs_text": "Meine AHV-Simulation: geschätzte Rente von {{rente}} CHF/Monat ab {{age}} Jahren",
+    "lpp_text": "Meine PK-Simulation: projiziertes Kapital von {{capital}} CHF, Rente von {{rente}} CHF/Monat mit {{age}} Jahren",
+    "privacy_hint": "🔒 Der Teilen-Link enthält die im Formular eingegebenen Angaben. Teilen Sie ihn nur mit vertrauenswürdigen Personen."
   },
 
   "Chatbot": {
