@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabaseClient';
 import './Assurance.css';
@@ -249,6 +249,55 @@ export const getRegionLabel = (canton: string, reg: string, lang: string = 'fr')
   return dict[canton]?.[reg] || reg.replace('PR-REG CH', defaultWord);
 };
 
+// ============================================================
+// ✨ PARTAGE : encodage des filtres dans le lien (#s=...)
+// Le destinataire ouvre le simulateur PRÉ-REMPLI — la recherche
+// se lance automatiquement chez lui, et il peut modifier les
+// filtres. Contenu : filtres publics uniquement, jamais de
+// données de compte.
+// ============================================================
+interface SharedAssuranceData {
+  v: number;
+  age?: string;    // ERW | JUG | KIN-K1 | KIN-K2
+  fr?: number;     // franchise
+  acc?: string;    // MIT-UNF | OHN-UNF
+  model?: string;  // '' | TAR-BASE | TAR-HAM | TAR-DIV
+  cA?: string; rA?: string;  // canton + région (mode simple)
+  cB?: string; rB?: string;  // canton + région (mode comparaison)
+}
+
+const encodeAssuranceShareData = (data: SharedAssuranceData): string => {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let bin = '';
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+
+const decodeAssuranceShareData = (hash: string): SharedAssuranceData | null => {
+  const m = hash.match(/#s=([A-Za-z0-9\-_]+)/);
+  if (!m) return null;
+  try {
+    let b64 = m[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) { b64 += '='; }
+    const bin = atob(b64);
+    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+    const d = JSON.parse(new TextDecoder().decode(bytes));
+    // Garde : un lien de partage Déménagement/Retraite contient d'autres champs
+    // (dep/arr, avs/lpp) — on ne l'interprète PAS comme un partage Assurance
+    // (sinon l'instance intégrée au hub chercherait à se pré-remplir).
+    if (!d || d.v !== 1 || (d.cA === undefined && d.age === undefined)) return null;
+    return d as SharedAssuranceData;
+  } catch {
+    return null;
+  }
+};
+
+const buildAssuranceShareLink = (data: SharedAssuranceData): string => {
+  const base = `${window.location.origin}${window.location.pathname}`;
+  return `${base}?src=share#s=${encodeAssuranceShareData(data)}`;
+};
+
 export default function Assurance({ initialMode = 'simple', onPrevStep, onNextStep, onResultChange, hideWarning }: AssuranceProps) {
   const { t, i18n } = useTranslation();
 
@@ -273,6 +322,35 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
   const [resultsB, setResultsB] = useState<Prime[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+
+    // ✨ PARTAGE : vue partagée (lien #s=...) + pré-remplissage.
+  // Actif UNIQUEMENT en mode simple — l'instance intégrée au hub
+  // Déménagement utilise son propre partage de synthèse.
+  const [sharedView, setSharedView] = useState<SharedAssuranceData | null>(() =>
+    typeof window !== 'undefined' && initialMode === 'simple'
+      ? decodeAssuranceShareData(window.location.hash)
+      : null
+  );
+  const sharePref = useRef<SharedAssuranceData | null>(sharedView);
+  const [autoSearchDone, setAutoSearchDone] = useState(false);
+
+  // Pré-remplissage PENDANT LE RENDU (pattern React officiel « ajuster l'état
+  // pendant le rendu ») : les setters s'appliquent avant le premier commit,
+  // donc fetchRegions et les correctifs 2027 (franchise/modèle/rabais) partent
+  // directement sur les bonnes valeurs — pas de requête avec un ancien canton
+  // du localStorage. Les régions ne sont PAS posées ici : fetchRegions les
+  // applique via sharePref (prefer), sinon sa réponse les écraserait.
+  const [prefillApplied, setPrefillApplied] = useState(false);
+  if (sharedView && !prefillApplied) {
+    setPrefillApplied(true);
+    const d = sharedView;
+    if (d.age) setSelectedAge(d.age);
+    if (typeof d.fr === 'number') setFranchise(d.fr);
+    if (d.acc) setAccident(d.acc);
+    if (d.model !== undefined) setTariftyp(d.model);
+    if (d.cA) { setCantonA(d.cA); setSelectedRegionA(''); }
+    if (d.cB) { setCantonB(d.cB); setSelectedRegionB(''); }
+  }
 
   const isChild = selectedAge === 'KIN-K1' || selectedAge === 'KIN-K2';
 
@@ -358,26 +436,40 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
     return () => { actif = false; };
   }, [cantonB]);
 
-  const fetchRegions = async (canton: string, setAvailableRegions: React.Dispatch<React.SetStateAction<RegionOption[]>>, setSelectedRegion: React.Dispatch<React.SetStateAction<string>>) => {
+  const fetchRegions = async (
+    canton: string,
+    setAvailableRegions: React.Dispatch<React.SetStateAction<RegionOption[]>>,
+    setSelectedRegion: React.Dispatch<React.SetStateAction<string>>,
+    preferRegion?: string // ✨ PARTAGE : région du lien à conserver si elle existe
+  ) => {
     const { data, error } = await supabase.from('primes_lamal').select('Region').eq('Kanton', canton).eq('Geschäftsjahr', 2027);
     if (error || !data) { setAvailableRegions([]); return; }
     const uniqueRegions = [...new Set(data.map((p: { Region: string }) => p.Region))];
-    
-    const options: RegionOption[] = uniqueRegions.map(reg => ({ 
-      value: reg, 
-      label: getRegionLabel(canton, reg, i18n.language) // Langue ajoutée ici
+    const options: RegionOption[] = uniqueRegions.map(reg => ({
+      value: reg,
+      label: getRegionLabel(canton, reg, i18n.language)
     })).sort((a, b) => a.value.localeCompare(b.value));
-    
     setAvailableRegions(options);
-    if (options.length > 0) setSelectedRegion(options[0].value);
+    if (options.length > 0) {
+      // ✨ PARTAGE : garder la région du lien partagé si elle existe dans ce canton
+      const keep = preferRegion && options.some(o => o.value === preferRegion)
+        ? preferRegion
+        : options[0].value;
+      setSelectedRegion(keep);
+    }
   };
 
+
   useEffect(() => {
-    fetchRegions(cantonA, setAvailableRegionsA, setSelectedRegionA);
+    const pre = sharePref.current;
+    fetchRegions(cantonA, setAvailableRegionsA, setSelectedRegionA,
+      pre && pre.cA === cantonA ? pre.rA : undefined);
   }, [cantonA]);
 
   useEffect(() => {
-    fetchRegions(cantonB, setAvailableRegionsB, setSelectedRegionB);
+    const pre = sharePref.current;
+    fetchRegions(cantonB, setAvailableRegionsB, setSelectedRegionB,
+      pre && pre.cB === cantonB ? pre.rB : undefined);
   }, [cantonB]);
 
   useEffect(() => {
@@ -407,25 +499,23 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
     return preFiltered.filter((p, index, self) => index === self.findIndex((t) => (t.Versicherer === p.Versicherer && t.Tarifbezeichnung === p.Tarifbezeichnung)));
   };
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // ✨ Refactor : logique de recherche extraite dans runSearch — déclenchable
+  // par le formulaire ET automatiquement (lien partagé).
+  const runSearch = async () => {
     setLoading(true);
     setSearched(true);
     try {
       const primesA = await getFilteredPrimes(cantonA, selectedRegionA);
       setResultsA(primesA);
-      
       if (mode === 'comparaison') {
         const primesB = await getFilteredPrimes(cantonB, selectedRegionB);
         setResultsB(primesB);
-        
-        const avgA = calculateAvgPrime(primesA);
-        const avgB = calculateAvgPrime(primesB);
-        const calculatedDiff = avgA.annuel - avgB.annuel;
-        
-        if (onResultChange) onResultChange(calculatedDiff, { 
-          avgA: avgA.annuel, 
-          avgB: avgB.annuel,
+        const moyA = calculateAvgPrime(primesA);
+        const moyB = calculateAvgPrime(primesB);
+        const calculatedDiff = moyA.annuel - moyB.annuel;
+        if (onResultChange) onResultChange(calculatedDiff, {
+          avgA: moyA.annuel,
+          avgB: moyB.annuel,
           depCanton: cantonA,
           depRegion: selectedRegionA,
           arrCanton: cantonB,
@@ -439,6 +529,62 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
       const message = error instanceof Error ? error.message : 'Erreur inconnue';
       alert('Erreur : ' + message);
     } finally { setLoading(false); }
+  };
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await runSearch();
+  };
+
+  // ✨ PARTAGE : à l'ouverture d'un lien partagé, lancer la recherche
+  // automatiquement dès que la région du canton A est connue (une seule fois).
+  useEffect(() => {
+    if (!sharedView || autoSearchDone || loading) return;
+    if (!selectedRegionA) return;
+    setAutoSearchDone(true);
+    runSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sharedView, autoSearchDone, loading, selectedRegionA]);
+
+  // ✨ PARTAGE : bouton « Partager » — le lien transporte les filtres ;
+  // le destinataire voit le comparatif se recalculer chez lui.
+  const handleShare = async () => {
+    const cheapest = displayedResults[0]; // liste triée par prime croissante
+    const shareText = t('share.ass_text', {
+      canton: getCantonLabel(cantonA),
+      franchise: franchise,
+      price: formatCHF(cheapest ? cheapest.Prämie : avgA.mensuel)
+    });
+    const shareUrl = buildAssuranceShareLink({
+      v: 1,
+      age: selectedAge,
+      fr: franchise,
+      acc: accident,
+      model: tariftyp,
+      cA: cantonA,
+      rA: selectedRegionA,
+      cB: mode === 'comparaison' ? cantonB : undefined,
+      rB: mode === 'comparaison' ? selectedRegionB : undefined,
+    });
+    const fullMessage = `${shareText}\n${t('share.test_here')} :\n${shareUrl}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'SwissSimple - Assurance', text: shareText, url: shareUrl });
+      } catch { console.log('Partage annulé'); }
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(fullMessage)}`, '_blank');
+    }
+  };
+
+  // ✨ PARTAGE : « Faire ma propre simulation » — repart sur un formulaire vierge.
+  const startOwnSimulation = () => {
+    setSharedView(null);
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    setSelectedAge('ERW'); setFranchise(300); setAccident('MIT-UNF'); setTariftyp('');
+    setCantonA('VD'); setSelectedRegionA('');
+    setCantonB('GE'); setSelectedRegionB('');
+    setResultsA([]); setResultsB([]); setSearched(false); setAutoSearchDone(false);
+    window.scrollTo(0, 0);
   };
 
   const calculateAvgPrime = (primes: Prime[]) => {
@@ -477,6 +623,16 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
           {mode === 'comparaison' ? t('assurance.subtitle_compare') : t('assurance.subtitle_simple')}
         </p>
       </div>
+
+       {/* ✨ PARTAGE : bandeau « simulation partagée » au-dessus du formulaire */}
+      {sharedView && (
+        <div className="share-banner">
+          <span className="share-banner-text">🔗 {t('hub.shared_banner')}</span>
+          <button type="button" className="btn-primary" onClick={startOwnSimulation}>
+            {t('hub.shared_cta')}
+          </button>
+        </div>
+      )}
 
       <form onSubmit={handleSearch} className="assurance-form">
         <div className="assurance-filters">
@@ -657,6 +813,28 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
                   </div>
                 </div>
               ))}
+
+      {/* ✨ Partage flottant : accessible pendant tout le scroll des résultats */}
+            {searched && (
+              <button
+                type="button"
+                onClick={handleShare}
+                className="btn-primary share-fab"
+                aria-label={t('hub.share_result_btn')}
+                title={t('hub.share_result_btn')}
+              >
+                <svg
+                  width="22" height="22" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" strokeWidth="2"
+                  strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+                >
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                  <polyline points="16 6 12 2 8 6" />
+                  <line x1="12" y1="2" x2="12" y2="15" />
+                </svg>
+                    <span>{t('hub.share_result_btn')}</span>
+              </button>
+)}
             </div>
           </>
         )}

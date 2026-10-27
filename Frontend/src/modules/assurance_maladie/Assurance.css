@@ -307,6 +307,50 @@
 }
 
 /* ============================================================
+   ✨ PARTAGE (liens #s=) : bandeau destinataire + bouton flottant
+   ============================================================ */
+
+/* Bandeau « simulation partagée » au-dessus du formulaire */
+.share-banner {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.share-banner-text { font-size: 15px; }
+
+/* Le CTA du bandeau garde le style .btn-primary, juste borné en largeur */
+.share-banner .btn-primary { max-width: 340px; }
+
+/* Bouton de partage flottant (FAB) : rond, fixé en bas à droite.
+   Sélecteur à double classe (.btn-primary.share-fab) : il garde la couleur
+   du bouton primaire tout en écrasant largeur / padding / margin-top
+   de .btn-primary — sans !important, quel que soit l'ordre du fichier. */
+.btn-primary.share-fab {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: auto;
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0 1.25rem;
+  margin-top: 0;
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25);
+}
+/* ============================================================
    RÉSPONSIVE MOBILE ET TABLETTE POUR L'ASSURANCE
    ============================================================ */
 
@@ -348,6 +392,7 @@
 
   .results-grid {
     grid-template-columns: 1fr;
+    padding-bottom: 4.5rem; /* ✨ PARTAGE : laisse la place au FAB sous la dernière carte */
   }
 
   .region-tab {

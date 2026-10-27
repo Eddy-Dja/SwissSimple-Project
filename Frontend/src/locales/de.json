@@ -569,7 +569,8 @@
     "ret_result": "🧓 Ich habe meine Rente auf SwissSimple simuliert! Gesamtrente: {{total}} CHF/Monat.",
     "ret_avs": "🏛️ AHV: {{state}}, {{gender}} (geb. {{birthYear}}). Gehalt {{salary}} CHF, {{years}} Beitragsjahre, {{boughtYears}} Jahr gekauft, {{children}} Kind(er). Rentenalter {{age}} Jahre.",
     "ret_lpp": "🏦 Pensionskasse: Geb. {{birthYear}}. Gehalt {{salary}} CHF, Kapital {{capital}} CHF, Rückkauf/Jahr {{buyback}} CHF. Rentenalter {{age}} Jahre, Zins {{rate}}%.",
-    "ret_call": "Und du, bist du bereit?"
+    "ret_call": "Und du, bist du bereit?",
+    "ass_text": "🏥 KVG-Prämien 2027 in {{canton}}: die günstigste kostet {{price}} CHF/Monat (Franchise {{franchise}}.-)!"
   },
 
   "Chatbot": {
