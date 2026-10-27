@@ -17,7 +17,7 @@ interface ResultatAVS {
   renteMensuelleProvisoire: number; ramUser: number; anneesValidesUser: number; tauxReduction: number;
   renteMensuelleDefinitive: number; renteAnnuelleDefinitive: number; supplementVeuf: number; isPlafondCouple: boolean;
   anneeRetraiteConjoint: number; ramConjoint: number; tauxReductionConjoint: number; renteMensuelleConjoint: number;
-  renteAnnuelleConjoint: number; anneesValidesConjoint: number; hasPhase1Conjoint: number; renteMensuelleProvisoireConjoint: number;
+  renteAnnuelleConjoint: number; anneesValidesConjoint: number; hasPhase1Conjoint: boolean; renteMensuelleProvisoireConjoint: number;
 }
 
 type EtatCivil = 'celibataire' | 'marie' | 'divorce' | 'veuf';
