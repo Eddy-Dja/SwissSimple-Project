@@ -570,7 +570,10 @@
     "ret_avs": "🏛️ AVS: {{state}}, {{gender}} (Né en {{birthYear}}). Salaire {{salary}} CHF, {{years}} ans de cot., {{boughtYears}} an racheté, {{children}} enfant(s). Retraite à {{age}} ans.",
     "ret_lpp": "🏦 LPP: Né en {{birthYear}}. Salaire {{salary}} CHF, Capital {{capital}} CHF, Rachat/an {{buyback}} CHF. Retraite à {{age}} ans, Taux {{rate}}%.",
     "ret_call": "Et toi, es-tu prêt ?",
-    "ass_text": "🏥 Primes LAMal 2027 à {{canton}} : la moins chère est à {{price}} CHF/mois (franchise {{franchise}}.-) !"
+    "ass_text": "🏥 Primes LAMal 2027 à {{canton}} : la moins chère est à {{price}} CHF/mois (franchise {{franchise}}.-) !",
+    "rad_text": "…",
+    "rad_privacy": "…",
+    "fab_label": "Partager"
   },
 
   "Chatbot": {

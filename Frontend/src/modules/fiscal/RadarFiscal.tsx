@@ -1200,6 +1200,60 @@ export function calculerImpotPrecis(user: UserProfile, baseRevenuInput: number, 
 }
 
 // ============================================================
+// ✨ PARTAGE : encodage des saisies dans le lien (#s=...)
+// Le destinataire ouvre le simulateur PRÉ-REMPLI — le calcul se
+// lance automatiquement chez lui, et il peut modifier les champs.
+// Contenu : les saisies du formulaire uniquement, jamais de compte.
+// ============================================================
+interface SharedRadarData {
+  v: number;
+  com: number;    // id de la commune
+  rev?: number;   // revenu principal (brut)
+  st?: string;    // statut civil
+  rel?: string;   // religion
+  ca?: string;    // classe d'âge
+  caC?: string;   // classe d'âge du conjoint
+  revC?: number;  // revenu du conjoint
+  eM?: number;    // enfants mineurs
+  eX?: number;    // enfants majeurs
+  fg?: number;    // frais de garde
+  p3a?: number;   // pilier 3a
+  p3aC?: number;  // pilier 3a conjoint
+  cot?: number;   // cotisations sociales (telles qu'affichées)
+}
+
+const encodeRadarShareData = (data: SharedRadarData): string => {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let bin = '';
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+
+const decodeRadarShareData = (hash: string): SharedRadarData | null => {
+  const m = hash.match(/#s=([A-Za-z0-9\-_]+)/);
+  if (!m) return null;
+  try {
+    let b64 = m[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) { b64 += '='; }
+    const bin = atob(b64);
+    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+    const d = JSON.parse(new TextDecoder().decode(bytes));
+    // Garde : les liens Déménagement/Retraite/Assurance contiennent d'autres
+    // champs (dep/arr, avs/lpp, cA/age) — un lien Radar se reconnaît à `com`.
+    if (!d || d.v !== 1 || typeof d.com !== 'number') return null;
+    return d as SharedRadarData;
+  } catch {
+    return null;
+  }
+};
+
+const buildRadarShareLink = (data: SharedRadarData): string => {
+  const base = `${window.location.origin}${window.location.pathname}`;
+  return `${base}?src=share#s=${encodeRadarShareData(data)}`;
+};
+
+// ============================================================
 // 2. COMPOSANTS REACT (INTERFACE UTILISATEUR)
 // ============================================================
 
@@ -1208,11 +1262,15 @@ const SearchableSelect: React.FC<{
   emoji: string;
   communes: Commune[];
   onSelect: (c: Commune) => void;
-}> = ({ label, emoji, communes, onSelect }) => {
+  initialValue?: Commune | null; // ✨ PARTAGE
+}> = ({ label, emoji, communes, onSelect, initialValue }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState<Commune | null>(null);
+  const [selected, setSelected] = useState<Commune | null>(initialValue ?? null);
+  // ✨ PARTAGE : synchronise l'affichage si la commune change côté parent
+  // (pré-remplissage par lien partagé, ou remise à zéro du formulaire)
+  useEffect(() => { setSelected(initialValue ?? null); }, [initialValue]);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -1302,6 +1360,36 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
   const [difference, setDifference] = useState<number | null>(null);
   const [isUnsupported, setIsUnsupported] = useState(false);
 
+    // ✨ PARTAGE : vue partagée (lien #s=...) — uniquement en mode simple
+  // (l'instance du hub Déménagement a son propre partage de synthèse).
+  const [sharedView, setSharedView] = useState<SharedRadarData | null>(() =>
+    typeof window !== 'undefined' && initialMode === 'simple'
+      ? decodeRadarShareData(window.location.hash)
+      : null
+  );
+
+  // Pré-remplissage des champs scalaires PENDANT LE RENDU (pattern « ajuster
+  // l'état pendant le rendu ») : l'effet des cotisations sociales et le calcul
+  // partent directement sur les valeurs du partage, pas sur le localStorage
+  // du destinataire. La commune (id à résoudre) et les cotisations sont
+  // appliquées plus tard, dans les effets du bloc 6.
+  const [prefillApplied, setPrefillApplied] = useState(false);
+  if (sharedView && !prefillApplied) {
+    setPrefillApplied(true);
+    const d = sharedView;
+    if (typeof d.rev === 'number') setRevenuInput(String(d.rev));
+    if (d.st) setStatutCivil(d.st as StatutCivil);
+    if (d.rel) setReligion(d.rel as Religion);
+    if (d.ca) setClasseAge(d.ca as ClasseAge);
+    if (d.caC) setClasseAgeConjoint(d.caC as ClasseAge);
+    if (typeof d.revC === 'number') setRevenuConjoint(String(d.revC));
+    if (typeof d.eM === 'number') setEnfantsMineurs(d.eM);
+    if (typeof d.eX === 'number') setEnfantsMajeurs(d.eX);
+    if (typeof d.fg === 'number') setFraisGarde(String(d.fg));
+    if (typeof d.p3a === 'number') setPilier3a(String(d.p3a));
+    if (typeof d.p3aC === 'number') setPilier3aConjoint(String(d.p3aC));
+  }
+
   useEffect(() => {
     const fetchCommunes = async (): Promise<void> => {
       const { data, error } = await supabase.from('communes').select('id, commune, canton, canton_id, coeff_revenu_canton, coeff_revenu_commune, coeff_revenu_eglise_reforme, coeff_revenu_eglise_catholique').order('commune').limit(5000);
@@ -1337,8 +1425,10 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     setCotisationsSociales(calculateCotisationsSociales(user).toString());
   }, [revenuInput, typeRevenu, classeAge, classeAgeConjoint, statutCivil, revenuConjoint, setCotisationsSociales]);
 
-  const handleCompare = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault();
+      // ✨ PARTAGE : logique de calcul extraite dans runCompare — déclenchable
+  // par le formulaire (handleCompare) ET automatiquement (lien partagé),
+  // car elle ne dépend d'aucun événement de formulaire.
+  const runCompare = async (): Promise<void> => {
     if (!communeDepart) return alert(t('radar.alert_commune'));
     if (mode === 'comparaison' && !communeArrivee) return alert(t('radar.alert_arrivee'));
 
@@ -1351,8 +1441,8 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
 
     try {
       const input = totalBrut();
-      const statutFilter = (statutCivil === 'celibataire' && nombreEnfants > 0) 
-        ? `statut.eq.tous,statut.eq.celibataire,statut.eq.marie` 
+      const statutFilter = (statutCivil === 'celibataire' && nombreEnfants > 0)
+        ? `statut.eq.tous,statut.eq.celibataire,statut.eq.marie`
         : `statut.eq.tous,statut.eq.${statutCivil}`;
       const statutBaremeFederal = (statutCivil === 'celibataire' && nombreEnfants > 0) ? 'marie' : statutCivil;
       const statutBaremeCantonal = (statutCivil === 'celibataire' && nombreEnfants > 0) ? 'marie' : statutCivil;
@@ -1392,7 +1482,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
 
         const resArr = calculerImpotPrecis(user, input, arrData[0].data as BaremeTranche[], depData[1].data as BaremeTranche[], communeArrivee, depData[2].data as DeductionRow[], arrData[1].data as DeductionRow[], depData[4].data as DeductionPalier[], arrData[2].data as DeductionPalier[], statutCivil, statutBaremeCantonal, enfantsMineurs, enfantsMajeurs);
         setResultatArrivee(resArr);
-        
+
         const calculatedDiff = resDep.impotTotal - resArr.impotTotal;
         setDifference(calculatedDiff);
         if (onResultChange) onResultChange(calculatedDiff, { dep: resDep, arr: resArr, depName: communeDepart?.commune, arrName: communeArrivee?.commune });
@@ -1406,6 +1496,95 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
     } finally { setLoading(false); }
   };
 
+  const handleCompare = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
+    await runCompare();
+  };
+
+  // ✨ PARTAGE : bouton « Partager » — le lien transporte les saisies ;
+  // le destinataire voit le détail fiscal se recalculer chez lui.
+  const handleShare = async () => {
+    if (!resultatDepart || !communeDepart) return;
+    const shareText = t('share.rad_text', {
+      commune: `${communeDepart.commune} (${communeDepart.canton})`,
+      montant: formatCHF(resultatDepart.impotTotal),
+      revenu: formatCHF(totalBrut()),
+    });
+    const shareUrl = buildRadarShareLink({
+      v: 1,
+      com: communeDepart.id,
+      rev: parseFloat(revenuInput) || 0,
+      st: statutCivil,
+      rel: religion,
+      ca: classeAge,
+      caC: statutCivil === 'marie' ? classeAgeConjoint : undefined,
+      revC: statutCivil === 'marie' ? (parseFloat(revenuConjoint) || 0) : undefined,
+      eM: enfantsMineurs,
+      eX: enfantsMajeurs,
+      fg: parseFloat(fraisGarde) || 0,
+      p3a: parseFloat(pilier3a) || 0,
+      p3aC: statutCivil === 'marie' ? (parseFloat(pilier3aConjoint) || 0) : undefined,
+      cot: parseFloat(cotisationsSociales) || 0,
+    });
+    const fullMessage = `${shareText}\n${t('share.test_here')} :\n${shareUrl}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'SwissSimple - Impôts', text: shareText, url: shareUrl });
+      } catch { console.log('Partage annulé'); }
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(fullMessage)}`, '_blank');
+    }
+  };
+
+  // ✨ PARTAGE : « Faire ma propre simulation » — repart sur un formulaire vierge.
+  const startOwnSimulation = () => {
+    setSharedView(null);
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    setRevenuInput('100000');
+    setStatutCivil('celibataire');
+    setReligion('aucune');
+    setClasseAge('35-44');
+    setClasseAgeConjoint('35-44');
+    setRevenuConjoint('100000');
+    setEnfantsMineurs(0);
+    setEnfantsMajeurs(0);
+    setFraisGarde('0');
+    setPilier3a('0');
+    setPilier3aConjoint('0');
+    setCommuneDepart(null);
+    setResultatDepart(null); setResultatArrivee(null); setDifference(null);
+    // Cotisations : recalculées explicitement (l'effet ne se redéclenche pas
+    // si tous les champs reviennent à leurs valeurs par défaut)
+    setCotisationsSociales(calculateCotisationsSociales({
+      revenuBrut: 100000, cotisationsSociales: 0, statutCivil: 'celibataire',
+      revenuConjoint: 100000, typeRevenu: 'brut', classeAge: '35-44', classeAgeConjoint: '35-44',
+      religion: 'aucune', pilier3a: '0', pilier3aConjoint: '0', fraisGarde: '0',
+    }).toString());
+    window.scrollTo(0, 0);
+  };
+
+  // ✨ PARTAGE : résoudre la commune du lien (attend le chargement de la
+  // liste) + appliquer les cotisations sociales du partage APRÈS l'effet de
+  // recalcul automatique (qui sinon les écraserait).
+  const [shareCommuneApplied, setShareCommuneApplied] = useState(false);
+  useEffect(() => {
+    if (!sharedView || shareCommuneApplied || communes.length === 0) return;
+    setShareCommuneApplied(true);
+    setCommuneDepart(communes.find(c => c.id === sharedView.com) ?? null);
+    if (typeof sharedView.cot === 'number') setCotisationsSociales(String(sharedView.cot));
+  }, [communes, sharedView, shareCommuneApplied]);
+
+  // ✨ PARTAGE : lancer le calcul automatiquement, une seule fois, quand la
+  // commune partagée est résolue.
+  const [autoCompareDone, setAutoCompareDone] = useState(false);
+  useEffect(() => {
+    if (!sharedView || autoCompareDone || loading || !shareCommuneApplied) return;
+    if (!communeDepart) return;
+    setAutoCompareDone(true);
+    runCompare();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sharedView, autoCompareDone, loading, communeDepart, shareCommuneApplied]);
+
   const formatCHF = (amount: number | null | undefined): string => {
     if (!amount) return '0';
     return amount.toLocaleString('fr-CH');
@@ -1417,11 +1596,22 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         <title>Simulateur d'Impôts Suisse 2026 | Comparateur 26 Cantons</title>
         <meta name="description" content="Estimez votre charge fiscale dans tous les cantons suisses. Comparez les impôts, les déductions et le 3ème pilier gratuitement." />
       </Helmet>
-      
+
       <div className="radar-title-container">
         <h1 className="radar-title">{t('radar.title')}</h1>
         <p className="radar-subtitle">{mode === 'comparaison' ? t('radar.subtitle_compare') : t('radar.subtitle_simple')}</p>
       </div>
+
+      {/* ✨ PARTAGE : bandeau « simulation partagée » au-dessus du formulaire */}
+      {sharedView && (
+        <div className="share-banner">
+          <span className="share-banner-text">🔗 {t('hub.shared_banner')}</span>
+          <button type="button" className="btn-primary" onClick={startOwnSimulation}>
+            {t('hub.shared_cta')}
+          </button>
+        </div>
+      )}
+
       <form onSubmit={handleCompare} className="radar-form">
         <div className="radar-filters base-filters">
           <div className="filter-group">
@@ -1535,8 +1725,8 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         )}
 
         <div className={`radar-filters commune-filters ${mode}`}>
-          <SearchableSelect label={mode === 'comparaison' ? t('radar.commune_depart_label') : t('radar.commune_simple_label')} emoji="📍" communes={communes} onSelect={setCommuneDepart} />
-          {mode === 'comparaison' && <SearchableSelect label={t('radar.commune_arrivee_label')} emoji="🚀" communes={communes} onSelect={setCommuneArrivee} />}
+          <SearchableSelect label={mode === 'comparaison' ? t('radar.commune_depart_label') : t('radar.commune_simple_label')} emoji="📍" communes={communes} onSelect={setCommuneDepart} initialValue={communeDepart} />
+          {mode === 'comparaison' && <SearchableSelect label={t('radar.commune_arrivee_label')} emoji="🚀" communes={communes} onSelect={setCommuneArrivee} initialValue={communeArrivee} />}
         </div>
         <button className="btn-primary" type="submit" disabled={loading}>
           {loading ? t('radar.calc_loading') : (mode === 'comparaison' ? t('radar.calc_btn_compare') : t('radar.calc_btn_simple'))}
@@ -1650,6 +1840,29 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
         )
       )}
 
+      {/* ✨ PARTAGE : note + bouton flottant (module simple uniquement) */}
+      {mode === 'simple' && resultatDepart && (
+        <>
+          <p className="share-hint">🔒 {t('share.rad_privacy')}</p>
+<button
+  type="button"
+  className="btn-primary share-fab"
+  onClick={handleShare}
+  aria-label={t('hub.share_result_btn')}
+  title={t('hub.share_result_btn')}
+>
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="18" cy="5" r="3"></circle>
+    <circle cx="6" cy="12" r="3"></circle>
+    <circle cx="18" cy="19" r="3"></circle>
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+  </svg>
+  {t('share.fab_label', 'Partager')}
+</button>
+        </>
+      )}
+
       {mode === 'comparaison' && onNextStep && (
         <div className="hub-navigation hub-nav-spacing">
           <button className="btn-hub-next" onClick={onNextStep}>
@@ -1657,7 +1870,7 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
           </button>
         </div>
       )}
-      
+
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
 
       {!hideWarning && (

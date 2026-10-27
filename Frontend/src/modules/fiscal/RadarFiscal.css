@@ -218,9 +218,9 @@ body.dark-mode, body.dark, .dark-mode, .dark {
   right: 0 !important;
   margin-top: 5px !important;
   background: var(--rf-bg-card) !important;
-  border: 1px solid var(--rf-border-color) !important; 
+  border: 1px solid var(--rf-border-color) !important;
   border-radius: 8px !important;
-  box-shadow: var(--rf-shadow) !important; 
+  box-shadow: var(--rf-shadow) !important;
   z-index: 9999 !important;
   max-height: 450px !important;
   display: flex !important;
@@ -370,9 +370,9 @@ body.dark-mode, body.dark, .dark-mode, .dark {
 .result-diff-container.perte { background: #fef2f2; }
 .result-diff-container.neutre { background: var(--rf-bg-light); }
 
-body.dark-mode .result-diff-container.benefice, 
+body.dark-mode .result-diff-container.benefice,
 body.dark .result-diff-container.benefice { background: rgba(22, 163, 74, 0.1); }
-body.dark-mode .result-diff-container.perte, 
+body.dark-mode .result-diff-container.perte,
 body.dark .result-diff-container.perte { background: rgba(220, 38, 38, 0.1); }
 
 .diff-title {
@@ -473,7 +473,7 @@ body.dark .result-diff-container.perte { background: rgba(220, 38, 38, 0.1); }
   gap: 0.5rem;
 }
 
-body.dark-mode .avertissement-legal, 
+body.dark-mode .avertissement-legal,
 body.dark .avertissement-legal {
   background-color: rgba(251, 191, 36, 0.1) !important;
   border: 1px solid rgba(251, 191, 36, 0.3) !important;
@@ -489,7 +489,7 @@ body.dark .avertissement-legal {
   margin-bottom: 1rem;
 }
 
-body.dark-mode .avertissement-legal .titre-avertissement, 
+body.dark-mode .avertissement-legal .titre-avertissement,
 body.dark .avertissement-legal .titre-avertissement {
   color: #fcd34d !important;
 }
@@ -502,11 +502,11 @@ body.dark .avertissement-legal .titre-avertissement {
 
 .result-spacing-wrapper {
   margin-top: 30px;
-  margin-bottom: 30px; 
+  margin-bottom: 30px;
 }
 
 .hub-nav-spacing {
-  margin-top: 24px !important; 
+  margin-top: 24px !important;
   margin-bottom: 24px !important;
 }
 
@@ -523,7 +523,7 @@ body.dark .avertissement-legal .titre-avertissement {
   box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.1);
 }
 
-body.dark-mode .result-container.unsupported-result, 
+body.dark-mode .result-container.unsupported-result,
 body.dark .result-container.unsupported-result {
   background-color: rgba(127, 29, 29, 0.2);
   border: 1px solid rgba(220, 38, 38, 0.3);
@@ -564,7 +564,7 @@ body.dark-mode .unsupported-text, body.dark .unsupported-text { color: #fecaca; 
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
-  
+
   .result-container.unsupported-result {
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -597,4 +597,57 @@ body.dark-mode .unsupported-text, body.dark .unsupported-text { color: #fecaca; 
 .deduction-detail-montant, .result-deduction-detail span:last-child {
   font-weight: 600;
   white-space: nowrap;
+}
+
+/* ============================================================
+   ✨ PARTAGE (liens #s=) : bandeau destinataire + bouton flottant
+   ============================================================ */
+
+.share-banner {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.share-banner-text { font-size: 15px; }
+
+.share-banner .btn-primary { max-width: 340px; }
+
+.share-hint {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--rf-text-muted);
+  margin: 0.5rem auto 0;
+  max-width: 800px;
+}
+
+/* Bouton de partage flottant COMPACT : même gabarit que le bouton
+   retour (texte ~0.9rem), fixé en bas à droite. */
+.btn-primary.share-fab {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 2.25rem;
+  padding: 0 1rem;
+  margin-top: 0;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* Mobile : laisser la place à la pilule sous le dernier résultat */
+@media (max-width: 768px) {
+  .result-container.simple-result { padding-bottom: 3.5rem; }
 }
