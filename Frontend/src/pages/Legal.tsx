@@ -6,7 +6,6 @@ export default function Legal() {
   const { i18n } = useTranslation();
   const isDe = i18n.language.startsWith('de');   // ← LA ligne que tu cherchais
                    
-
   return (
     <div className="legal-container">
       <SEO
