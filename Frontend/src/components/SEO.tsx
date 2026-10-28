@@ -11,7 +11,7 @@ interface SEOProps {
 }
 
 const SITE_URL = 'https://swisssimple.ch';
-const OG_IMAGE = `${SITE_URL}/og-image.png`;
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 export default function SEO({ title, description, path = '' }: SEOProps) {
   const { i18n } = useTranslation();
