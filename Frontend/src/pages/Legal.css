@@ -74,3 +74,8 @@ body.dark-mode .legal-content li {
 body.dark-mode .legal-content section {
   border-bottom-color: #334155;
 }
+
+@media (max-width: 600px) {
+  .legal-container { padding: 100px 12px 40px; }
+  .legal-content { padding: 24px 18px; }
+}

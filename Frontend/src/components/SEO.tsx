@@ -30,8 +30,8 @@ export default function SEO({ title, description, path = '' }: SEOProps) {
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={OG_IMAGE} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      <meta property="og:image:width" content="2400" />
+      <meta property="og:image:height" content="1260" />
       <meta property="og:locale" content={locale} />
 
       <meta name="twitter:card" content="summary_large_image" />
