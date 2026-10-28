@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabaseClient';
 import AuthModal from '../../components/AuthModal';
 import './RadarFiscal.css';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../../components/SEO';
 import TaxCopilot from './TaxCopilot';
 
 
@@ -1592,10 +1592,8 @@ const RadarFiscal: React.FC<RadarFiscalProps> = ({ initialMode = 'simple', onNex
 
   return (
     <div className="radar-container">
-      <Helmet>
-        <title>Simulateur d'Impôts Suisse 2026 | Comparateur 26 Cantons</title>
-        <meta name="description" content="Estimez votre charge fiscale dans tous les cantons suisses. Comparez les impôts, les déductions et le 3ème pilier gratuitement." />
-      </Helmet>
+      
+<SEO title={t('seo.impots_title')} description={t('seo.impots_desc')} path="/radar-fiscal" />
 
       <div className="radar-title-container">
         <h1 className="radar-title">{t('radar.title')}</h1>

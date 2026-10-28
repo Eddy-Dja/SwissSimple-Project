@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabaseClient';
 import './Assurance.css';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../../components/SEO';
 
 interface Prime {
   id: number;
@@ -612,10 +612,8 @@ export default function Assurance({ initialMode = 'simple', onPrevStep, onNextSt
 
   return (
     <div className="assurance-container">
-      <Helmet>
-        <title>Comparatif Assurances Maladie Suisse | Primes LAMal 2027</title>
-        <meta name="description" content="Comparez les primes de l'assurance maladie de base (LAMal) 2027 par canton et par âge. Trouvez la caisse la moins chère en Suisse avec notre simulateur gratuit." />
-      </Helmet>
+      
+<SEO title={t('seo.assurance_title')} description={t('seo.assurance_desc')} path="/assurance" />
 
       <div className="assurance-header">
         <h1 className="assurance-title">{t('assurance.title')}</h1>

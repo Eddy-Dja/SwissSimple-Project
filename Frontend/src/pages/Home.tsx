@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';   // adapte le chemin relatif à l'emplacement du fichier
 
 export default function Home() {
   const navigate = useNavigate();
@@ -47,10 +47,7 @@ export default function Home() {
   return (
     <div className="swiss-app">
 
-      <Helmet>
-        <title>SwissSimple | Simulateur Financier Suisse (Impôts, Retraite (AVS et LPP), Assurances)</title>
-        <meta name="description" content="SwissSimple: Le simulateur financier suisse 100% gratuit + assistant fiscal IA sur les lois des 26 cantons. Calculez vos impôts, comparez votre assurance maladie et estimez votre retraite (AVS/LPP) dans tous les cantons." />
-      </Helmet>
+  <SEO title={t('seo.home_title')} description={t('seo.home_desc')} path="/" />
 
       <header className="hero-section">
         <div className="hero-glow"></div>

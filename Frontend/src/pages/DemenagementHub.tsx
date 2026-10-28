@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { generateDemenagementPDF } from '../utils/pdfGenerator';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import './DemenagementHub.css';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 // ============================================================
 // PARTAGE : encodage de la synthèse dans le lien (#s=...)
@@ -212,10 +212,8 @@ const DemenagementHub: React.FC = () => {
 
   return (
     <div className="hub-container">
-      <Helmet>
-        <title>Simulateur Déménagement Suisse | Impôts & Assurances comparés</title>
-        <meta name="description" content="Calculez le vrai coût d'un déménagement en Suisse. Comparez impôts, primes d'assurance maladie et loyers pour choisir la meilleure commune pour votre budget." />
-      </Helmet>
+      
+      <SEO title={t('seo.demenagement_title')} description={t('seo.demenagement_desc')} path="/demenagement" />
 
       <div className="hub-header">
         <h1 className="radar-title">{t('hub.demenagement_title')}</h1>

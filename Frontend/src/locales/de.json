@@ -604,5 +604,24 @@
     "children_2": "2",
     "children_3plus": "3 oder mehr",
     "loading_hint": "Analyse der kantonalen Gesetze läuft, dies kann 10–20 Sekunden dauern…"
-  }
+  },
+
+  "seo": {
+  "home_title": "SwissSimple | Schweizer Finanzsimulator: Steuern, KVG, AHV & PK",
+  "home_desc": "Berechnen Sie Ihre Steuern, vergleichen Sie Ihre Krankenversicherung und schätzen Sie Ihre Rente (AHV & PK) in allen 26 Kantonen. 100% gratis, anonym und werbefrei.",
+  "impots_title": "Steuern 2026 Schweiz: Kantone & Gemeinden vergleichen | SwissSimple",
+  "impots_desc": "Berechnen Sie Ihre Steuerbelastung 2026 (Bund, Kanton, Gemeinde) und vergleichen Sie die Steuertarife aller Kantone. Gratis und anonymer Simulator.",
+  "assurance_title": "KVG-Prämien 2027: Krankenversicherung vergleichen | SwissSimple",
+  "assurance_desc": "Vergleichen Sie die KVG-Prämien 2027 aller Versicherer Ihrer Region: Franchisen, Modelle und Sparpotenzial. Offizielle BAG-Daten, 100% gratis.",
+  "avs_title": "AHV-Rechner: Berechnen Sie Ihre Altersrente | SwissSimple",
+  "avs_desc": "Schätzen Sie Ihre AHV-Rente (1. Säule): Beiträge, Splitting, 13. Rentenzahlung und Referenzalter. Offizielle Daten 2026, gratis und anonym.",
+  "lpp_title": "PK-Rechner: Ihre 2. Säule bei der Pensionierung | SwissSimple",
+  "lpp_desc": "Projizieren Sie Ihre Pensionskasse: Kapital, Rendite, Rentenumwandlung und Steuerbelastung. Gratis und anonym, für alle Kantone.",
+  "demenagement_title": "Umzug in der Schweiz: Finanz-Impact im Vergleich | SwissSimple",
+  "demenagement_desc": "Lohnt sich ein Umzug? Vergleichen Sie den Gesamtimpact auf Ihre Finanzen: Steuern, KVG-Prämien, Mieten und Lebenshaltungskosten.",
+  "retraite_title": "Rente in der Schweiz: alle 3 Säulen kombiniert | SwissSimple",
+  "retraite_desc": "AHV, PK und Säule 3a in einer Ansicht: Ihr tatsächliches Renteneinkommen je nach Kanton, Renten und Steuern kombiniert.",
+  "classements_title": "Schweiz-Atlas: Kantone & Gemeinden im Ranking | SwissSimple",
+  "classements_desc": "Steuern, KVG-Prämien, Mieten: Entdecken Sie die Rangliste der 26 Kantone und finden Sie die günstigsten Gemeinden für Ihr Profil."
+}
 }

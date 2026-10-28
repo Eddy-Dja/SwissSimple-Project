@@ -604,5 +604,24 @@
     "children_2": "2",
     "children_3plus": "3 ou plus",
     "loading_hint": "Analyse des lois cantonales en cours, cela peut prendre 10 à 20 secondes…"
-  }
+  },
+
+  "seo": {
+  "home_title": "SwissSimple | Simulateur financier suisse : impôts, LAMal, AVS & LPP",
+  "home_desc": "Calculez vos impôts, comparez votre assurance maladie et estimez votre retraite (AVS & LPP) dans les 26 cantons suisses. 100% gratuit, anonyme et sans publicité.",
+  "impots_title": "Impôts suisses 2026 : comparez cantons et communes | SwissSimple",
+  "impots_desc": "Calculez votre charge fiscale 2026 (fédéral, cantonal, communal) et comparez les barèmes AFC de tous les cantons suisses. Simulateur gratuit et anonyme.",
+  "assurance_title": "Primes LAMal 2027 : comparateur assurance maladie | SwissSimple",
+  "assurance_desc": "Comparez les primes LAMal 2027 de tous les assureurs de votre région : franchises, modèles et économies possibles. Données officielles OFSP, 100% gratuit.",
+  "avs_title": "Simulateur AVS : calculez votre rente de retraite | SwissSimple",
+  "avs_desc": "Estimez votre rente AVS (1er pilier) : cotisations, splitting, 13e versement et âge de référence. Données officielles 2026, simulation gratuite et anonyme.",
+  "lpp_title": "Simulateur LPP : votre 2e pilier à la retraite | SwissSimple",
+  "lpp_desc": "Projetez votre caisse de pension (2e pilier) : capital, rendement, conversion en rente et imposition. Simulation gratuite et anonyme, tous cantons.",
+  "demenagement_title": "Déménagement en Suisse : impact financier complet | SwissSimple",
+  "demenagement_desc": "Faut-il déménager ? Comparez l'impact total sur vos finances : impôts, primes LAMal, loyers et coût de la vie, canton par canton.",
+  "retraite_title": "Retraite en Suisse : vos 3 piliers simulés ensemble | SwissSimple",
+  "retraite_desc": "AVS, LPP et pilier 3a réunis dans une vue unique : votre revenu de retraite réel selon votre canton, rentes et impôts combinés.",
+  "classements_title": "Atlas suisse : classements cantons et communes | SwissSimple",
+  "classements_desc": "Impôts, primes LAMal, loyers : explorez et comparez les 26 cantons suisses et trouvez les communes les plus avantageuses pour votre profil."
+}
 }

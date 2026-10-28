@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import './SimulateurAVS.css';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../../components/SEO';
 
 const AVS_CONSTANTS = {
   RENTE_MIN_MENSUELLE: 1260,
@@ -440,10 +440,7 @@ const SimulateurAVS: React.FC<SimulateurAVSProps> = ({ onResultChange, hideWarni
   return (
     <div className="radar-container">
 
-<Helmet>
-  <title>Simulateur Rente AVS 2026 | Calculateur Retraite Suisse</title>
-  <meta name="description" content="Calculez votre rente AVS (1er pilier) en fonction de votre âge, salaire et années de cotisation. Estimez votre retraite suisse anticipée ou ordinaire gratuitement." />
-</Helmet>
+<SEO title={t('seo.avs_title')} description={t('seo.avs_desc')} path="/simulateur-avs" />
 
       <div className="radar-title-container">
         <h1 className="radar-title">{t('avs.title')}</h1>

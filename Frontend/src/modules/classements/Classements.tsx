@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { calculerImpotPrecis, calculateCotisationsSociales } from '../fiscal/RadarFiscal';
 import type { UserProfile, Commune, BaremeTranche, DeductionRow, DeductionPalier } from '../fiscal/RadarFiscal';
 import './Classements.css';
+import SEO from '../../components/SEO';
 
 const CHEFS_LIEUX = [
   { canton_id: 1, nomRecherche: 'Zürich', key: 'zurich', abreviation: 'ZH' },
@@ -161,6 +162,9 @@ export default function Classements() {
 
   return (
     <div className="classements-container">
+
+      <SEO title={t('seo.classements_title')} description={t('seo.classements_desc')} path="/classements" />
+      
       <h1>{t('classements.title', 'Atlas Suisse 2026/2027 📊')}</h1>
       <p>{activeTab === 'impots' ? t('classements.subtitle_impots') : t('classements.subtitle_assurance')}</p>      
       {activeTab === 'impots' && (
