@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import SEO from '../components/SEO';   // ⚠️ adapte si Legal.tsx n'est pas directement dans src/pages/
+import SEO from '../components/SEO';
 import './Legal.css';
 
 export default function Legal() {
   const { i18n } = useTranslation();
-  const isDe = i18n.language.startsWith('de');   // ← LA ligne que tu cherchais
-                   
+  const isDe = i18n.language.startsWith('de');
+
   return (
     <div className="legal-container">
       <SEO
@@ -13,20 +13,20 @@ export default function Legal() {
         description={isDe
           ? 'Impressum und Datenschutzerklärung von SwissSimple: Herausgeber, Hosting, Datenverarbeitung und Ihre Rechte nach revDSG.'
           : 'Mentions légales et confidentialité de SwissSimple : éditeur, hébergement, traitement des données et vos droits selon la revLPD.'}
-              path="/legal"
+        path="/legal"
       />
 
       <div className="legal-content">
         <h1>{isDe ? 'Impressum & Datenschutzerklärung' : 'Mentions Légales & Politique de Confidentialité'}</h1>
-        <p className="legal-update">{isDe ? 'Letzte Aktualisierung: 28. Oktober 2026' : 'Dernière mise à jour : 28 octobre 2026'}</p>
+        <p className="legal-update">{isDe ? 'Letzte Aktualisierung: 29. Oktober 2026' : 'Dernière mise à jour : 29 octobre 2026'}</p>
 
-        {/* 1. EDITEUR */}
+        {/* 1. ÉDITEUR */}
         <section>
           <h2>{isDe ? '1. Herausgeber der Website' : '1. Éditeur du site'}</h2>
           <p>
             {isDe ? 'Die Website SwissSimple wird herausgegeben von:' : 'Le site SwissSimple est édité par :'} <br />
             <strong>Edgard DJAHOUI</strong> (SwissSimple)<br />
-            1700 Fribourg/Freiburg, Schweiz<br />
+            {isDe ? '1700 Freiburg, Schweiz' : '1700 Fribourg, Suisse'}<br />
             {isDe ? 'Kontakt' : 'Contact'} : <a href="mailto:contact@swisssimple.ch">contact@swisssimple.ch</a>
           </p>
         </section>
@@ -36,8 +36,8 @@ export default function Legal() {
           <h2>{isDe ? '2. Hosting & Infrastruktur' : '2. Hébergement & Infrastructures'}</h2>
           <p>
             {isDe
-              ? 'Die Website wird über das Cloudflare-Netzwerk (CDN) ausgeliefert. Der Anwendungsserver (KI-Assistent) wird von Render Inc. (USA) betrieben. Authentifizierung, sichere Datenbank sowie die offiziellen Referenzdaten (KVG-Prämien 2027, ESTV-Steuertarife 2026) werden von Supabase Inc. gehostet. Diese Datenbanken enthalten ausschliesslich öffentliche offizielle Daten — es werden keine persönlichen Benutzerdaten darin gespeichert.'
-              : "Le site est distribué via le réseau Cloudflare (CDN). Le serveur applicatif (assistant IA) est opéré par Render Inc. (USA). L'authentification, la base de données sécurisée et les données officielles de référence (primes LAMal 2027, barèmes fiscaux AFC 2026) sont hébergées par Supabase Inc. Ces bases ne contiennent que des données officielles publiques — aucune donnée personnelle d'utilisateur n'y est stockée."}
+              ? 'Die Website wird über das Cloudflare-Netzwerk (CDN) ausgeliefert. Der Anwendungsserver (KI-Assistent) wird von Render Inc. (USA) betrieben. Authentifizierung, sichere Datenbank sowie die offiziellen Referenzdaten (KVG-Prämien 2027, ESTV-Steuertarife 2026) werden von Supabase Inc. gehostet. Die Referenzdatenbanken enthalten ausschliesslich öffentliche offizielle Daten — ohne personenbezogene Daten. Die E-Mail-Adressen der Konten werden separat und sicher gespeichert (siehe Abschnitt 4).'
+              : "Le site est distribué via le réseau Cloudflare (CDN). Le serveur applicatif (assistant IA) est opéré par Render Inc. (USA). L'authentification, la base de données sécurisée et les données officielles de référence (primes LAMal 2027, barèmes fiscaux AFC 2026) sont hébergées par Supabase Inc. Les bases de référence ne contiennent que des données officielles publiques, sans aucune donnée personnelle. Les adresses e-mail des comptes sont stockées séparément, de manière sécurisée (voir section 4)."}
           </p>
         </section>
 
@@ -108,11 +108,19 @@ export default function Legal() {
                 ? 'SwissSimple verkauft, vermietet oder teilt Ihre persönlichen Daten niemals zu kommerziellen Zwecken mit Dritten.'
                 : 'SwissSimple ne vend, ne loue et ne partage jamais vos données personnelles avec des tiers à des fins commerciales.'}
             </li>
+            {/* ⚠️ Item valable uniquement si @fontsource/inter est en place (voir message) */}
             <li>
               <strong>{isDe ? 'Schriftarten: ' : 'Polices de caractères : '}</strong>
               {isDe
-                ? 'Die verwendete Schrift (Inter) wird über Google Fonts geladen, wobei Ihre IP-Adresse an Google übermittelt wird.'
-                : "La police utilisée (Inter) est chargée via Google Fonts, ce qui transmet votre adresse IP à Google."}
+                ? 'Die verwendete Schrift (Inter) wird selbst gehostet und von swisssimple.ch ausgeliefert. Es gehen keine Anfragen an Dritte.'
+                : "La police utilisée (Inter) est auto-hébergée et servie depuis swisssimple.ch. Aucune requête n'est envoyée à un tiers."}
+            </li>
+            {/* ⚠️ Item valable uniquement si le beacon Cloudflare est en place (voir message) */}
+            <li>
+              <strong>{isDe ? 'Statistiken: ' : 'Statistiques : '}</strong>
+              {isDe
+                ? 'Wir verwenden Cloudflare Web Analytics: keine Cookies, keine individuelle Identifizierung. Besuche werden nur aggregiert gezählt.'
+                : "Nous utilisons Cloudflare Web Analytics : aucun cookie, aucune identification individuelle. Les visites sont comptées de manière agrégée."}
             </li>
           </ul>
         </section>
