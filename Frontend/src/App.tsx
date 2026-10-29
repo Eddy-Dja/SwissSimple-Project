@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './context/AuthContext';
-import { useState, useEffect } from 'react';
-import Classements from './modules/classements/Classements';
+import { useState, useEffect, lazy, Suspense } from 'react';
 
 // Imports Composants Globaux
 import GlobalToolbar from './components/GlobalToolbar';
@@ -10,18 +9,23 @@ import GlobalNavbar from './components/GlobalNavbar';
 import ScrollToTop from './components/ScrollToTop';
 import AuthModal from './components/AuthModal';
 
-// Imports Pages
+// Home reste EAGER : c'est la page d'atterrissage.
+// La charger en différé provoquerait un flash blanc juste après le loader.
 import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
-import DemenagementHub from './pages/DemenagementHub';
-import RetraiteHub from './pages/RetraiteHub';
-import Legal from './pages/Legal';
 
-// Imports Modules
-import RadarFiscal from './modules/fiscal/RadarFiscal';
-import Assurance from './modules/assurance_maladie/Assurance';
-import SimulateurAVS from './modules/rente_avs/SimulateurAVS';
-import SimulateurLPP from './modules/rente_lpp/SimulateurLPP';
+// ============================================================
+// CODE-SPLITTING : chaque page/module devient un chunk séparé,
+// téléchargé uniquement quand l'utilisateur visite la route.
+// ============================================================
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const DemenagementHub = lazy(() => import('./pages/DemenagementHub'));
+const RetraiteHub = lazy(() => import('./pages/RetraiteHub'));
+const Legal = lazy(() => import('./pages/Legal'));
+const RadarFiscal = lazy(() => import('./modules/fiscal/RadarFiscal'));
+const Assurance = lazy(() => import('./modules/assurance_maladie/Assurance'));
+const SimulateurAVS = lazy(() => import('./modules/rente_avs/SimulateurAVS'));
+const SimulateurLPP = lazy(() => import('./modules/rente_lpp/SimulateurLPP'));
+const Classements = lazy(() => import('./modules/classements/Classements'));
 
 import './DarkMode.css';
 
@@ -42,6 +46,17 @@ function ScrollToHash() {
     }
   }, [hash]);
   return null;
+}
+
+// Attente pendant le chargement d'un chunk (~100-500 ms) — inline, zéro CSS
+function RouteChunkFallback() {
+  const { i18n } = useTranslation();
+  const isDe = i18n.language.startsWith('de');
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh', color: '#94A3B8', fontSize: '14px' }}>
+      {isDe ? 'Laden…' : 'Chargement…'}
+    </div>
+  );
 }
 
 function AppRoutes() {
@@ -99,11 +114,13 @@ function App() {
     <BrowserRouter>
       <GlobalToolbar />
       <GlobalNavbar />
-      <ScrollToHash />      {/* ← NOUVEAU : saute aux ancres (#copilot) */}
-      <ScrollToTop />       {/* remonte en haut — voir la modification ci-dessous */}
+      <ScrollToHash />      {/* saute aux ancres (#copilot) */}
+      <ScrollToTop />        {/* remonte en haut */}
 
       <div style={{ minHeight: '80vh', paddingTop: '110px' }}>
-        <AppRoutes />
+        <Suspense fallback={<RouteChunkFallback />}>
+          <AppRoutes />
+        </Suspense>
       </div>
 
       <footer className="footer">
