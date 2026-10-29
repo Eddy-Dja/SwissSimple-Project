@@ -3,8 +3,15 @@ import { initReactI18next } from 'react-i18next';
 import fr from './locales/fr.json';
 import de from './locales/de.json';
 
-// On lit la langue sauvegardée dans le navigateur. Si vide, on met 'fr'.
-const savedLanguage = localStorage.getItem('app_language') || 'fr';
+// Langue initiale : L'URL PRIME sur la préférence sauvegardée.
+// - /de/...  -> allemand, dès le premier rendu (Googlebot voit ainsi
+//   la bonne langue sur la bonne URL, sans flash de contenu FR)
+// - sinon    -> préférence mémorisée, français par défaut.
+// Le composant LangSync ajustera ensuite la langue à chaque navigation.
+const isDeUrl =
+  typeof window !== 'undefined' &&
+  (window.location.pathname === '/de' || window.location.pathname.startsWith('/de/'));
+const savedLanguage = isDeUrl ? 'de' : localStorage.getItem('app_language') || 'fr';
 
 i18n
   .use(initReactI18next)

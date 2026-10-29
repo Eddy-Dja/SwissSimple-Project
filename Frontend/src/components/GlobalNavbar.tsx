@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate';
 import { useTranslation } from 'react-i18next';
 import './GlobalNavbar.css';
 
 export default function GlobalNavbar() {
-  const navigate = useNavigate();
+  // Navigation localisée : ajoute automatiquement le préfixe /de
+  // quand l'interface est en allemand (les URLs /de/... restent ainsi
+  // cohérentes pendant toute la navigation).
+  const navigate = useLocalizedNavigate();
   const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
 

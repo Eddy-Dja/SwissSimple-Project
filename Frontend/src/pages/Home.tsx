@@ -1,11 +1,12 @@
 import { useLayoutEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
 import SEO from '../components/SEO';   // adapte le chemin relatif à l'emplacement du fichier
 
 export default function Home() {
-  const navigate = useNavigate();
+  // Navigation localisée : conserve le préfixe /de pour les visiteurs allemands
+  const navigate = useLocalizedNavigate();
   const { t, i18n } = useTranslation();
 
   const handlePremiumClick = (path: string) => {

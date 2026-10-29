@@ -8,6 +8,8 @@ import GlobalToolbar from './components/GlobalToolbar';
 import GlobalNavbar from './components/GlobalNavbar';
 import ScrollToTop from './components/ScrollToTop';
 import AuthModal from './components/AuthModal';
+import LangSync from './components/LangSync';
+import SiteFooter from './components/SiteFooter';
 
 // Home reste EAGER : c'est la page d'atterrissage.
 // La charger en différé provoquerait un flash blanc juste après le loader.
@@ -62,8 +64,17 @@ function RouteChunkFallback() {
 function AppRoutes() {
   const { user } = useAuth();
 
+  // ============================================================
+  // BILINGUISME SEO : chaque page existe sous DEUX URLs.
+  //   FR : /radar-fiscal        (racine, inchangée — SEO existant conservé)
+  //   DE : /de/radar-fiscal     (version allemande indexable par Google)
+  // Les mêmes composants sont montés sur les deux familles de routes :
+  // mêmes chunks, même code — seule l'URL change. La langue affichée
+  // est pilotée par LangSync (l'URL est la source de vérité).
+  // ============================================================
   return (
     <Routes>
+      {/* ===== Version française (racine) ===== */}
       <Route path="/" element={<Home />} />
       <Route path="/demenagement" element={<DemenagementHub />} />
       <Route path="/retraite" element={<RetraiteHub />} />
@@ -72,15 +83,29 @@ function AppRoutes() {
       <Route path="/assurance" element={<Assurance />} />
       <Route path="/simulateur-avs" element={<SimulateurAVS />} />
       <Route path="/simulateur-lpp" element={<SimulateurLPP />} />
-      <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
-      <Route path="*" element={<Navigate to="/" />} />
       <Route path="/classements" element={<Classements />} />
+      <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
+
+      {/* ===== Version allemande (préfixe /de) ===== */}
+      <Route path="/de" element={<Home />} />
+      <Route path="/de/demenagement" element={<DemenagementHub />} />
+      <Route path="/de/retraite" element={<RetraiteHub />} />
+      <Route path="/de/legal" element={<Legal />} />
+      <Route path="/de/radar-fiscal" element={<RadarFiscal />} />
+      <Route path="/de/assurance" element={<Assurance />} />
+      <Route path="/de/simulateur-avs" element={<SimulateurAVS />} />
+      <Route path="/de/simulateur-lpp" element={<SimulateurLPP />} />
+      <Route path="/de/classements" element={<Classements />} />
+      <Route path="/de/dashboard" element={user ? <Dashboard /> : <Navigate to="/de" />} />
+
+      {/* ===== Routes inconnues ===== */}
+      <Route path="/de/*" element={<Navigate to="/de" />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }
 
 function App() {
-  const { t } = useTranslation();
   const { recoveryMode, setRecoveryMode, signOut } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
@@ -112,6 +137,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <LangSync />         {/* synchronise langue <-> URL (/de/...) */}
       <GlobalToolbar />
       <GlobalNavbar />
       <ScrollToHash />      {/* saute aux ancres (#copilot) */}
@@ -123,21 +149,7 @@ function App() {
         </Suspense>
       </div>
 
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-brand">
-            <img src="/favicon.svg" alt="Drapeau Suisse" className="logo-icon" style={{ width: '26px', height: '26px', flexShrink: 0 }} />
-            <span><span className="logo-red-letter">S</span>wiss<span className="logo-red-letter">S</span>imple</span>
-          </div>
-          <p className="disclaimer">
-            {t('footer.copyright')} <br/>
-            {t('footer.disclaimer')}<br/>
-            <a href="/legal" style={{ color: '#94A3B8', textDecoration: 'underline', marginTop: '10px', display: 'inline-block' }}>
-              {t('footer.legal_link')}
-            </a>
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <AuthModal
         isOpen={isAuthModalOpen}

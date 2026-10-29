@@ -27,8 +27,11 @@
     <meta name="twitter:description" content="Impôts, assurance maladie, retraite AVS & LPP — 100% gratuit, anonyme et sans publicité." />
     <meta name="twitter:image" content="https://swisssimple.ch/og-image.jpg" />
 
-    <!-- URL canonique -->
-    <link rel="canonical" href="https://swisssimple.ch/" />
+    <!-- URL canonique : NE PAS en mettre en statique ici !
+         Le composant SEO (react-helmet) génère le canonical correct pour
+         chaque page et chaque langue (/radar-fiscal, /de/radar-fiscal...).
+         Un canonical statique vers "/" créait un DOUBLON contradictoire
+         sur toutes les pages (Google voyait deux canonicals). -->
 
 <style>
   body { margin: 0; background-color: #ffffff; font-family: 'Inter', system-ui, sans-serif; }

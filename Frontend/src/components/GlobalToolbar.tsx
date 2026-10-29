@@ -3,13 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import AuthModal from './AuthModal';
+import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate';
 import './GlobalToolbar.css';
 
 const GlobalToolbar: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { user, signOut } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const rawNavigate = useNavigate();      // navigation brute (changement de langue)
+  const navigate = useLocalizedNavigate(); // navigation localisée (bouton retour)
   const location = useLocation();
 
   const [isDark, setIsDark] = useState(() => {
@@ -27,13 +29,23 @@ const GlobalToolbar: React.FC = () => {
   }, [isDark]);
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'fr' ? 'de' : 'fr';
-    i18n.changeLanguage(newLang);
-    // --- ON SAUVEGARDE MANUELLEMENT ICI ---
-    localStorage.setItem('app_language', newLang);
+    // Le bouton DE/FR change maintenant D'URL : /quelquechose <-> /de/quelquechose.
+    // C'est LangSync qui ajuste ensuite la langue affichée (l'URL est la
+    // source de vérité). Résultat : chaque langue a une URL partageable
+    // et indexable par Google (hreflang).
+    const { pathname, search, hash } = location;
+    const isDe = pathname === '/de' || pathname.startsWith('/de/');
+    if (isDe) {
+      // /de/radar-fiscal -> /radar-fiscal   (et /de -> /)
+      rawNavigate((pathname.slice(3) || '/') + search + hash);
+    } else {
+      // /radar-fiscal -> /de/radar-fiscal   (et / -> /de)
+      rawNavigate((pathname === '/' ? '/de' : `/de${pathname}`) + search + hash);
+    }
   };
 
-  const isHome = location.pathname === '/';
+  // Accueil FR ("/") ou DE ("/de") : pas de bouton retour sur cette page
+  const isHome = location.pathname === '/' || location.pathname === '/de';
 
   // Fonction pour ouvrir la messagerie avec une demande de suppression pré-remplie
   const handleDeleteAccount = () => {

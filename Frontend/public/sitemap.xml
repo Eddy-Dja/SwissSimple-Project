@@ -1,43 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!--
+  Sitemap bilingue : chaque page existe en FR (racine) et DE (/de/...).
+  Les balises xhtml:link hreflang indiquent à Google les versions
+  linguistiques de chaque URL (fr, de + x-default = fr).
+  /dashboard est volontairement absent : page privée (redirection).
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- ===== Accueil ===== -->
   <url>
     <loc>https://swisssimple.ch/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/"/>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://swisssimple.ch/de</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/"/>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- ===== Déménagement (hub) ===== -->
+  <url>
     <loc>https://swisssimple.ch/demenagement</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/demenagement"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/demenagement"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/demenagement"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://swisssimple.ch/de/demenagement</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/demenagement"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/demenagement"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/demenagement"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ===== Retraite (hub) ===== -->
   <url>
     <loc>https://swisssimple.ch/retraite</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/retraite"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/retraite"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/retraite"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://swisssimple.ch/de/retraite</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/retraite"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/retraite"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/retraite"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ===== Radar fiscal ===== -->
   <url>
     <loc>https://swisssimple.ch/radar-fiscal</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/radar-fiscal"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/radar-fiscal"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/radar-fiscal"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://swisssimple.ch/de/radar-fiscal</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/radar-fiscal"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/radar-fiscal"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/radar-fiscal"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ===== Assurance LAMal ===== -->
   <url>
     <loc>https://swisssimple.ch/assurance</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/assurance"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/assurance"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/assurance"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://swisssimple.ch/de/assurance</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/assurance"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/assurance"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/assurance"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ===== Simulateur AVS ===== -->
   <url>
     <loc>https://swisssimple.ch/simulateur-avs</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/simulateur-avs"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/simulateur-avs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/simulateur-avs"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://swisssimple.ch/simulateur-lpp</loc>
+    <loc>https://swisssimple.ch/de/simulateur-avs</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/simulateur-avs"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/simulateur-avs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/simulateur-avs"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-    <url>
+
+  <!-- ===== Simulateur LPP ===== -->
+  <url>
+    <loc>https://swisssimple.ch/simulateur-lpp</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/simulateur-lpp"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/simulateur-lpp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/simulateur-lpp"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swisssimple.ch/de/simulateur-lpp</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/simulateur-lpp"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/simulateur-lpp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/simulateur-lpp"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ===== Classements / Atlas ===== -->
+  <url>
     <loc>https://swisssimple.ch/classements</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/classements"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/classements"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/classements"/>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://swisssimple.ch/de/classements</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/classements"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/classements"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/classements"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ===== Mentions légales ===== -->
+  <url>
+    <loc>https://swisssimple.ch/legal</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/legal"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/legal"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/legal"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://swisssimple.ch/de/legal</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/legal"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/legal"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/legal"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
 </urlset>
