@@ -31,3 +31,7 @@ Backend/__pycache__/
 Backend/PDFs/
 data_impot/
 data_assurance/
+
+/package.json
+/package-lock.json
+.wrangler/
