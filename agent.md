@@ -1,12 +1,14 @@
-# 🇨🇭 SwissSimple V2.1 : Estimateur d'impôts suisse + Copilot IA (RAG)
+# 🇨🇭 SwissSimple V2.2 : Estimateur d'impôts suisse + Copilot IA (RAG), bilingue FR/DE
 
 > **En production** : https://swisssimple.ch (génération V2, multi-cloud gratuit, coût d'exploitation 0 CHF).
-> Deux générations du backend Copilot sont documentées : **V1** (locale, autonome, embeddings sur machine) et **V2** (déployée, embeddings par API, conteneur Docker). « V2.1 » désigne la version du produit.
+> Ne pas confondre les numéros de version : **V1 / V2** = les deux générations du backend Copilot (locale puis déployée). **V2.1** = le produit avec Copilot en ligne. **V2.2** = le produit actuel : bilingue français/allemand indexable, SEO complet, dépôt nettoyé.
 
-**Application double :**
+**Application double, désormais bilingue :**
 
 1. **Estimateur d'impôt sur le revenu (IFD + ICC)** au centime près pour les 26 cantons et leurs communes, basé strictement sur l'Open Data officiel de l'AFC (Administration Fédérale des Contributions).
 2. **Tax Copilot IA** : assistant RAG cross-lingual qui répond aux questions fiscales cantonales en citant les paragraphes de loi (§) et les montants exacts, dans la langue de l'utilisateur (fr/de/it/en).
+
+Chaque page existe en deux versions indexables : française à la racine (`/radar-fiscal`) et allemande (`/de/radar-fiscal`). L'URL est la source de vérité de la langue affichée.
 
 ## Sommaire
 
@@ -14,24 +16,30 @@
 2. Les deux modules : architecture V1 puis V2
 3. L'avant/après : pourquoi deux générations
 4. Stack technique
-5. Structure du projet
-6. Schéma de données Supabase
-7. Module 1 : moteur fiscal de l'estimateur
-8. Module 2 : Tax Copilot IA (RAG)
-9. Fournisseurs LLM
-10. Installation et lancement
-11. Tests et validation
-12. Dépannage
-13. Limites connues
-14. Roadmap
-15. Interdictions absolues
-16. Sécurité
-17. Bilan : les chiffres de l'avant/après
+5. La version allemande : le site bilingue FR/DE
+6. Le SEO et l'indexation Google
+7. Structure du projet
+8. Schéma de données Supabase
+9. Module 1 : moteur fiscal de l'estimateur
+10. Module 2 : Tax Copilot IA (RAG)
+11. Fournisseurs LLM
+12. Installation et lancement
+13. Hygiène du dépôt Git
+14. Règles de collaboration humain-agent
+15. Tests et validation
+16. Dépannage
+17. Limites connues
+18. Roadmap
+19. Interdictions absolues
+20. Sécurité
+21. Bilan : les chiffres de l'avant/après
 
 ## 1. Vision et objectifs
 
 - **Nom du projet** : SwissSimple
 - **Objectif principal** : un estimateur d'impôt (IFD + ICC) au centime près pour les 26 cantons et leurs communes, basé strictement sur les données officielles de l'AFC, et un assistant conversationnel capable de justifier chaque réponse par le texte de loi cantonal source.
+- **Mission bilingue (V2.2)** : le même site en allemand sous `/de`, indexable par Google (hreflang), pour le public alémanique. Une seule base de code, deux familles d'URLs.
+- **Vocation pédagogique** : chaque modification est appliquée pas à pas par le développeur, comprise, reproduite, puis expliquée à un public non-initié.
 - **Principe absolu** : zéro donnée chiffrée codée en dur, ni dans React, ni dans les prompts IA. Toute la logique lit la base Supabase dynamiquement. Les incohérences de l'Open Data AFC sont gérées via le dictionnaire CANTON_RULES (architecture State-Specific). Le Copilot n'affiche que des montants présents dans les extraits de loi récupérés.
 
 ## 2. Les deux modules : architecture V1 puis V2
@@ -112,28 +120,102 @@
 
 ## 4. Stack technique (règles immuables, moteurs évolutifs)
 
-Les règles sont identiques depuis V1 : composants `React.FC`, aucun `any` ni `@ts-ignore`, pas de Redux/Zustand (`useState`/`useEffect` natifs), CSS pur dans fichiers dédiés (interdits : Tailwind, MUI, Chakra), `.toLocaleString('fr-CH')` partout, une seule dépendance npm autorisée (remark-gfm, exception documentée : sans elle, aucun tableau Markdown du Copilot ne s'affiche, GFM ≠ Markdown de base).
+Les règles sont identiques depuis V1 : composants `React.FC`, aucun `any` ni `@ts-ignore`, pas de Redux/Zustand (`useState`/`useEffect` natifs), CSS pur dans fichiers dédiés (interdits : Tailwind, MUI, Chakra), `.toLocaleString('fr-CH')` partout, et une liste **FERMÉE** de dépendances npm, toutes documentées dans la table ci-dessous (règle §19 : toute nouvelle dépendance doit être documentée ici).
 
-Seuls le moteur d'embeddings et l'infrastructure ont évolué (décision documentée §3) :
+**Frontend (état exact V2.2, vérifié dans package.json) :**
+
+| Couche | Choix |
+|---|---|
+| Framework | React 19.2.6 + TypeScript Strict, Vite 8 |
+| Routage | react-router-dom 7.17.0 (BrowserRouter ; 10 routes FR + 10 miroirs /de) |
+| Internationalisation | i18next 26 + react-i18next 17 + i18next-browser-languagedetector 8 (locales/fr.json, de.json) |
+| SEO | react-helmet-async 3 (src/components/SEO.tsx) |
+| Markdown (Copilot) | react-markdown 10 + remark-gfm 4 (sans GFM, aucun tableau ne s'affiche) |
+| Export PDF | jspdf 4 + jspdf-autotable 5 (src/utils/pdfGenerator.tsx) |
+| Données | @supabase/supabase-js 2 |
+| Police | @fontsource/inter 5 |
+
+Seuls le moteur d'embeddings et l'infrastructure ont évolué entre les générations de backend (décision documentée §3) :
 
 | Couche | V1 | V2 |
 |---|---|---|
-| Frontend | React 18 + TypeScript (Strict), Vite, React Router (SPA) | identique |
 | BDD | Supabase (Auth, PostgreSQL, RLS) | identique |
 | Backend | FastAPI + uvicorn, sentence-transformers, pdfplumber, python-dotenv, groq, openai | FastAPI + uvicorn, pdfplumber, python-dotenv, groq, openai (torch retiré) |
 | Embeddings | paraphrase-multilingual-MiniLM-L12-v2, local, 384 dim, cross-lingual FR↔DE | API Gemini, 3072 dim, multilingue, quota gratuit 1000 req/j |
 | LLM | Gemini (principal) → Groq gpt-oss-20b (repli), temperature 0.0 | cascade : 3 modèles Gemini puis Groq |
 | Infra | localhost:8000 | Docker sur Render, front Cloudflare, CI/CD GitHub |
 
-## 5. Structure du projet
+## 5. La version allemande : le site bilingue FR/DE (V2.2)
+
+**Principe** (commentaire « BILINGUISME SEO » dans App.tsx) : chaque page existe sous DEUX URLs. FR : `/radar-fiscal` (racine, inchangée — SEO existant conservé). DE : `/de/radar-fiscal` (version allemande indexable par Google). Les mêmes composants sont montés sur les deux familles de routes : mêmes chunks, même code — seule l'URL change. La langue affichée est pilotée par LangSync : **l'URL est la source de vérité**.
+
+**Les 20 routes (App.tsx) :**
+
+- FR : `/`, `/demenagement`, `/retraite`, `/legal`, `/radar-fiscal`, `/assurance`, `/simulateur-avs`, `/simulateur-lpp`, `/classements`, `/dashboard` (protégée : exige un utilisateur connecté)
+- DE : les 10 mêmes avec le préfixe `/de` (`/de`, `/de/demenagement`, … `/de/dashboard`)
+- Routes inconnues : renvoi vers `/` (ou `/de`)
+
+**Découpage du code (code-splitting)** : Home reste EAGER (page d'atterrissage — la charger en différé provoquerait un flash blanc juste après le loader). 9 chunks en React.lazy (App.tsx, lignes 22-30) : Dashboard, DemenagementHub, RetraiteHub, Legal, RadarFiscal, Assurance, SimulateurAVS, SimulateurLPP, Classements.
+
+**La chaîne linguistique :**
+
+- `src/i18n.js` : i18next, clé `app_language` en localStorage
+- `src/locales/fr.json` et `src/locales/de.json` : toutes les chaînes d'interface
+- `GlobalToolbar` : bouton FR/DE (`toggleLanguage`)
+- `src/hooks/useLocalizedNavigate.ts` : navigation qui conserve la langue
+- `src/components/LangSync.tsx` (66 lignes) : synchronise URL ↔ langue
+
+**La leçon du ping-pong (commit da246ff)** : la redirection mémoire de LangSync (`/` → `/de` pour un visiteur germanophone) se déclenchait AUSSI pendant la navigation SPA : depuis `/de`, un clic FR renvoyait vers `/`… qui rebondissait vers `/de` (ping-pong / ↔ /de). Correctif : une garde `useRef didRootCheck` (lignes 31-46) — la redirection ne s'applique qu'au TOUT PREMIER rendu, plus jamais pendant la navigation interne. Erreur TS associée vécue : les TS1005/TS1128 signalent en AVAL du vrai coupable (accolade en trop).
+
+## 6. Le SEO et l'indexation Google (V2.2)
+
+**Le moteur** : `src/components/SEO.tsx` (react-helmet-async). Par page : titre FR/DE, attribut `lang`, `canonical` unique, `hreflang` fr / de / x-default. Le sitemap `Frontend/public/sitemap.xml` liste 18 URLs : 9 FR + 9 DE (les dashboards sont exclus, réservés aux visiteurs connectés).
+
+**robots.txt** : Googlebot autorisé. Google-Extended et GoogleOther (bots d'IA) sont bloqués par le robots.txt géré par Cloudflare — attention : ce ne sont PAS des robots de recherche, l'indexation Google n'est pas concernée.
+
+**Google Search Console (état vérifié) :**
+
+- Propriété vérifiée via `google581bf650ec8345f4.html` (le 307 initial est bénin, le fichier finit en 200)
+- Sitemap soumis et ACCEPTÉ (18 URLs)
+- Page racine swisssimple.ch INDEXÉE
+- 10 demandes d'indexation : `/`, `/de` et les 8 pages d'outils
+
+**L'analogie de la bibliothèque** (pour un public non-initié) : Google indexe comme une bibliothèque catalogue ses livres. Le site = les livres ; le sitemap = le catalogue remis au bibliothécaire ; hreflang = la notice qui dit « ce livre existe aussi en allemand, autre rayon ». Une page non indexée = un livre dont personne n'a rempli la fiche.
+
+**Contrôles de production (tous verts)** : titres FR/DE, attribut lang, canonical unique par page, hreflang fr/de/x-default, zéro noindex. L'asset servi est `index-DSptW770.js` — son hash est resté inchangé après la suppression du code mort : preuve que ce code n'était jamais bundlé (jamais importé nulle part).
+
+## 7. Structure du projet
 
 ```
 SwissSimple/
-├── Frontend/                            # identique V1/V2
+├── agent.md                     ← ce document (source de vérité pour agents IA)
+├── README.md
+├── wrangler.jsonc               ← config Cloudflare Workers
+├── estv_api.py                  ← script d'import Open Data AFC
+├── data_impot/                  ← Open Data AFC + scripts d'import
+│                                  (9 fichiers encore SUIVIS malgré l'ignore — voir §13)
+├── .gitignore                   ← voir §13
+├── Frontend/
+│   ├── index.html               ← loader initial + <div id="root">
+│   ├── public/sitemap.xml       ← 18 URLs (9 FR + 9 DE)
+│   ├── public/robots.txt
 │   ├── src/
-│   │   ├── pages/RadarFiscal.tsx        # estimateur + CANTON_RULES
-│   │   ├── components/TaxCopilot.tsx    # Copilot (V2 : lecture du flux streaming)
-│   │   └── *.css                        # styles dédiés, pas d'inline utilitaire
+│   │   ├── App.tsx              ← 10 routes FR + 10 miroirs /de ; 9 lazy + Home eager
+│   │   ├── i18n.js              ← i18next, clé localStorage "app_language"
+│   │   ├── locales/fr.json, de.json
+│   │   ├── components/          ← GlobalNavbar, GlobalToolbar, LangSync, SEO,
+│   │   │                          SiteFooter, ScrollToTop, AuthModal, EmailGate
+│   │   ├── hooks/               ← useLocalStorageState, useLocalizedNavigate
+│   │   ├── context/AuthContext.tsx
+│   │   ├── lib/supabaseClient.ts
+│   │   ├── utils/pdfGenerator.tsx
+│   │   ├── pages/               ← Home, Dashboard, Legal, RetraiteHub, DemenagementHub
+│   │   └── modules/
+│   │       ├── fiscal/           ← RadarFiscal.tsx (+.css), TaxCopilot.tsx (+.css)
+│   │       ├── rente_lpp/        ← SimulateurLPP
+│   │       ├── rente_avs/        ← SimulateurAVS
+│   │       ├── assurance_maladie/← Assurance
+│   │       └── classements/      ← Classements
 │   └── package.json
 └── Backend/
     ├── api.py               # V1 : backend local (embeddings MiniLM sur machine)
@@ -143,13 +225,14 @@ SwissSimple/
     ├── Dockerfile           # V2
     ├── requirements.txt     # V1
     ├── requirements_v2.txt  # V2 : 7 dépendances
+    ├── Words/               # 26 lois cantonales en .docx (encore suivies — voir §13)
     ├── PDFs/                # 26 lois cantonales (documents ESTV)
-    └── .env                 # clés : JAMAIS commité (voir §16)
+    └── .env                 # clés : JAMAIS commité (voir §20)
 ```
 
-## 6. Schéma de données Supabase
+## 8. Schéma de données Supabase
 
-### 6.1 Tables de l'estimateur (identiques V1/V2, noms stricts)
+### 8.1 Tables de l'estimateur (identiques V1/V2, noms stricts)
 
 **communes** : `id (int, PK)`, `commune`, `canton`, `canton_id (int)`, `coeff_revenu_canton (float)` (ex. 96 pour 96 %), `coeff_revenu_commune (float)`, `coeff_revenu_eglise_reforme (float)`, `coeff_revenu_eglise_catholique (float)`
 
@@ -159,27 +242,27 @@ SwissSimple/
 
 **deductions_paliers** : `canton_id`, `nom_deduction`, `revenu_seuil`, `deduction_montant`, `statut`
 
-### 6.2 Table vectorielle du Copilot
+### 8.2 Table vectorielle du Copilot
 
 **V1** : `tax_documents (id, canton, content, embedding VECTOR(384))`, RPC `match_tax_docs(query_embedding, match_count, filter_canton)`, similarité cosinus filtrée par canton, `match_count = 5`.
 
 **V2** : `tax_documents_v2 (id, canton, content, embedding VECTOR(3072))`, RPC `match_tax_docs_v2`, `match_count = 7`. Décision technique : pas d'index vectoriel (ivfflat/hnsw plafonne à 2000 dimensions) ; avec le filtre par canton (~800 lignes max), le scan séquentiel est rapide ET exact (l'index approximatif peut rater le meilleur chunk, le séquentiel ne rate jamais).
 
-### 6.3 Cache des réponses
+### 8.3 Cache des réponses
 
 **V1** : `ANSWER_CACHE` en mémoire du serveur (clé = question + canton + statut + enfants + profession + langue), instantané mais volatile : vidé au redémarrage d'uvicorn.
 
 **V2** : deux niveaux. RAM d'abord, puis table `answer_cache_v2` en base : **persistante et partagée entre tous les visiteurs**. Une question populaire ne coûte qu'une fois : le cache l'absorbe pour tous les suivants. C'est ce qui rend le modèle gratuit viable (1000 embeddings/jour + cache = des dizaines de milliers de réponses servies).
 
-### 6.4 Convention de nommage des cantons (identique V1/V2, source de vérité unique)
+### 8.4 Convention de nommage des cantons (identique V1/V2, source de vérité unique)
 
 Les valeurs stockées dans la table vectorielle doivent être identiques au caractère près aux `value` du `<select>` du frontend :
 
 `Zürich, Bern, Luzern, Uri, Schwyz, Obwalden, Nidwalden, Glarus, Zug, Fribourg, Solothurn, Basel-Stadt, Basel-Landschaft, Schaffhausen, Appenzell Ausserrhoden, Appenzell Innerrhoden, St. Gallen, Graubünden, Aargau, Thurgau, Ticino, Vaud, Valais, Neuchâtel, Genève, Jura`
 
-L'ingestion garantit cet alignement via le dictionnaire ALIASES (§8.3). Un désalignement produit le symptôme « Je n'ai pas trouvé cette information dans les lois de ce canton » pour un canton pourtant ingéré.
+L'ingestion garantit cet alignement via le dictionnaire ALIASES (§10.3). Un désalignement produit le symptôme « Je n'ai pas trouvé cette information dans les lois de ce canton » pour un canton pourtant ingéré.
 
-## 7. Module 1 : moteur fiscal de l'estimateur (inchangé : V1 = V2)
+## 9. Module 1 : moteur fiscal de l'estimateur (inchangé : V1 = V2)
 
 ### Étape 1 : du revenu brut au revenu net
 
@@ -217,7 +300,7 @@ Note : le script Python d'import a déjà géré l'élargissement des tranches p
   - Impôt paroissial = Base × `coeff_eglise` / 100
 - **Total = IFD + ICC**
 
-### 7.1 Architecture « State-Specific Strategy »
+### 9.1 Architecture « State-Specific Strategy »
 
 L'Open Data AFC est incohérent entre cantons (montants dans `montant` ou `maximum`, montants doublés pour les couples ou non). L'application adopte une architecture modulaire par canton, en quatre phases.
 
@@ -251,15 +334,16 @@ const CANTON_RULES: Record<number, CantonStrategy> = {
 
 **Phase 4 : moteur générique (fallback)** : doubler les montants `statut = 'tous'` pour les mariés, lire `maximum` si `montant = 0`, etc. Filet de sécurité permettant de corriger les cantons un par un sans tout casser.
 
-### 7.2 Interface utilisateur
+### 9.2 Interface utilisateur
 
 - **Filtres de base** : revenu (brut/net), classe d'âge (LPP), statut (célibataire/marié), religion, enfants à charge, commune
 - **Options avancées (toggles)** : cotisations sociales (auto-calculé, modifiable), frais de transport réels, primes d'assurance réelles, frais médicaux, dons, pilier 3a, frais de garde, revenu net du conjoint, case « retraité AVS/AI »
-- **Résultats** : séparation claire cantonal / communal / paroissial / IFD, montant total et taux effectif
+- **Résultats** : séparation claire cantonal / communal / paroissial / IFD, montant total et taux effectif. Deux modes : simple (une commune) et comparaison (deux communes, « VS »)
+- **Intégration** : le widget TaxCopilot est monté en bas de la page de l'estimateur (`<TaxCopilot />` à la fin de RadarFiscal.tsx)
 
-## 8. Module 2 : Tax Copilot IA (RAG)
+## 10. Module 2 : Tax Copilot IA (RAG)
 
-### 8.1 Flux V1 (l'original, local)
+### 10.1 Flux V1 (l'original, local)
 
 ```
 React TaxCopilot.tsx (question + profil + langue)
@@ -276,7 +360,7 @@ FastAPI api.py
 ReactMarkdown + remark-gfm (tableaux)
 ```
 
-### 8.2 Flux V2 (l'actuel, en production)
+### 10.2 Flux V2 (l'actuel, en production)
 
 1. **Cache** (RAM puis Supabase) : question déjà posée ? réponse instantanée, 0 token
 2. **Vectorisation** : question → 3072 dimensions (API Gemini)
@@ -287,7 +371,7 @@ ReactMarkdown + remark-gfm (tableaux)
 7. **Streaming** : NDJSON ligne par ligne vers le navigateur
 8. **Cache** : sauvegarde (RAM + Supabase) pour la prochaine fois
 
-### 8.3 Ingestion
+### 10.3 Ingestion
 
 **Le chunking (identique V1/V2, le cœur de la qualité du RAG)** :
 
@@ -308,7 +392,7 @@ ReactMarkdown + remark-gfm (tableaux)
 | Quotas | aucun (local illimité) | 1000 requêtes/jour, backoff patient : les 429 attendent 65 s et réessaient, reprise le lendemain |
 | Idempotence | canton effacé avant réinsertion, relançable sans doublons | renforcée : un canton complet est sauté, un partiel est refait |
 
-### 8.4 Backend
+### 10.4 Backend
 
 **Endpoints** :
 
@@ -317,15 +401,15 @@ ReactMarkdown + remark-gfm (tableaux)
 
 **Paramètres LLM (introduits en V1, conservés en V2)** : `temperature = 0.0` (déterminisme des montants), troncature du contexte à 10 000 caractères (anti-413), budget de sortie 3000 tokens (Groq compte entrée + budget de sortie dans la taille de requête), `reasoning_effort = "low"` chez Groq (économie de tokens de raisonnement), `max_tokens = 3000` chez Gemini, détection `finish_reason == "length"` (réponse coupée), nettoyage regex du mot-valise « ab-déduction », consigne anti-invention (tout montant doit venir des extraits), traceback complet au terminal en cas d'erreur.
 
-### 8.5 Les garde-fous anti-hallucination
+### 10.5 Les garde-fous anti-hallucination
 
 V1 en avait deux (le prompt restrictif, la validation factuelle manuelle). V2 en ajoute un troisième, positionné AVANT le LLM :
 
 1. **Prompt restrictif** : « Tu n'inventes JAMAIS de chiffre : tout montant doit venir des extraits fournis » + « si la réponse n'y est pas, dis-le »
 2. **Seuil de similarité (V2, calibré empiriquement)** : les questions fiscales mesurées vivent à 0.55-0.72, les absurdités à 0.49-0.51 → seuil à 0.55 → les hors-sujets sont interceptés avant le LLM (zéro token)
-3. **Protocole de validation factuelle** : tests de vérité terrain contre les PDF ESTV (voir §11)
+3. **Protocole de validation factuelle** : tests de vérité terrain contre les PDF ESTV (voir §15)
 
-### 8.6 La cascade de fournisseurs (V2, la résilience)
+### 10.6 La cascade de fournisseurs (V2, la résilience)
 
 ```python
 providers = [Gemini 3.5, Gemini 3.8, Gemini 3.6, Groq]
@@ -335,11 +419,11 @@ providers = [Gemini 3.5, Gemini 3.8, Gemini 3.6, Groq]
 
 Testée en conditions réelles : 429 (quotas quotidiens), 503 (surcharge) vécus, le service n'est jamais tombé. Détail précieux : les quotas Gemini sont comptés **par modèle** → trois modèles dans la cascade = trois budgets séparés.
 
-### 8.7 Le streaming (V2, l'UX)
+### 10.7 Le streaming (V2, l'UX)
 
 Le endpoint `/api/tax-copilot-stream` émet du NDJSON : `{"type":"meta"...}` puis `{"type":"chunk","text":"..."} × N` puis `{"type":"done"}`. Côté React : `getReader()` lit le flux et `setAnswer(acc)` fait s'écrire la réponse mot par mot : 20 secondes de génération sont perçues comme 2 secondes.
 
-### 8.8 Le multilingue (identique V1/V2, la finesse)
+### 10.8 Le multilingue (identique V1/V2, la finesse)
 
 Un code langue (« de ») injecté dans un prompt français ne suffit pas à contraindre le modèle. Trois leviers :
 
@@ -349,11 +433,11 @@ Un code langue (« de ») injecté dans un prompt français ne suffit pas à con
 
 Mécanique profonde : question FR → extraits DE → réponse IT si demandée. Le triptyque cross-lingual suisse, rendu possible par les embeddings multilingues (MiniLM en V1, Gemini 3072d en V2).
 
-### 8.9 Frontend (TaxCopilot.tsx)
+### 10.9 Frontend (TaxCopilot.tsx)
 
 5 sélecteurs (canton : les 26 valeurs canoniques, statut civil, enfants, profession, langue de réponse) ; ReactMarkdown avec `remarkPlugins={[remarkGfm]}` (sinon les tableaux s'affichent en bouillie) ; `overflowX: 'auto'` sur le conteneur ; en V2, lecture du flux streaming via `getReader()`.
 
-## 9. Fournisseurs LLM
+## 11. Fournisseurs LLM
 
 | | Gemini (AI Studio) | Groq (gpt-oss-20b) |
 |---|---|---|
@@ -365,13 +449,13 @@ Mécanique profonde : question FR → extraits DE → réponse IT si demandée. 
 
 **Règles clés** : une clé API n'est valable que sur l'endpoint de son fournisseur (clé Gemini dans le client Groq → 401) ; vérifier le nom exact du modèle actuel (ils évoluent).
 
-**Évolution V2** : d'une simple paire principal/repli, le système est passé à la cascade de quatre fournisseurs (§8.6), chaque modèle Gemini apportant son propre budget de quota.
+**Évolution V2** : d'une simple paire principal/repli, le système est passé à la cascade de quatre fournisseurs (§10.6), chaque modèle Gemini apportant son propre budget de quota.
 
 **Pourquoi la cascade plutôt qu'un choix unique** : « quel est le meilleur LLM » se répond par le critère (quota, vitesse, qualité, souveraineté des données). Une réponse de développeur, pas de fan.
 
-## 10. Installation et lancement
+## 12. Installation et lancement
 
-### 10.1 V1 : backend local (mode développement autonome)
+### 12.1 V1 : backend local (mode développement autonome)
 
 ```bash
 cd Backend
@@ -394,7 +478,7 @@ npm install remark-gfm
 npm run dev
 ```
 
-### 10.2 V2 : production (Docker, Render, Cloudflare)
+### 12.2 V2 : production (Docker, Render, Cloudflare)
 
 ```dockerfile
 FROM python:3.13-slim
@@ -408,25 +492,101 @@ Concepts clés : l'image (plan figé) vs le conteneur (processus vivant) ; isola
 
 | Service | Rôle | Coût |
 |---|---|---|
-| Cloudflare | frontend statique, mondial, build à chaque push | 0 CHF |
+| Cloudflare | frontend statique mondial + **intégration Git : chaque push sur main = build puis déploiement automatiques** | 0 CHF |
 | Render | backend V2 Docker (512 Mo, veille ~15 min) | 0 CHF |
 | Supabase | corpus vectoriel + cache + auth | 0 CHF |
 | Gemini → Groq | embeddings + LLM en cascade | 0 CHF (quotas) |
 | GitHub | source de vérité, CI/CD | 0 CHF |
 
+**Le déploiement moderne (V2.2, décrypté depuis le dashboard Cloudflare)** : l'intégration Git du projet « swisssimple-project » construit avec `npm run build` (dossier racine /Frontend) puis déploie avec `npx wrangler deploy`, à chaque push sur main. Conséquence : **PUSH = DÉPLOIEMENT**. Le `wrangler deploy` manuel est devenu redondant — le garder uniquement en secours. Garde-fou : `npm run build` local avant chaque push (tsc attrape tout en ~8 s). Si un build échoue chez Cloudflare, le site garde la dernière version valide. Les doublons de déploiements (un manuel a4d225c4 + un build Git c56fcc61 le même soir) sont sans conséquence.
+
 **Leçons de mise en ligne vécues** : `VITE_API_URL` vit chez l'hébergeur (injectée au build, jamais dans le repo) ; le `.env` Docker sans guillemets ni espaces (dotenv pardonne, Docker non : trois bugs appris) ; le déclencheur de build = `git push` (le commit vide comme variante) ; chaque déploiement garde la dernière version valide si le build échoue.
 
 **Workflow de développement durable** : atelier local (`uvicorn api_v2:app --reload --port 8001` + `npm run dev`) → répétition (`npm run build`, tsc attrape tout en 8 s, + `docker run` local) → contrôle (`findstr` : aucun .env/PDF/venv ne part) → envoi (`git push` : Cloudflare + Render suivent automatiquement).
 
-### 10.3 Rituels de stabilité
+### 12.3 Rituels de stabilité
 
 - Après chaque sauvegarde de l'api, attendre `Application startup complete.` (~5 s) avant de questionner : sinon « Erreur de connexion »
 - Vérifier `/health` avant tout test
 - **Préparer une démo** : V1, le cache vit en mémoire du serveur (poser les questions de démo après le dernier redémarrage) ; V2, le cache persiste en base, mais Render sort de veille : réchauffer le service avant la démo, les questions pré-posées ressortent instantanément, à l'abri des quotas
 
-## 11. Tests et validation
+## 13. Hygiène du dépôt Git
 
-### 11.1 Audits SQL
+**.gitignore actuel (racine du dépôt)** :
+
+```
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.env
+
+# ==== Backend (Tax Copilot) ====
+Backend/.env
+Backend/venv/
+Backend/__pycache__/
+Backend/PDFs/
+data_impot/
+data_assurance/
+
+/package.json
+/package-lock.json
+.wrangler/
+*.patch
+```
+
+**Les incidents vécus (et leurs leçons)** :
+
+1. **package.json / package-lock.json parasites à la racine** (push b2e72d7, session précédente) → historique réécrit, parasites disparus. Leçon : les fichiers générés à la racine du dépôt n'ont rien à faire dans l'historique ; ils sont désormais ignorés.
+2. **Le patch swisssimple-p1.patch committé par erreur** via `git add -A` (Git ≥ 2.0 ajoute TOUT l'arbre, pas seulement le dossier courant) → nettoyage `git rm --cached` + `*.patch` ajouté au .gitignore (commits 28107b95 / a30a3f3). Leçons : (a) un commit = une étiquette sur une boîte — regarder la boîte AVANT d'étiqueter (`git diff --cached`) ; (b) une liste noire (findstr) perd toujours contre .gitignore ; (c) préférer les chemins explicites à `add -A`.
+3. **Code mort supprimé** (commit 91b1217) : LanguageSwitcher.tsx, LanguageSwitcher.css, AppLayout.tsx (−137 lignes). Vérifié AVANT : 0 importeur, build OK ; vérifié APRÈS : le hash de l'asset de production est inchangé — le code mort jamais importé n'est jamais bundlé.
+
+4. **Fichiers de données encore suivis malgré l'ignore** (constat du 30.10.2026, lecture seule) : `data_impot/` figure dans .gitignore MAIS 9 fichiers restent suivis (Barèmes, Déductions, Coefficients en CSV/DOCX + 2 scripts d'import Python) — committés AVANT l'ignore. Et `Backend/Words/` (26 lois cantonales en .docx) n'est pas ignoré du tout : .gitignore n'ignore que `Backend/PDFs/`. Leçon (déjà connue avec le .patch) : **.gitignore n'annule pas le suivi existant** — seul `git rm --cached` désuivi. Décision laissée au développeur : ce sont des données publiques de l'AFC, aucun secret ; les garder (le clone contient alors toutes les données) ou les retirer du suivi (dépôt plus léger, données locales uniquement). Symptôme révélateur : `git ls-files` affiche ces noms entre guillemets (caractères accentués), ex. `"data_impot/Bar\303\250mes.docx"`.
+
+**Chaîne de commits récente (branche main) :**
+
+- `ebd7521` — SEO: version allemande indexable (patch P1 « bilingue-SEO », 11 fichiers, +349/−41 : 8 modifiés + LangSync.tsx, SiteFooter.tsx, useLocalizedNavigate.ts)
+- `da246ff` — Fix: redirection mémoire uniquement au 1er rendu (clic FR depuis /de) — amend du commit intermédiaire 5fe1a3f, disparu
+- `a30a3f3` — chore: retire le patch P1 du dépôt et ignore *.patch (avec 28107b95)
+- `91b1217` — chore: supprime le code mort (LanguageSwitcher, AppLayout)
+
+## 14. Règles de collaboration humain-agent
+
+**Les 5 règles absolues du développeur :**
+
+1. Jamais de fichier créé à l'initiative de l'agent ; le code se livre DANS LE CHAT.
+2. Fichiers seulement sur demande explicite, nommés par le développeur, créés de son côté.
+3. Après une perte de contexte : redemander au lieu de deviner (relire ce fichier).
+4. Tout choix explicite du développeur est consigné (worklog / ce document).
+5. Consentement explicite AVANT toute modification (code, build, commit, déploiement). Un message ambigu = demander, ne pas agir.
+
+**Mode de travail** : le développeur applique les modifications LUI-MÊME, pas à pas — pour comprendre, reproduire, puis expliquer à un public non-initié. Rôle de l'agent : conseiller, vérifier en LECTURE SEULE, expliquer. L'agent ne possède AUCUN identifiant GitHub ni Cloudflare (c'est voulu) : il ne peut ni pousser ni déployer. Origine de la règle 5 : « Tu peux faire toutes les modifications tout seul » était une question, pas une autorisation.
+
+**Routine de mise en ligne** : appliquer → `npm run build` (garde-fou local) → commit (`git diff --cached` d'abord) → push → Cloudflare construit et déploie (§12.2) → vérification lecture seule en production par l'agent.
+
+## 15. Tests et validation
+
+### 15.1 Audits SQL
 
 ```sql
 -- 26 cantons présents, aucun à 0 (table selon la génération : tax_documents / tax_documents_v2)
@@ -447,7 +607,7 @@ SELECT LEFT(content, 500) FROM tax_documents_v2
 WHERE canton = 'Luzern' AND content LIKE '%Kind 12500%';
 ```
 
-### 11.2 Fact-check systématique (vérité terrain = les PDF ESTV)
+### 15.2 Fact-check systématique (vérité terrain = les PDF ESTV)
 
 | Test | Question | Canton | Attendu | Statut |
 |---|---|---|---|---|
@@ -464,15 +624,28 @@ WHERE canton = 'Luzern' AND content LIKE '%Kind 12500%';
 
 Stabilité : poser la même question 3× → montants et références identiques (temp 0.0). La formulation peut varier légèrement (modèle de raisonnement) : **les chiffres sont le critère de vérité**.
 
-### 11.3 Instruments de debug
+### 15.3 Instruments de debug
 
 `POST /api/debug-retrieval` (l'outil qui a calibré le seuil, diagnostiqué le § 52, mesuré le recall : extraits bruts sans consommer de tokens LLM) ; le terminal du serveur (témoins `[RAG] 7 extraits`, `[GROQ] OK`, `[CACHE-DB]`) ; `repr()` et `Get-Content` avec crochets (rendre les caractères invisibles visibles) ; `py_compile`, `npm run build`, `findstr` (les trois contrôles avant push).
 
-## 12. Dépannage
+### 15.4 Vérifications SEO de production (V2.2)
+
+| Point contrôlé | Résultat |
+|---|---|
+| Titres FR et DE par page | ✅ |
+| Attribut lang | ✅ |
+| canonical unique par page | ✅ |
+| hreflang fr / de / x-default | ✅ |
+| Balises noindex | ✅ zéro |
+| sitemap.xml | ✅ 18 URLs |
+| robots.txt (Googlebot) | ✅ autorisé |
+| Fichier de vérification Google | ✅ 307 puis 200 (bénin) |
+
+## 16. Dépannage
 
 | Symptôme | Génération | Cause probable | Solution |
 |---|---|---|---|
-| « Erreur de connexion au serveur backend » | V1 | uvicorn éteit ou en redémarrage (sauvegarde de api.py) ou SyntaxError | attendre `Application startup complete.` ; terminal ; `py_compile` |
+| « Erreur de connexion au serveur backend » | V1 | uvicorn éteint ou en redémarrage (sauvegarde de api.py) ou SyntaxError | attendre `Application startup complete.` ; terminal ; `py_compile` |
 | Première requête lente en ligne | V2 | Render sort de veille (~15 min d'inactivité) | réchauffer le service avant une démo |
 | Frontend appelle localhost en production | V2 | `VITE_API_URL` absente chez l'hébergeur | variable de build chez Cloudflare, rebuild |
 | Variables .env vides dans Docker | V2 | guillemets ou espaces dans le .env | format strict `KEY=value` |
@@ -480,14 +653,18 @@ Stabilité : poser la même question 3× → montants et références identiques
 | 413 « Request too large » | V1+V2 | Groq compte entrée + budget de sortie | `max_completion_tokens ≤ 3000` ; troncature du contexte |
 | 404 model_not_found | V1+V2 | nom de modèle inexistant sur le compte | nom exact chez le fournisseur |
 | 401 | V1+V2 | clé du mauvais fournisseur | faire correspondre clé et `base_url` |
-| « Je n'ai pas trouvé » sur un canton ingéré | V1+V2 | nom désaligné (« Lucerne » en base, « Luzern » envoyé) | audit SQL §11 ; ALIASES ; re-ingestion |
+| « Je n'ai pas trouvé » sur un canton ingéré | V1+V2 | nom désaligné (« Lucerne » en base, « Luzern » envoyé) | audit SQL §15 ; ALIASES ; re-ingestion |
 | Montant manquant (ex. 12 500) | V1+V2 | chunk pollué multi-sujets / top-k insuffisant | chunking paragraphe ; vérifier `match_count` |
 | Tableaux en bouillie de ` ` | V1+V2 | remark-gfm absent | installer + `remarkPlugins` |
 | Réponse en français malgré langue = de | V1+V2 | code langue non contraignant | LANGUE_NOMS + interdiction + SECTION_HEADERS |
 | TypeError: multiple values for 'temperature' | V1+V2 | paramètres en dur ET via `**params` | uniquement `**params` |
 | TypeError: 'int' and 'dict' (puissance) | V1+V2 | virgule manquante avant `**params` | virgule après l'argument précédent |
+| Clic FR depuis /de : rebond vers la racine (ping-pong / ↔ /de) | V2.2 | redirection mémoire LangSync déclenchée pendant la navigation SPA | garde didRootCheck : redirection uniquement au 1er rendu (corrigé da246ff) |
+| TS1005 / TS1128 en cascade | tous | accolade en trop — l'erreur TS pointe en AVAL du vrai coupable | compter les accolades du bloc modifié ; remonter vers la ligne fautive |
+| Un .patch (ou fichier parasite) se retrouve committé | tous | `git add -A` ajoute tout l'arbre | `git rm --cached` + .gitignore ; `git diff --cached` avant tout commit |
+| `git apply` : « No such file or directory » | tous | le patch n'a jamais été téléchargé côté machine | re-télécharger le patch avant de l'appliquer |
 
-## 13. Limites connues (assumées, documentées)
+## 17. Limites connues (assumées, documentées)
 
 - ~~Le Copilot requiert le backend local~~ : **résolu par V2** (en ligne sur swisssimple.ch)
 - Top-k retrieval ≠ rappel 100 % sur question très courte ou générique (« déplacement » seul matche mal, St. Gallen vécu) : remèdes identifiés (placeholder incitatif, multi-requêtes, expansion de question, reranking)
@@ -495,27 +672,52 @@ Stabilité : poser la même question 3× → montants et références identiques
 - Cache RAM volatile (redémarrage = vidage) : le niveau base persiste (V2)
 - Cache sans TTL : les lois changent chaque année → purge annuelle prévue à la ré-ingestion
 - À température 0, la formulation peut varier légèrement (modèle de raisonnement) : les montants et références restent le critère
+- Analytics sans cookies pas encore en place : recommandation Cloudflare Web Analytics (gratuit) ; alternatifs payants Plausible, Fathom
 - Outil d'information : ne remplace ni la déclaration officielle, ni un conseil fiscal
 
-## 14. Roadmap
+## 18. Roadmap
 
-- Reranking des extraits + déduplication des quasi-copies
-- Historique conversationnel multi-tours
-- Auth Supabase + RLS sur les questions des utilisateurs
-- ~~Backend hébergé~~ ✅ **fait** (V2 : Docker sur Render, front Cloudflare, en production)
-- Extension du Copilot aux barèmes communaux
-- Inférence locale (Ollama) : le seul « vraiment illimité » (machine allumée)
-- Purge/TTL annuel du cache automatisé à la ré-ingestion
+**Fait (ordre chronologique) :**
 
-## 15. Interdictions absolues
+- ✅ Backend hébergé (V2 : Docker sur Render, front Cloudflare, en production)
+- ✅ Balises OG
+- ✅ SEO des pages primes
+- ✅ Pages légales
+- ✅ hreflang + version /de indexable (patch P1, commit ebd7521, 11 fichiers, +349/−41)
+- ✅ React.lazy vérifié (9 chunks, App.tsx lignes 22-30)
+- ✅ Export des résultats en PDF (jspdf + jspdf-autotable, src/utils/pdfGenerator.tsx)
+- ✅ Suppression du code mort (91b1217, −137 lignes)
+
+**En cours :**
+
+- 🔄 Agrandissement de l'affichage des résultats de l'estimateur : parité des tailles avec la page LPP (montants 1.5rem, libellés 1rem, boîtes padding 1.5rem) — proposition livrée, application par le développeur
+
+**À faire :**
+
+- ⬜ Analytics sans cookies — recommandation : Cloudflare Web Analytics (gratuit, sans cookie) ; alternatifs payants : Plausible, Fathom
+- ⬜ Module Pilier 3a — cible avant décembre (fenêtre fiscale)
+- ⬜ 26 pages cantonales (une par canton) — idée ouverte
+- ⬜ Reranking des extraits + déduplication des quasi-copies
+- ⬜ Historique conversationnel multi-tours
+- ⬜ Auth Supabase + RLS sur les questions des utilisateurs
+- ⬜ Extension du Copilot aux barèmes communaux
+- ⬜ Inférence locale (Ollama) : le seul « vraiment illimité » (machine allumée)
+- ⬜ Purge/TTL annuel du cache automatisé à la ré-ingestion
+
+**Suivi Google (J+2/J+7 après les demandes d'indexation) :**
+
+- Rechercher `site:swisssimple.ch` et `site:swisssimple.ch/de`
+- Consulter le rapport Pages dans Search Console
+
+## 19. Interdictions absolues
 
 1. Jamais de `@ts-ignore` ni `any` non justifié
-2. Jamais de nouvelle dépendance npm non documentée (exception autorisée : remark-gfm)
+2. Jamais de nouvelle dépendance npm non documentée dans §4. Liste documentée actuelle : remark-gfm, react-markdown, i18next, react-i18next, i18next-browser-languagedetector, react-helmet-async, react-router-dom, jspdf, jspdf-autotable, @supabase/supabase-js, @fontsource/inter
 3. Jamais de coefficients communaux ou d'église sur l'IFD
 4. Jamais de règle fiscale chiffrée en dur dans React (ni dans les prompts IA : les montants viennent des extraits de loi dans Supabase)
 5. Jamais de classes CSS utilitaires inline style-Tailwind : CSS traditionnel dans des fichiers `.css` dédiés
 
-## 16. Sécurité
+## 20. Sécurité
 
 - `.env` jamais commité : vérifier `.gitignore` (`.env`, `venv/`, `node_modules/`). En cas de fuite de clé : révoquer et régénérer immédiatement chez le fournisseur
 - Contrôle avant chaque push : `findstr` garantit qu'aucun `.env`/PDF/`venv` ne part
@@ -524,7 +726,7 @@ Stabilité : poser la même question 3× → montants et références identiques
 - V1 : le frontend appelait `http://localhost:8000`, le Copilot restait local : héberger le backend avant de l'exposer (c'est fait en V2)
 - Aucune donnée personnelle stockée : le cache ne contient que des questions anonymes et des réponses de loi publique
 
-## 17. Bilan : les chiffres de l'avant/après
+## 21. Bilan : les chiffres de l'avant/après
 
 **26 cantons ingérés, ~1300 chunks, noms alignés. 14 déductions rendues sur Luzern (record de complétude).**
 
@@ -538,4 +740,11 @@ Stabilité : poser la même question 3× → montants et références identiques
 | Pannes absorbées | repli Groq | 429, 503, timeout 196 s, sans interruption |
 | Coût d'exploitation | 0 (machine locale) | 0 CHF (multi-cloud gratuit) |
 
----
+**Les jalons de V2.2 (cette semaine) :**
+
+- 18 URLs dans le sitemap, sitemap accepté par Search Console, 10 demandes d'indexation, racine indexée
+- Patch P1 « bilingue-SEO » : 11 fichiers, +349/−41 (commit ebd7521)
+- Fix LangSync ping-pong : da246ff
+- Ménage du dépôt : a30a3f3 (.patch retiré, *.patch ignoré)
+- Code mort : 91b1217 (−137 lignes), hash de l'asset de production inchangé (index-DSptW770.js) — preuve qu'il n'était jamais bundlé
+- Coût d'exploitation : 0 CHF maintenu

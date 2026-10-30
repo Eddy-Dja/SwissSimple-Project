@@ -7,6 +7,9 @@
 /* --- Conteneur principal --- */
 .copilot-container {
   margin-top: 30px;
+  max-width: 800px;      /* NOUVEAU */
+  margin-left: auto;     /* NOUVEAU */
+  margin-right: auto;    /* NOUVEAU */
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;

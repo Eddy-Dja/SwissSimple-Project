@@ -33,7 +33,7 @@ body.dark-mode, body.dark, .dark-mode, .dark {
    ============================================================ */
 
 .radar-container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
   font-family: 'Inter', system-ui, sans-serif;
@@ -281,7 +281,7 @@ body.dark-mode, body.dark, .dark-mode, .dark {
 .btn-primary {
   width: 100%;
   padding: 1rem;
-  background: var(--rf-bg-dark);
+  background: #2563eb;
   color: white;
   border: none;
   border-radius: 12px;
@@ -292,7 +292,7 @@ body.dark-mode, body.dark, .dark-mode, .dark {
 }
 
 .btn-primary:hover {
-  filter: brightness(1.2);
+  background-color: #1d4ed8;
 }
 
 .btn-primary:disabled {
@@ -395,13 +395,13 @@ body.dark .result-diff-container.perte { background: rgba(220, 38, 38, 0.1); }
 
 .simple-result {
   padding: 3rem 2rem;
-  max-width: 600px !important;
+  max-width: 1200px !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
 
 .simple-center {
-  max-width: 400px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -413,7 +413,7 @@ body.dark .result-diff-container.perte { background: rgba(220, 38, 38, 0.1); }
 
 .simple-location-name {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--rf-text-main);
   margin-top: 0;
@@ -424,33 +424,41 @@ body.dark .result-diff-container.perte { background: rgba(220, 38, 38, 0.1); }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .simple-box.light { background: var(--rf-bg-light); }
 .simple-box.dark { background: var(--rf-bg-dark); color: white; }
-.simple-box.total-box { background: #3b82f6; color: white; margin-top: 1rem; padding: 1.5rem; }
+.simple-box.total-box { background: #3b82f6; color: white; margin-top: 1rem; padding: 2rem; }
 
-.simple-box-label { font-size: 0.875rem; color: var(--rf-text-muted); font-weight: 500; }
-.simple-box-value { font-size: 1.1rem; font-weight: 700; color: var(--rf-text-main); margin: 0; }
-.simple-box-label-dark { font-size: 0.875rem; opacity: 0.8; }
-.simple-box-value-dark { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.simple-box-label { font-size: 1rem; color: var(--rf-text-muted); font-weight: 500; }
+.simple-box-value { font-size: 1.5rem; font-weight: 700; color: var(--rf-text-main); margin: 0; }
+.simple-box-label-dark { font-size: 1rem; opacity: 0.8; }
+.simple-box-value-dark { font-size: 1.5rem; font-weight: 700; margin: 0; }
+
+/* NOUVELLE règle — le total est le chiffre vedette de la page */
+.simple-box.total-box .simple-box-value-dark { font-size: 2rem; }
 
 .taux-effectif {
   text-align: center;
   margin-top: 1.5rem;
   color: var(--rf-text-muted);
-  font-size: 0.9rem;
+  font-size: 1.1rem;
 }
 
-.taux-effectif strong { color: var(--rf-text-main); }
+.taux-effectif strong { color: var(--rf-text-main); font-size: 1.2rem; }
 
 @media (max-width: 640px) {
   .result-row {
     flex-direction: column;
     gap: 1.5rem;
+
+    /* Ligne 450 — mobile : AJOUTER cette ligne DANS le @media existant
+   (indispensable avec les nouvelles tailles, sinon débordement) */
+.simple-box { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+
   }
   .result-vs {
     transform: rotate(90deg);
@@ -575,8 +583,8 @@ body.dark-mode .unsupported-text, body.dark .unsupported-text { color: #fecaca; 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
-  font-size: 0.8rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
   color: var(--rf-text-muted);
   background-color: var(--rf-bg-light);
   border-left: 3px solid var(--rf-border-color);
