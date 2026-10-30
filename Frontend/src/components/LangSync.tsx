@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -18,23 +18,30 @@ export default function LangSync() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { i18n } = useTranslation();
+  const didRootCheck = useRef(false);
 
   useEffect(() => {
     const isDe = pathname === '/de' || pathname.startsWith('/de/');
     const target = isDe ? 'de' : 'fr';
 
-    // (3) D'ABORD : redirection du visiteur "allemand" atterrissant sur "/".
-    //     On lit le choix mémorisé avant de l'écraser plus bas.
-    if (pathname === '/' && !isDe) {
-      let saved: string | null = null;
-      try {
-        saved = localStorage.getItem('app_language');
-      } catch {
-        /* navigation privée : on ignore */
-      }
-      if (saved === 'de') {
-        navigate('/de', { replace: true });
-        return; // l'effet relancera sur /de et configurera la langue
+        // (3) D'ABORD : redirection du visiteur "allemand" atterrissant sur "/".
+    //     UNIQUEMENT au premier rendu (= chargement de la page par un visiteur
+    //     qui revient). Jamais lors d'une navigation interne vers "/" (ex:
+    //     bouton FR depuis /de) : l'utilisateur vient de choisir, on ne le
+    //     renvoie pas en arrière.
+    if (!didRootCheck.current) {
+      didRootCheck.current = true;
+      if (pathname === '/' && !isDe) {
+        let saved: string | null = null;
+        try {
+          saved = localStorage.getItem('app_language');
+        } catch {
+          /* navigation privée : on ignore */
+        }
+        if (saved === 'de') {
+          navigate('/de', { replace: true });
+          return; // l'effet relancera sur /de et configurera la langue
+        }
       }
     }
 

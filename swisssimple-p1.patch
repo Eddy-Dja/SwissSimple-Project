@@ -1,0 +1,614 @@
+diff --git a/Frontend/index.html b/Frontend/index.html
+index 93a0267..d19423d 100644
+--- a/Frontend/index.html
++++ b/Frontend/index.html
+@@ -27,8 +27,11 @@
+     <meta name="twitter:description" content="Impôts, assurance maladie, retraite AVS & LPP — 100% gratuit, anonyme et sans publicité." />
+     <meta name="twitter:image" content="https://swisssimple.ch/og-image.jpg" />
+ 
+-    <!-- URL canonique -->
+-    <link rel="canonical" href="https://swisssimple.ch/" />
++    <!-- URL canonique : NE PAS en mettre en statique ici !
++         Le composant SEO (react-helmet) génère le canonical correct pour
++         chaque page et chaque langue (/radar-fiscal, /de/radar-fiscal...).
++         Un canonical statique vers "/" créait un DOUBLON contradictoire
++         sur toutes les pages (Google voyait deux canonicals). -->
+ 
+ <style>
+   body { margin: 0; background-color: #ffffff; font-family: 'Inter', system-ui, sans-serif; }
+diff --git a/Frontend/public/sitemap.xml b/Frontend/public/sitemap.xml
+index 9c4029d..93bcf4d 100644
+--- a/Frontend/public/sitemap.xml
++++ b/Frontend/public/sitemap.xml
+@@ -1,43 +1,173 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
++<!--
++  Sitemap bilingue : chaque page existe en FR (racine) et DE (/de/...).
++  Les balises xhtml:link hreflang indiquent à Google les versions
++  linguistiques de chaque URL (fr, de + x-default = fr).
++  /dashboard est volontairement absent : page privée (redirection).
++-->
++<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
++        xmlns:xhtml="http://www.w3.org/1999/xhtml">
++
++  <!-- ===== Accueil ===== -->
+   <url>
+     <loc>https://swisssimple.ch/</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/"/>
+     <changefreq>monthly</changefreq>
+     <priority>1.0</priority>
+   </url>
++  <url>
++    <loc>https://swisssimple.ch/de</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/"/>
++    <changefreq>monthly</changefreq>
++    <priority>1.0</priority>
++  </url>
++
++  <!-- ===== Déménagement (hub) ===== -->
+   <url>
+     <loc>https://swisssimple.ch/demenagement</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/demenagement"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/demenagement"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/demenagement"/>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++  <url>
++    <loc>https://swisssimple.ch/de/demenagement</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/demenagement"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/demenagement"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/demenagement"/>
+     <changefreq>monthly</changefreq>
+     <priority>0.8</priority>
+   </url>
++
++  <!-- ===== Retraite (hub) ===== -->
+   <url>
+     <loc>https://swisssimple.ch/retraite</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/retraite"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/retraite"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/retraite"/>
+     <changefreq>monthly</changefreq>
+     <priority>0.8</priority>
+   </url>
++  <url>
++    <loc>https://swisssimple.ch/de/retraite</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/retraite"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/retraite"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/retraite"/>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++
++  <!-- ===== Radar fiscal ===== -->
+   <url>
+     <loc>https://swisssimple.ch/radar-fiscal</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/radar-fiscal"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/radar-fiscal"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/radar-fiscal"/>
+     <changefreq>monthly</changefreq>
+     <priority>0.8</priority>
+   </url>
++  <url>
++    <loc>https://swisssimple.ch/de/radar-fiscal</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/radar-fiscal"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/radar-fiscal"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/radar-fiscal"/>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++
++  <!-- ===== Assurance LAMal ===== -->
+   <url>
+     <loc>https://swisssimple.ch/assurance</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/assurance"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/assurance"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/assurance"/>
+     <changefreq>monthly</changefreq>
+     <priority>0.8</priority>
+   </url>
++  <url>
++    <loc>https://swisssimple.ch/de/assurance</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/assurance"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/assurance"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/assurance"/>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++
++  <!-- ===== Simulateur AVS ===== -->
+   <url>
+     <loc>https://swisssimple.ch/simulateur-avs</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/simulateur-avs"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/simulateur-avs"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/simulateur-avs"/>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++  <url>
++    <loc>https://swisssimple.ch/de/simulateur-avs</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/simulateur-avs"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/simulateur-avs"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/simulateur-avs"/>
+     <changefreq>monthly</changefreq>
+     <priority>0.8</priority>
+   </url>
++
++  <!-- ===== Simulateur LPP ===== -->
+   <url>
+     <loc>https://swisssimple.ch/simulateur-lpp</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/simulateur-lpp"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/simulateur-lpp"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/simulateur-lpp"/>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++  <url>
++    <loc>https://swisssimple.ch/de/simulateur-lpp</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/simulateur-lpp"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/simulateur-lpp"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/simulateur-lpp"/>
+     <changefreq>monthly</changefreq>
+     <priority>0.8</priority>
+   </url>
+-    <url>
++
++  <!-- ===== Classements / Atlas ===== -->
++  <url>
+     <loc>https://swisssimple.ch/classements</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/classements"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/classements"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/classements"/>
++    <changefreq>weekly</changefreq>
++    <priority>0.8</priority>
++  </url>
++  <url>
++    <loc>https://swisssimple.ch/de/classements</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/classements"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/classements"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/classements"/>
+     <changefreq>weekly</changefreq>
+     <priority>0.8</priority>
+   </url>
+-</urlset>
+\ No newline at end of file
++
++  <!-- ===== Mentions légales ===== -->
++  <url>
++    <loc>https://swisssimple.ch/legal</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/legal"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/legal"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/legal"/>
++    <changefreq>yearly</changefreq>
++    <priority>0.3</priority>
++  </url>
++  <url>
++    <loc>https://swisssimple.ch/de/legal</loc>
++    <xhtml:link rel="alternate" hreflang="fr" href="https://swisssimple.ch/legal"/>
++    <xhtml:link rel="alternate" hreflang="de" href="https://swisssimple.ch/de/legal"/>
++    <xhtml:link rel="alternate" hreflang="x-default" href="https://swisssimple.ch/legal"/>
++    <changefreq>yearly</changefreq>
++    <priority>0.3</priority>
++  </url>
++
++</urlset>
+diff --git a/Frontend/src/App.tsx b/Frontend/src/App.tsx
+index 75f5713..90b5a5b 100644
+--- a/Frontend/src/App.tsx
++++ b/Frontend/src/App.tsx
+@@ -8,6 +8,8 @@ import GlobalToolbar from './components/GlobalToolbar';
+ import GlobalNavbar from './components/GlobalNavbar';
+ import ScrollToTop from './components/ScrollToTop';
+ import AuthModal from './components/AuthModal';
++import LangSync from './components/LangSync';
++import SiteFooter from './components/SiteFooter';
+ 
+ // Home reste EAGER : c'est la page d'atterrissage.
+ // La charger en différé provoquerait un flash blanc juste après le loader.
+@@ -62,8 +64,17 @@ function RouteChunkFallback() {
+ function AppRoutes() {
+   const { user } = useAuth();
+ 
++  // ============================================================
++  // BILINGUISME SEO : chaque page existe sous DEUX URLs.
++  //   FR : /radar-fiscal        (racine, inchangée — SEO existant conservé)
++  //   DE : /de/radar-fiscal     (version allemande indexable par Google)
++  // Les mêmes composants sont montés sur les deux familles de routes :
++  // mêmes chunks, même code — seule l'URL change. La langue affichée
++  // est pilotée par LangSync (l'URL est la source de vérité).
++  // ============================================================
+   return (
+     <Routes>
++      {/* ===== Version française (racine) ===== */}
+       <Route path="/" element={<Home />} />
+       <Route path="/demenagement" element={<DemenagementHub />} />
+       <Route path="/retraite" element={<RetraiteHub />} />
+@@ -72,15 +83,29 @@ function AppRoutes() {
+       <Route path="/assurance" element={<Assurance />} />
+       <Route path="/simulateur-avs" element={<SimulateurAVS />} />
+       <Route path="/simulateur-lpp" element={<SimulateurLPP />} />
++      <Route path="/classements" element={<Classements />} />
+       <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
++
++      {/* ===== Version allemande (préfixe /de) ===== */}
++      <Route path="/de" element={<Home />} />
++      <Route path="/de/demenagement" element={<DemenagementHub />} />
++      <Route path="/de/retraite" element={<RetraiteHub />} />
++      <Route path="/de/legal" element={<Legal />} />
++      <Route path="/de/radar-fiscal" element={<RadarFiscal />} />
++      <Route path="/de/assurance" element={<Assurance />} />
++      <Route path="/de/simulateur-avs" element={<SimulateurAVS />} />
++      <Route path="/de/simulateur-lpp" element={<SimulateurLPP />} />
++      <Route path="/de/classements" element={<Classements />} />
++      <Route path="/de/dashboard" element={user ? <Dashboard /> : <Navigate to="/de" />} />
++
++      {/* ===== Routes inconnues ===== */}
++      <Route path="/de/*" element={<Navigate to="/de" />} />
+       <Route path="*" element={<Navigate to="/" />} />
+-      <Route path="/classements" element={<Classements />} />
+     </Routes>
+   );
+ }
+ 
+ function App() {
+-  const { t } = useTranslation();
+   const { recoveryMode, setRecoveryMode, signOut } = useAuth();
+   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+ 
+@@ -112,6 +137,7 @@ function App() {
+ 
+   return (
+     <BrowserRouter>
++      <LangSync />         {/* synchronise langue <-> URL (/de/...) */}
+       <GlobalToolbar />
+       <GlobalNavbar />
+       <ScrollToHash />      {/* saute aux ancres (#copilot) */}
+@@ -123,21 +149,7 @@ function App() {
+         </Suspense>
+       </div>
+ 
+-      <footer className="footer">
+-        <div className="footer-container">
+-          <div className="footer-brand">
+-            <img src="/favicon.svg" alt="Drapeau Suisse" className="logo-icon" style={{ width: '26px', height: '26px', flexShrink: 0 }} />
+-            <span><span className="logo-red-letter">S</span>wiss<span className="logo-red-letter">S</span>imple</span>
+-          </div>
+-          <p className="disclaimer">
+-            {t('footer.copyright')} <br/>
+-            {t('footer.disclaimer')}<br/>
+-            <a href="/legal" style={{ color: '#94A3B8', textDecoration: 'underline', marginTop: '10px', display: 'inline-block' }}>
+-              {t('footer.legal_link')}
+-            </a>
+-          </p>
+-        </div>
+-      </footer>
++      <SiteFooter />
+ 
+       <AuthModal
+         isOpen={isAuthModalOpen}
+diff --git a/Frontend/src/components/GlobalNavbar.tsx b/Frontend/src/components/GlobalNavbar.tsx
+index ad595ab..8306a25 100644
+--- a/Frontend/src/components/GlobalNavbar.tsx
++++ b/Frontend/src/components/GlobalNavbar.tsx
+@@ -1,10 +1,13 @@
+ import { useState, useEffect } from 'react';
+-import { useNavigate } from 'react-router-dom';
++import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate';
+ import { useTranslation } from 'react-i18next';
+ import './GlobalNavbar.css';
+ 
+ export default function GlobalNavbar() {
+-  const navigate = useNavigate();
++  // Navigation localisée : ajoute automatiquement le préfixe /de
++  // quand l'interface est en allemand (les URLs /de/... restent ainsi
++  // cohérentes pendant toute la navigation).
++  const navigate = useLocalizedNavigate();
+   const { t } = useTranslation();
+   const [scrolled, setScrolled] = useState(false);
+ 
+diff --git a/Frontend/src/components/GlobalToolbar.tsx b/Frontend/src/components/GlobalToolbar.tsx
+index 116e2b1..734844d 100644
+--- a/Frontend/src/components/GlobalToolbar.tsx
++++ b/Frontend/src/components/GlobalToolbar.tsx
+@@ -3,13 +3,15 @@ import { useTranslation } from 'react-i18next';
+ import { useNavigate, useLocation } from 'react-router-dom';
+ import { useAuth } from '../context/AuthContext';
+ import AuthModal from './AuthModal';
++import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate';
+ import './GlobalToolbar.css';
+ 
+ const GlobalToolbar: React.FC = () => {
+   const { t, i18n } = useTranslation();
+   const { user, signOut } = useAuth();
+   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+-  const navigate = useNavigate();
++  const rawNavigate = useNavigate();      // navigation brute (changement de langue)
++  const navigate = useLocalizedNavigate(); // navigation localisée (bouton retour)
+   const location = useLocation();
+ 
+   const [isDark, setIsDark] = useState(() => {
+@@ -27,13 +29,23 @@ const GlobalToolbar: React.FC = () => {
+   }, [isDark]);
+ 
+   const toggleLanguage = () => {
+-    const newLang = i18n.language === 'fr' ? 'de' : 'fr';
+-    i18n.changeLanguage(newLang);
+-    // --- ON SAUVEGARDE MANUELLEMENT ICI ---
+-    localStorage.setItem('app_language', newLang);
++    // Le bouton DE/FR change maintenant D'URL : /quelquechose <-> /de/quelquechose.
++    // C'est LangSync qui ajuste ensuite la langue affichée (l'URL est la
++    // source de vérité). Résultat : chaque langue a une URL partageable
++    // et indexable par Google (hreflang).
++    const { pathname, search, hash } = location;
++    const isDe = pathname === '/de' || pathname.startsWith('/de/');
++    if (isDe) {
++      // /de/radar-fiscal -> /radar-fiscal   (et /de -> /)
++      rawNavigate((pathname.slice(3) || '/') + search + hash);
++    } else {
++      // /radar-fiscal -> /de/radar-fiscal   (et / -> /de)
++      rawNavigate((pathname === '/' ? '/de' : `/de${pathname}`) + search + hash);
++    }
+   };
+ 
+-  const isHome = location.pathname === '/';
++  // Accueil FR ("/") ou DE ("/de") : pas de bouton retour sur cette page
++  const isHome = location.pathname === '/' || location.pathname === '/de';
+ 
+   // Fonction pour ouvrir la messagerie avec une demande de suppression pré-remplie
+   const handleDeleteAccount = () => {
+diff --git a/Frontend/src/components/LangSync.tsx b/Frontend/src/components/LangSync.tsx
+new file mode 100644
+index 0000000..3e00d60
+--- /dev/null
++++ b/Frontend/src/components/LangSync.tsx
+@@ -0,0 +1,58 @@
++import { useEffect } from 'react';
++import { useLocation, useNavigate } from 'react-router-dom';
++import { useTranslation } from 'react-i18next';
++
++/**
++ * Synchronisation URL <-> langue. Monté à l'intérieur du BrowserRouter.
++ *
++ * 1. L'URL est la source de vérité : /de/... => interface allemande,
++ *    tout le reste => français. Googlebot n'a ni localStorage ni cookies :
++ *    il voit donc toujours la bonne langue sur la bonne URL.
++ * 2. Met à jour <html lang="..."> (accessibilité + SEO).
++ * 3. Un visiteur qui avait choisi l'allemand lors d'une visite précédente
++ *    et qui atterrit sur la racine "/" est redirigé vers "/de" (on garde
++ *    son choix en mémoire). Le crawler, lui, n'a pas de localStorage et
++ *    n'est jamais redirigé : "/" reste toujours la version française.
++ */
++export default function LangSync() {
++  const { pathname } = useLocation();
++  const navigate = useNavigate();
++  const { i18n } = useTranslation();
++
++  useEffect(() => {
++    const isDe = pathname === '/de' || pathname.startsWith('/de/');
++    const target = isDe ? 'de' : 'fr';
++
++    // (3) D'ABORD : redirection du visiteur "allemand" atterrissant sur "/".
++    //     On lit le choix mémorisé avant de l'écraser plus bas.
++    if (pathname === '/' && !isDe) {
++      let saved: string | null = null;
++      try {
++        saved = localStorage.getItem('app_language');
++      } catch {
++        /* navigation privée : on ignore */
++      }
++      if (saved === 'de') {
++        navigate('/de', { replace: true });
++        return; // l'effet relancera sur /de et configurera la langue
++      }
++    }
++
++    // (1) La langue suit l'URL
++    if (i18n.language !== target) {
++      i18n.changeLanguage(target);
++    }
++
++    // (2) <html lang> suit l'URL
++    document.documentElement.lang = target;
++
++    // Mémorisation du choix (utilisée uniquement pour la redirection (3))
++    try {
++      localStorage.setItem('app_language', target);
++    } catch {
++      /* navigation privée : on ignore */
++    }
++  }, [pathname, i18n, navigate]);
++
++  return null;
++}
+diff --git a/Frontend/src/components/SEO.tsx b/Frontend/src/components/SEO.tsx
+index 349c188..8a3beb9 100644
+--- a/Frontend/src/components/SEO.tsx
++++ b/Frontend/src/components/SEO.tsx
+@@ -6,33 +6,50 @@ interface SEOProps {
+   title: string;
+   /** Description pour Google (~155 car. max) */
+   description: string;
+-  /** Chemin de la page, ex. '/assurance' — pour l'URL canonique */
++  /** Chemin FR de la page, ex. '/assurance' (SANS préfixe /de) — sert
++   *  à construire l'URL canonique et les deux versions hreflang */
+   path?: string;
+ }
+ 
+ const SITE_URL = 'https://swisssimple.ch';
+ const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+ 
+-export default function SEO({ title, description, path = '' }: SEOProps) {
++export default function SEO({ title, description, path = '/' }: SEOProps) {
+   const { i18n } = useTranslation();
+-  const url = `${SITE_URL}${path}`;
+-  const locale = i18n.language === 'de' ? 'de_CH' : 'fr_CH';
++  const isDe = i18n.language?.startsWith('de') ?? false;
++
++  // Chemin FR normalisé : '' pour la racine (évite swisssimple.ch//)
++  const frPath = path === '/' ? '' : path;
++  const frUrl = `${SITE_URL}${frPath}`;
++  const deUrl = `${SITE_URL}/de${frPath}`;
++
++  // Chaque version linguistique a SA propre URL canonique (règle Google
++  // pour les sites multilingues) + les deux alternates hreflang.
++  const canonical = isDe ? deUrl : frUrl;
++  const locale = isDe ? 'de_CH' : 'fr_CH';
+ 
+   return (
+     <Helmet>
++      <html lang={isDe ? 'de' : 'fr'} />
+       <title>{title}</title>
+       <meta name="description" content={description} />
+-      <link rel="canonical" href={url} />
++      <link rel="canonical" href={canonical} />
++
++      {/* Versions linguistiques : fr (racine), de (/de/...), x-default = fr */}
++      <link rel="alternate" hrefLang="fr" href={frUrl} />
++      <link rel="alternate" hrefLang="de" href={deUrl} />
++      <link rel="alternate" hrefLang="x-default" href={frUrl} />
+ 
+       <meta property="og:type" content="website" />
+       <meta property="og:site_name" content="SwissSimple" />
+       <meta property="og:title" content={title} />
+       <meta property="og:description" content={description} />
+-      <meta property="og:url" content={url} />
++      <meta property="og:url" content={canonical} />
+       <meta property="og:image" content={OG_IMAGE} />
+       <meta property="og:image:width" content="2400" />
+       <meta property="og:image:height" content="1260" />
+       <meta property="og:locale" content={locale} />
++      <meta property="og:locale:alternate" content={isDe ? 'fr_CH' : 'de_CH'} />
+ 
+       <meta name="twitter:card" content="summary_large_image" />
+       <meta name="twitter:title" content={title} />
+@@ -40,4 +57,4 @@ export default function SEO({ title, description, path = '' }: SEOProps) {
+       <meta name="twitter:image" content={OG_IMAGE} />
+     </Helmet>
+   );
+-}
+\ No newline at end of file
++}
+diff --git a/Frontend/src/components/SiteFooter.tsx b/Frontend/src/components/SiteFooter.tsx
+new file mode 100644
+index 0000000..50b66f7
+--- /dev/null
++++ b/Frontend/src/components/SiteFooter.tsx
+@@ -0,0 +1,39 @@
++import { useTranslation } from 'react-i18next';
++import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate';
++
++/**
++ * Pied de page global. Extrait d'App.tsx pour pouvoir utiliser la
++ * navigation localisée (le lien "Mentions légales" doit pointer vers
++ * /legal ou /de/legal selon la langue active).
++ */
++export default function SiteFooter() {
++  const { t } = useTranslation();
++  const navigate = useLocalizedNavigate();
++
++  return (
++    <footer className="footer">
++      <div className="footer-container">
++        <div className="footer-brand">
++          <img src="/favicon.svg" alt="Drapeau Suisse" className="logo-icon" style={{ width: '26px', height: '26px', flexShrink: 0 }} />
++          <span><span className="logo-red-letter">S</span>wiss<span className="logo-red-letter">S</span>imple</span>
++        </div>
++        <p className="disclaimer">
++          {t('footer.copyright')} <br/>
++          {t('footer.disclaimer')}<br/>
++          {/* href réel pour "clic milieu / ouvrir dans un onglet", mais
++              navigation SPA (et localisée) au clic normal */}
++          <a
++            href="/legal"
++            onClick={(e) => {
++              e.preventDefault();
++              navigate('/legal');
++            }}
++            style={{ color: '#94A3B8', textDecoration: 'underline', marginTop: '10px', display: 'inline-block' }}
++          >
++            {t('footer.legal_link')}
++          </a>
++        </p>
++      </div>
++    </footer>
++  );
++}
+diff --git a/Frontend/src/hooks/useLocalizedNavigate.ts b/Frontend/src/hooks/useLocalizedNavigate.ts
+new file mode 100644
+index 0000000..ab566a6
+--- /dev/null
++++ b/Frontend/src/hooks/useLocalizedNavigate.ts
+@@ -0,0 +1,26 @@
++import { useNavigate } from 'react-router-dom';
++import { useTranslation } from 'react-i18next';
++
++/**
++ * Navigation localisée : préfixe automatiquement les chemins avec "/de"
++ * quand l'interface est en allemand.
++ *
++ * Exemples (langue DE active) :
++ *   lp('/radar-fiscal')        -> /de/radar-fiscal
++ *   lp('/radar-fiscal#copilot')-> /de/radar-fiscal#copilot
++ *   lp('/')                    -> /de
++ *
++ * En français, les chemins sont utilisés tels quels.
++ */
++export function useLocalizedNavigate() {
++  const navigate = useNavigate();
++  const { i18n } = useTranslation();
++  const isDe = i18n.language?.startsWith('de') ?? false;
++
++  return (path: string) => {
++    // Normalisation : '/' devient '' (pour éviter "/de/"), on garantit
++    // un slash initial sur les autres chemins.
++    const clean = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`;
++    navigate(isDe ? `/de${clean}` : clean || '/');
++  };
++}
+diff --git a/Frontend/src/i18n.js b/Frontend/src/i18n.js
+index c30e0ee..01b97dd 100644
+--- a/Frontend/src/i18n.js
++++ b/Frontend/src/i18n.js
+@@ -3,8 +3,15 @@ import { initReactI18next } from 'react-i18next';
+ import fr from './locales/fr.json';
+ import de from './locales/de.json';
+ 
+-// On lit la langue sauvegardée dans le navigateur. Si vide, on met 'fr'.
+-const savedLanguage = localStorage.getItem('app_language') || 'fr';
++// Langue initiale : L'URL PRIME sur la préférence sauvegardée.
++// - /de/...  -> allemand, dès le premier rendu (Googlebot voit ainsi
++//   la bonne langue sur la bonne URL, sans flash de contenu FR)
++// - sinon    -> préférence mémorisée, français par défaut.
++// Le composant LangSync ajustera ensuite la langue à chaque navigation.
++const isDeUrl =
++  typeof window !== 'undefined' &&
++  (window.location.pathname === '/de' || window.location.pathname.startsWith('/de/'));
++const savedLanguage = isDeUrl ? 'de' : localStorage.getItem('app_language') || 'fr';
+ 
+ i18n
+   .use(initReactI18next)
+diff --git a/Frontend/src/pages/Home.tsx b/Frontend/src/pages/Home.tsx
+index a8eb421..41edefb 100644
+--- a/Frontend/src/pages/Home.tsx
++++ b/Frontend/src/pages/Home.tsx
+@@ -1,11 +1,12 @@
+ import { useLayoutEffect, useRef } from 'react';
+-import { useNavigate } from 'react-router-dom';
++import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate';
+ import { useTranslation } from 'react-i18next';
+ import './Home.css';
+ import SEO from '../components/SEO';   // adapte le chemin relatif à l'emplacement du fichier
+ 
+ export default function Home() {
+-  const navigate = useNavigate();
++  // Navigation localisée : conserve le préfixe /de pour les visiteurs allemands
++  const navigate = useLocalizedNavigate();
+   const { t, i18n } = useTranslation();
+ 
+   const handlePremiumClick = (path: string) => {
