@@ -35,3 +35,4 @@ data_assurance/
 /package.json
 /package-lock.json
 .wrangler/
+*.patch
