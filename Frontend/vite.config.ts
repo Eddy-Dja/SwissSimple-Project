@@ -1,8 +1,25 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { execSync } from 'node:child_process'
+
+// ============================================================
+// ESTAMPILLE DE BUILD (anti « vieux code en prod »)
+// Le commit Git + la date sont injectés dans le bundle.
+// Vérifiable en production : F12 → console →
+// « SwissSimple — build <sha> du <date> UTC »
+// ============================================================
+const gitSha = (() => {
+  try { return execSync('git rev-parse --short HEAD').toString().trim() }
+  catch { return 'dev-local' }
+})()
+const buildDate = new Date().toISOString().slice(0, 16).replace('T', ' ')
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    __BUILD_SHA__: JSON.stringify(gitSha),
+    __BUILD_DATE__: JSON.stringify(buildDate),
+  },
   build: {
     // ============================================================
     // CODE-SPLITTING VENDOR (Vite 8 / Rolldown)
@@ -22,7 +39,7 @@ export default defineConfig({
             },
             {
               name: 'vendor-router',
-              test: /[\\/]node_modules[\\/]react-router(-dom)?[\\/]/,
+              test: /[\\/]node_modules[\\/](react-router(-dom)?)[\\/]/,
               priority: 15,
             },
           ],

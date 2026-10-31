@@ -11,6 +11,12 @@ import './index.css';
 import { HelmetProvider } from 'react-helmet-async';
 import './DarkMode.css';
 
+// Estampille de build — valeurs injectées par vite.config.ts (define)
+declare const __BUILD_SHA__: string
+declare const __BUILD_DATE__: string
+
+console.info(`SwissSimple — build ${__BUILD_SHA__} du ${__BUILD_DATE__} UTC`);
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
    <HelmetProvider>
